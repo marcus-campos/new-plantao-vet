@@ -1,0 +1,22 @@
+{
+  "task.check": "Checagem: {name}",
+  "ceremony.owner_contact": "Contato com o tutor",
+  "ceremony.daily_progress_note": "Evolução diária",
+  "compliance.br.license_authority_label": "CRMV",
+  "handover.narrative.tasks": "No período: {done} concluídas, {partial} parciais, {not_done} não realizadas e {pending} pendentes ({overdue} atrasadas).",
+  "handover.narrative.events": "Eventos fora da grade: {count}.",
+  "handover.narrative.no_events": "Sem eventos fora da grade.",
+  "handover.narrative.prescriptions": "Prescrições: {created} criada(s), {adjusted} ajustada(s), {suspended} suspensa(s).",
+  "handover.narrative.notes": "Registrado pelo plantão: {texts}",
+  "handover.narrative.no_notes": "Sem notas de plantão no período.",
+  "compliance.br_human.license_authority_label": "CRM",
+  "identifier.microchip": "Microchip",
+  "identifier.rga": "RGA",
+  "identifier.cpf": "CPF",
+  "identifier.cns": "Cartão SUS (CNS)",
+  "identifier.mrn": "Prontuário",
+  "responsible.owner": "Tutor",
+  "responsible.guardian": "Responsável",
+  "compliance.profile.br": "Veterinária",
+  "compliance.profile.br_human": "Saúde humana"
+}

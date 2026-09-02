@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; font-family: "Instrument Sans", "Segoe UI", system-ui, sans-serif; }
+    a { color: #0C6B58; } a:hover { color: #0A5847; }
+  </style>
+</helmet>
+<div style="width: 1440px; height: 900px; background: #F3F6F4; color: #17251F; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; background: #FFFFFF; border-bottom: 1px solid #DFE7E2; padding: 14px 28px">
+    <div style="display: flex; align-items: center; gap: 18px">
+      <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 19px">Plantão<span style="color: #0C6B58">Vet</span></div>
+      <div style="color: #7C8B83; font-size: 14px">Clínica Vida Animal · Internação</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 14px">
+      <div style="font-size: 13px; font-weight: 600; color: #0A5847; background: #E4F0EB; border: 1px solid #DFE7E2; border-radius: 999px; padding: 7px 14px">Modo estação · toque para identificar (PIN)</div>
+      <div style="font-variant-numeric: tabular-nums; font-weight: 600; font-size: 15px; color: #4A5A52">18:10</div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; padding: 22px 28px 8px">
+    <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 2px">
+      <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 30px; font-variant-numeric: tabular-nums">12</div>
+      <div style="font-size: 13px; color: #4A5A52; font-weight: 500">pacientes internados</div>
+    </div>
+    <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 2px">
+      <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 30px; font-variant-numeric: tabular-nums; color: #8F5D0B">3</div>
+      <div style="font-size: 13px; color: #4A5A52; font-weight: 500">tarefas em atenção</div>
+    </div>
+    <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 2px">
+      <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 30px; font-variant-numeric: tabular-nums; color: #A83A31">1</div>
+      <div style="font-size: 13px; color: #4A5A52; font-weight: 500">atrasada · 1 crítica</div>
+    </div>
+    <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 2px">
+      <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 30px; font-variant-numeric: tabular-nums; color: #0A5847">96%</div>
+      <div style="font-size: 13px; color: #4A5A52; font-weight: 500">no prazo hoje</div>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1; padding: 14px 28px 10px; display: flex; flex-direction: column; gap: 10px; overflow: hidden">
+
+    <div style="display: grid; grid-template-columns: 260px 1fr 220px 150px; gap: 16px; padding: 0 18px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #7C8B83; font-weight: 600">
+      <div>Paciente</div><div>Próxima tarefa</div><div>Dia</div><div>Situação</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E9C4BF; border-left: 4px solid #A83A31; border-radius: 10px; padding: 14px 18px; display: grid; grid-template-columns: 256px 1fr 220px 150px; gap: 16px; align-items: center">
+      <div style="display: flex; flex-direction: column"><div style="font-weight: 600; font-size: 16px">Nina</div><div style="font-size: 13px; color: #7C8B83">Felino · Box 07</div></div>
+      <div style="display: flex; flex-direction: column"><div style="font-weight: 500; font-size: 15px">Glicemia capilar — 16:00</div><div style="font-size: 13px; color: #A83A31; font-weight: 600">crítica · sem registro há 2h10</div></div>
+      <div style="font-size: 13px; color: #4A5A52; font-variant-numeric: tabular-nums">9 de 12 feitas</div>
+      <div><span style="font-size: 13px; font-weight: 600; color: #A83A31; background: #F9E6E3; border-radius: 999px; padding: 6px 14px">Atrasada</span></div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-left: 4px solid #D9A84E; border-radius: 10px; padding: 14px 18px; display: grid; grid-template-columns: 256px 1fr 220px 150px; gap: 16px; align-items: center">
+      <div style="display: flex; flex-direction: column"><div style="font-weight: 600; font-size: 16px">Thor</div><div style="font-size: 13px; color: #7C8B83">Canino · UTI 03</div></div>
+      <div style="display: flex; flex-direction: column"><div style="font-weight: 500; font-size: 15px">Dipirona 25 mg/kg IV — 18:00</div><div style="font-size: 13px; color: #8F5D0B; font-weight: 600">dentro da janela de tolerância</div></div>
+      <div style="font-size: 13px; color: #4A5A52; font-variant-numeric: tabular-nums">11 de 14 feitas</div>
+      <div><span style="font-size: 13px; font-weight: 600; color: #8F5D0B; background: #F7EDD8; border-radius: 999px; padding: 6px 14px">Atenção</span></div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-left: 4px solid #D9A84E; border-radius: 10px; padding: 14px 18px; display: grid; grid-template-columns: 256px 1fr 220px 150px; gap: 16px; align-items: center">
+      <div style="display: flex; flex-direction: column"><div style="font-weight: 600; font-size: 16px">Mel</div><div style="font-size: 13px; color: #7C8B83">Felino · UTI 01</div></div>
+      <div style="display: flex; flex-direction: column"><div style="font-weight: 500; font-size: 15px">Pressão arterial — 18:00</div><div style="font-size: 13px; color: #8F5D0B; font-weight: 600">dentro da janela de tolerância</div></div>
+      <div style="font-size: 13px; color: #4A5A52; font-variant-numeric: tabular-nums">7 de 9 feitas</div>
+      <div><span style="font-size: 13px; font-weight: 600; color: #8F5D0B; background: #F7EDD8; border-radius: 999px; padding: 6px 14px">Atenção</span></div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-left: 4px solid #9CCBB0; border-radius: 10px; padding: 14px 18px; display: grid; grid-template-columns: 256px 1fr 220px 150px; gap: 16px; align-items: center">
+      <div style="display: flex; flex-direction: column"><div style="font-weight: 600; font-size: 16px">Bob</div><div style="font-size: 13px; color: #7C8B83">Canino · Box 02</div></div>
+      <div style="display: flex; flex-direction: column"><div style="font-weight: 500; font-size: 15px">Checagem de fluidoterapia — 20:00</div><div style="font-size: 13px; color: #7C8B83">60 ml/h · Ringer Lactato</div></div>
+      <div style="font-size: 13px; color: #4A5A52; font-variant-numeric: tabular-nums">10 de 10 feitas</div>
+      <div><span style="font-size: 13px; font-weight: 600; color: #1F7A4D; background: #E3F2E9; border-radius: 999px; padding: 6px 14px">No prazo</span></div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-left: 4px solid #9CCBB0; border-radius: 10px; padding: 14px 18px; display: grid; grid-template-columns: 256px 1fr 220px 150px; gap: 16px; align-items: center">
+      <div style="display: flex; flex-direction: column"><div style="font-weight: 600; font-size: 16px">Luna</div><div style="font-size: 13px; color: #7C8B83">Felino · Box 04</div></div>
+      <div style="display: flex; flex-direction: column"><div style="font-weight: 500; font-size: 15px">Alimentação úmida — 18:00</div><div style="font-size: 13px; color: #7C8B83">registrar aceitação</div></div>
+      <div style="font-size: 13px; color: #4A5A52; font-variant-numeric: tabular-nums">8 de 9 feitas</div>
+      <div><span style="font-size: 13px; font-weight: 600; color: #1F7A4D; background: #E3F2E9; border-radius: 999px; padding: 6px 14px">No prazo</span></div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-left: 4px solid #9CCBB0; border-radius: 10px; padding: 14px 18px; display: grid; grid-template-columns: 256px 1fr 220px 150px; gap: 16px; align-items: center">
+      <div style="display: flex; flex-direction: column"><div style="font-weight: 600; font-size: 16px">Fred</div><div style="font-size: 13px; color: #7C8B83">Canino · Box 01</div></div>
+      <div style="display: flex; flex-direction: column"><div style="font-weight: 500; font-size: 15px">Ondansetrona 0,5 mg/kg IV — 22:00</div><div style="font-size: 13px; color: #7C8B83">última dose 10:00 · Dra. Paula</div></div>
+      <div style="font-size: 13px; color: #4A5A52; font-variant-numeric: tabular-nums">6 de 7 feitas</div>
+      <div><span style="font-size: 13px; font-weight: 600; color: #1F7A4D; background: #E3F2E9; border-radius: 999px; padding: 6px 14px">No prazo</span></div>
+    </div>
+  </div>
+
+  <div style="padding: 12px 28px 16px; color: #7C8B83; font-size: 12.5px; border-top: 1px solid #DFE7E2; background: #FFFFFF">
+    Painel e ficha leem da mesma fila de tarefas · atualizado agora · Evolução pendente hoje: Nina (última há 26h)
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

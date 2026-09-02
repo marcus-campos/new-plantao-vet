@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; font-family: "Instrument Sans", "Segoe UI", system-ui, sans-serif; }
+    a { color: #0C6B58; } a:hover { color: #0A5847; }
+  </style>
+</helmet>
+<div style="width: 1440px; height: 900px; background: #F3F6F4; color: #17251F; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; background: #FFFFFF; border-bottom: 1px solid #DFE7E2; padding: 12px 28px">
+    <div style="display: flex; align-items: center; gap: 18px">
+      <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 19px">Plantão<span style="color: #0C6B58">Vet</span></div>
+      <div style="color: #7C8B83; font-size: 14px">Ficha da internação</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 14px">
+      <div style="font-size: 13px; font-weight: 600; color: #0A5847; background: #E4F0EB; border-radius: 999px; padding: 7px 14px">Operador: Marina C. · trocar (PIN)</div>
+      <div style="font-variant-numeric: tabular-nums; font-weight: 600; font-size: 15px; color: #4A5A52">18:10</div>
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: center; justify-content: space-between; background: #FFFFFF; border-bottom: 1px solid #DFE7E2; padding: 16px 28px">
+    <div style="display: flex; align-items: center; gap: 20px">
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <div style="display: flex; align-items: center; gap: 10px">
+          <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 24px">Thor</div>
+          <span style="font-size: 12px; font-weight: 600; color: #A83A31; background: #F9E6E3; border-radius: 999px; padding: 4px 10px">Crítico</span>
+          <span style="font-size: 12px; font-weight: 600; color: #8F5D0B; background: #F7EDD8; border-radius: 999px; padding: 4px 10px">Jejum a partir de 22h</span>
+        </div>
+        <div style="font-size: 13.5px; color: #4A5A52">Canino · SRD · 8 anos · 24,3 kg · UTI 03 · internado há 2 dias · Vet responsável: Dra. Paula M. (CRMV-SP 12345)</div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px">
+      <span style="font-size: 13px; font-weight: 600; color: #1F7A4D; background: #E3F2E9; border-radius: 999px; padding: 7px 14px">Evolução de hoje registrada</span>
+      <div style="font-size: 14px; font-weight: 600; color: #4A5A52; border: 1px solid #DFE7E2; border-radius: 8px; padding: 9px 16px; background: #FFFFFF">Exportar PDF</div>
+      <div style="font-size: 14px; font-weight: 600; color: #FFFFFF; background: #0C6B58; border-radius: 8px; padding: 9px 16px">Nova prescrição</div>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1; display: flex; gap: 0; overflow: hidden">
+
+    <div style="flex-grow: 1; padding: 20px 0 20px 28px; display: flex; flex-direction: column; gap: 0; overflow: hidden">
+
+      <div style="display: grid; grid-template-columns: 250px repeat(8, minmax(0, 1fr)); gap: 4px; padding-right: 16px; align-items: center">
+        <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #7C8B83; font-weight: 600; padding: 8px 0">Hoje · 30 ago</div>
+        <div style="text-align: center; font-size: 12px; color: #7C8B83; font-variant-numeric: tabular-nums">08h</div>
+        <div style="text-align: center; font-size: 12px; color: #7C8B83; font-variant-numeric: tabular-nums">10h</div>
+        <div style="text-align: center; font-size: 12px; color: #7C8B83; font-variant-numeric: tabular-nums">12h</div>
+        <div style="text-align: center; font-size: 12px; color: #7C8B83; font-variant-numeric: tabular-nums">14h</div>
+        <div style="text-align: center; font-size: 12px; color: #7C8B83; font-variant-numeric: tabular-nums">16h</div>
+        <div style="text-align: center; font-size: 12px; font-weight: 700; color: #0A5847; font-variant-numeric: tabular-nums; border-bottom: 2px solid #0C6B58; padding-bottom: 4px">18h · agora</div>
+        <div style="text-align: center; font-size: 12px; color: #7C8B83; font-variant-numeric: tabular-nums">20h</div>
+        <div style="text-align: center; font-size: 12px; color: #7C8B83; font-variant-numeric: tabular-nums">22h</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 8px; padding-right: 16px">
+
+        <div style="display: grid; grid-template-columns: 250px repeat(8, minmax(0, 1fr)); gap: 4px; background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 10px; padding: 10px">
+          <div style="display: flex; flex-direction: column; gap: 1px; padding-right: 10px">
+            <div style="font-weight: 600; font-size: 14px">Dipirona 25 mg/kg IV</div>
+            <div style="font-size: 12px; color: #7C8B83">q8h · 10 / 18 / 02 · por 3 dias</div>
+          </div>
+          <div></div>
+          <div style="background: #E3F2E9; color: #1F7A4D; border-radius: 6px; font-size: 11.5px; font-weight: 600; display: flex; align-items: center; justify-content: center; padding: 8px 2px; font-variant-numeric: tabular-nums">MC 10:04</div>
+          <div></div><div></div><div></div>
+          <div style="background: #F7EDD8; color: #8F5D0B; border: 1px dashed #D9A84E; border-radius: 6px; font-size: 11.5px; font-weight: 600; display: flex; align-items: center; justify-content: center; padding: 8px 2px">vence 18:00</div>
+          <div></div><div></div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 250px repeat(8, minmax(0, 1fr)); gap: 4px; background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 10px; padding: 10px">
+          <div style="display: flex; flex-direction: column; gap: 1px; padding-right: 10px">
+            <div style="font-weight: 600; font-size: 14px">Fluidoterapia RL 60 ml/h</div>
+            <div style="font-size: 12px; color: #7C8B83">contínua · checagem de bomba q2h</div>
+          </div>
+          <div style="background: #E3F2E9; color: #1F7A4D; border-radius: 6px; font-size: 11.5px; font-weight: 600; display: flex; align-items: center; justify-content: center; padding: 8px 2px; font-variant-numeric: tabular-nums">MC 08:01</div>
+          <div style="background: #E3F2E9; color: #1F7A4D; border-radius: 6px; font-size: 11.5px; font-weight: 600; display: flex; align-items: center; justify-content: center; padding: 8px 2px; font-variant-numeric: tabular-nums">MC 10:06</div>
+          <div style="background: #E3F2E9; color: #1F7A4D; border-radius: 6px; font-size: 11.5px; font-weight: 600; display: flex; align-items: center; justify-content: center; padding: 8px 2px; font-variant-numeric: tabular-nums">JR 12:02</div>
+          <div style="background: #E3F2E9; color: #1F7A4D; border-radius: 6px; font-size: 11.5px; font-weight: 600; display: flex; align-items: center; justify-content: center; padding: 8px 2px; font-variant-numeric: tabular-nums">JR 14:11</div>
+          <div style="background: #F9E6E3; color: #A83A31; border-radius: 6px; font-size: 11.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 8px 2px">16h · atrasada</div>
+          <div style="background: #F7EDD8; color: #8F5D0B; border: 1px dashed #D9A84E; border-radius: 6px; font-size: 11.5px; font-weight: 600; display: flex; align-items: center; justify-content: center; padding: 8px 2px">vence 18:00</div>
+          <div style="border: 1px solid #DFE7E2; border-radius: 6px; font-size: 11.5px; color: #7C8B83; display: flex; align-items: center; justify-content: center; padding: 8px 2px">20:00</div>
+          <div style="border: 1px solid #DFE7E2; border-radius: 6px; font-size: 11.5px; color: #7C8B83; display: flex; align-items: center; justify-content: center; padding: 8px 2px">22:00</div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 250px repeat(8, minmax(0, 1fr)); gap: 4px; background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 10px; padding: 10px">
+          <div style="display: flex; flex-direction: column; gap: 1px; padding-right: 10px">
+            <div style="font-weight: 600; font-size: 14px">Ondansetrona 0,5 mg/kg IV</div>
+            <div style="font-size: 12px; color: #7C8B83">q12h · 10 / 22</div>
+          </div>
+          <div></div>
+          <div style="background: #E3F2E9; color: #1F7A4D; border-radius: 6px; font-size: 11.5px; font-weight: 600; display: flex; align-items: center; justify-content: center; padding: 8px 2px; font-variant-numeric: tabular-nums">MC 10:12</div>
+          <div></div><div></div><div></div><div></div><div></div>
+          <div style="border: 1px solid #DFE7E2; border-radius: 6px; font-size: 11.5px; color: #7C8B83; display: flex; align-items: center; justify-content: center; padding: 8px 2px">22:00</div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 250px repeat(8, minmax(0, 1fr)); gap: 4px; background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 10px; padding: 10px">
+          <div style="display: flex; flex-direction: column; gap: 1px; padding-right: 10px">
+            <div style="font-weight: 600; font-size: 14px">Alimentação úmida</div>
+            <div style="font-size: 12px; color: #7C8B83">q8h · 10 / 18 / 02 · registrar aceitação</div>
+          </div>
+          <div></div>
+          <div style="background: #F3F6F4; color: #7C8B83; border-radius: 6px; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; padding: 8px 2px; text-decoration: line-through">não feita · jejum</div>
+          <div></div><div></div><div></div>
+          <div style="background: #F7EDD8; color: #8F5D0B; border: 1px dashed #D9A84E; border-radius: 6px; font-size: 11.5px; font-weight: 600; display: flex; align-items: center; justify-content: center; padding: 8px 2px">vence 18:00</div>
+          <div></div><div></div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 250px repeat(8, minmax(0, 1fr)); gap: 4px; background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 10px; padding: 10px">
+          <div style="display: flex; flex-direction: column; gap: 1px; padding-right: 10px">
+            <div style="display: flex; align-items: center; gap: 8px"><div style="font-weight: 600; font-size: 14px">Pressão arterial</div><span style="font-size: 10.5px; font-weight: 700; color: #A83A31; background: #F9E6E3; border-radius: 999px; padding: 2px 8px">crítica</span></div>
+            <div style="font-size: 12px; color: #7C8B83">q12h · 10 / 22 · janela 30 min</div>
+          </div>
+          <div></div>
+          <div style="background: #E3F2E9; color: #1F7A4D; border-radius: 6px; font-size: 11.5px; font-weight: 600; display: flex; align-items: center; justify-content: center; padding: 8px 2px; font-variant-numeric: tabular-nums">PM 10:03 · 128</div>
+          <div></div><div></div><div></div><div></div><div></div>
+          <div style="border: 1px solid #DFE7E2; border-radius: 6px; font-size: 11.5px; color: #7C8B83; display: flex; align-items: center; justify-content: center; padding: 8px 2px">22:00</div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 250px 1fr; gap: 4px; background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 10px; padding: 10px">
+          <div style="display: flex; flex-direction: column; gap: 1px; padding-right: 10px">
+            <div style="font-weight: 600; font-size: 14px">Metadona 0,2 mg/kg IM</div>
+            <div style="font-size: 12px; color: #7C8B83">PRN — se dor · intervalo mínimo 4h · máx 4 doses/24h</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px">
+            <span style="background: #E4F0EB; color: #0A5847; border-radius: 6px; font-size: 11.5px; font-weight: 600; padding: 8px 12px; font-variant-numeric: tabular-nums">registro avulso · JR 13:05 · escore de dor 3</span>
+            <span style="font-size: 12px; color: #7C8B83">1 de 4 doses em 24h · liberada desde 17:05</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="width: 330px; border-left: 1px solid #DFE7E2; background: #FFFFFF; padding: 20px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+      <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #7C8B83; font-weight: 600">Ocorrências do turno</div>
+
+      <div style="border: 1px solid #DFE7E2; border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px">
+        <div style="display: flex; justify-content: space-between; align-items: center"><div style="font-weight: 600; font-size: 13.5px">Episódio de vômito</div><div style="font-size: 12px; color: #7C8B83; font-variant-numeric: tabular-nums">14:32</div></div>
+        <div style="font-size: 12.5px; color: #4A5A52">Bilioso, volume pequeno. Dra. Paula notificada.</div>
+        <div style="font-size: 11.5px; color: #7C8B83">registrado por Marina C.</div>
+      </div>
+
+      <div style="border: 1px solid #DFE7E2; border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; background: #F8FAF9">
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <div style="display: flex; align-items: center; gap: 7px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0C6B58" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0"></path><path d="M12 18v3"></path></svg>
+            <div style="font-weight: 600; font-size: 13.5px">Nota de áudio · transcrita</div>
+          </div>
+          <div style="font-size: 12px; color: #7C8B83; font-variant-numeric: tabular-nums">15:10</div>
+        </div>
+        <div style="font-size: 12.5px; color: #4A5A52; font-style: italic">"Thor mais responsivo, aceitou água. Mucosa ainda pálida, manter atenção na PA da noite."</div>
+        <div style="font-size: 11.5px; color: #7C8B83">entra no boletim do plantão</div>
+      </div>
+
+      <div style="border-top: 1px solid #DFE7E2; padding-top: 14px; display: flex; flex-direction: column; gap: 8px">
+        <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #7C8B83; font-weight: 600">Conta da internação</div>
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <div style="font-size: 13px; color: #4A5A52">14 itens executados hoje</div>
+          <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 20px; font-variant-numeric: tabular-nums">R$ 486,00</div>
+        </div>
+        <div style="font-size: 12px; color: #7C8B83">acumulado da internação: R$ 1.912,00 · ver extrato</div>
+      </div>
+
+      <div style="margin-top: auto; border: 1px solid #DFE7E2; border-radius: 10px; padding: 12px 14px; background: #F3F6F4; font-size: 12px; color: #4A5A52">
+        Cada registro grava autor, CRMV e horário na trilha de auditoria. Correções viram adendo — nada é apagado.
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

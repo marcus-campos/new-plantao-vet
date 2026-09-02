@@ -1,0 +1,331 @@
+/* Telas de internados: lista, admissão e encerramento.
+   Mesmas regras do resto do app: tokens do index.css, nada de largura fixa,
+   alvo de toque de 44px e tabela larga que rola dentro do próprio contêiner. */
+
+/* Cabeçalho de tela ---------------------------------------------------- */
+
+.patients-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.patients-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.patients-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 12px;
+  flex: 1 1 260px;
+  max-width: 320px;
+}
+
+.patients-search input {
+  border: 0;
+  outline: none;
+  background: transparent;
+  padding: 10px 0;
+  font-size: 14.5px;
+  width: 100%;
+}
+
+.patients-count {
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Lista de internados --------------------------------------------------- */
+
+.patients-table {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+/* A grade larga rola aqui dentro: o corpo da página nunca rola de lado. */
+.patients-scroll {
+  overflow-x: auto;
+}
+
+.patients-grid {
+  min-width: 900px;
+}
+
+.patients-row {
+  display: grid;
+  grid-template-columns: minmax(200px, 1.3fr) 110px minmax(220px, 1.6fr) 170px 130px;
+  gap: 16px;
+  align-items: center;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--line-soft);
+  border-left: 4px solid transparent;
+  font-size: 14px;
+}
+
+.patients-head {
+  background: var(--surface-subtle);
+  border-bottom: 1px solid var(--line);
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 600;
+  padding-top: 11px;
+  padding-bottom: 11px;
+}
+
+.patients-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.patients-link:last-child .patients-row {
+  border-bottom: 0;
+}
+
+.patients-link:hover .patients-row,
+.patients-link:focus-visible .patients-row {
+  background: var(--surface-subtle);
+}
+
+.patients-tasks {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.patients-tasks span {
+  border-radius: 6px;
+  padding: 2px 7px;
+}
+
+@media (max-width: 900px) {
+  .patients-grid {
+    min-width: 0;
+  }
+  .patients-head {
+    display: none;
+  }
+  .patients-row {
+    grid-template-columns: 1fr auto;
+    row-gap: 6px;
+    padding: 14px 16px;
+  }
+  .patients-row > .patients-cell-patient {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .patients-row > .patients-cell-state {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+  }
+  .patients-row > .patients-cell-kennel {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .patients-row > .patients-cell-next {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+  .patients-row > .patients-cell-tasks {
+    grid-column: 1 / -1;
+    grid-row: 4;
+  }
+}
+
+/* Admissão e alta: conteúdo + painel lateral ---------------------------- */
+
+.patients-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 1000px) {
+  .patients-split {
+    grid-template-columns: 1fr;
+  }
+}
+
+.patients-side {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.patients-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary-dark);
+  font-weight: 700;
+}
+
+.patients-note {
+  background: var(--surface-subtle);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px;
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+
+.patients-warn {
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-edge);
+  color: var(--warn);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  font-size: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.patients-meter {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--line-soft);
+  overflow: hidden;
+}
+
+.patients-meter > div {
+  height: 100%;
+  background: var(--primary);
+}
+
+.patients-summary {
+  display: grid;
+  gap: 12px;
+}
+
+.patients-summary dt {
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 600;
+}
+
+.patients-summary dd {
+  margin: 2px 0 0;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.patients-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.patients-total strong {
+  font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+}
+
+.patients-check {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+.patients-check input {
+  min-height: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  flex: 0 0 auto;
+}
+
+.patients-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.patients-empty {
+  color: var(--ink-3);
+  margin: 0;
+  font-size: 14.5px;
+}
+
+/* Resultado da busca no cadastro: paciente que NÃO está no painel de hoje. */
+.patients-hit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 11px 14px;
+}
+
+/* O censo. Sem paredão vermelho: o plantão é a tela das exceções; aqui a
+   pergunta é "quem está aqui, onde, e como vai". Cinco linhas de fundo rosa
+   com a palavra "Atrasada" repetida cinco vezes não informam nada. */
+
+.census { display: grid; gap: 4px; }
+
+.census-row {
+  display: grid;
+  grid-template-columns: minmax(160px, 240px) 1fr auto;
+  gap: 18px;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid transparent;
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  min-height: 56px;
+}
+.census-row:hover { border-color: var(--ink-muted); }
+.census-late { border-left-color: var(--late); }
+.census-warn { border-left-color: var(--warn-edge); }
+
+.census-who { display: grid; gap: 1px; min-width: 0; }
+.census-who strong { font-size: 15.5px; }
+.census-meta { font-size: 12.5px; color: var(--ink-3); }
+
+/* Uma frase, não uma etiqueta repetida. */
+.census-state { font-size: 14px; color: var(--ink-2); min-width: 0; }
+.census-late .census-state { color: var(--late); font-weight: 500; }
+
+.census-today { font-size: 13px; color: var(--ink-3); white-space: nowrap; }
+
+.patients-hits { display: grid; gap: 8px; }
+.past-stays { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.kennel-card-attention { border-color: var(--late-edge); background: var(--late-bg); }
+
+@media (max-width: 760px) {
+  .census-row { grid-template-columns: 1fr auto; }
+  .census-state { grid-column: 1 / -1; }
+}

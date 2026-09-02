@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; font-family: "Instrument Sans", "Segoe UI", system-ui, sans-serif; }
+    a { color: #0C6B58; } a:hover { color: #0A5847; }
+  </style>
+</helmet>
+<div style="width: 1440px; height: 900px; background: #F3F6F4; color: #17251F; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; background: #FFFFFF; border-bottom: 1px solid #DFE7E2; padding: 12px 28px">
+    <div style="display: flex; align-items: center; gap: 18px">
+      <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 19px">Plantão<span style="color: #0C6B58">Vet</span></div>
+      <div style="color: #7C8B83; font-size: 14px">Passagem de plantão</div>
+    </div>
+    <div style="font-variant-numeric: tabular-nums; font-weight: 600; font-size: 15px; color: #4A5A52">18:47</div>
+  </div>
+
+  <div style="display: flex; align-items: center; justify-content: space-between; background: #FFFFFF; border-bottom: 1px solid #DFE7E2; padding: 18px 28px">
+    <div style="display: flex; align-items: center; gap: 16px">
+      <div style="display: flex; flex-direction: column">
+        <div style="font-size: 12px; color: #7C8B83; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 600">Entrega</div>
+        <div style="font-weight: 600; font-size: 16px">Marina C. · Diurno 07–19h</div>
+      </div>
+      <svg width="26" height="18" viewBox="0 0 26 18" fill="none" stroke="#7C8B83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9h20"></path><path d="M16 3l6 6-6 6"></path></svg>
+      <div style="display: flex; flex-direction: column">
+        <div style="font-size: 12px; color: #7C8B83; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 600">Recebe</div>
+        <div style="font-weight: 600; font-size: 16px">Rafael S. · Noturno 19–07h</div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px">
+      <div style="font-size: 13.5px; color: #4A5A52; font-variant-numeric: tabular-nums"><b style="color: #0A5847">3 de 5</b> boletins aprovados · <b style="color: #8F5D0B">2</b> aceites pendentes</div>
+      <div style="font-size: 14px; font-weight: 600; color: #FFFFFF; background: #0C6B58; border-radius: 8px; padding: 9px 16px">Concluir passagem</div>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1; padding: 22px 28px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; overflow: hidden; align-content: start">
+
+    <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <div style="display: flex; align-items: center; gap: 10px">
+          <div style="font-weight: 600; font-size: 17px">Thor</div>
+          <div style="font-size: 13px; color: #7C8B83">Canino · UTI 03</div>
+          <span style="font-size: 11px; font-weight: 700; color: #A83A31; background: #F9E6E3; border-radius: 999px; padding: 3px 9px">crítico</span>
+        </div>
+        <div style="display: flex; gap: 8px; font-size: 12px; font-variant-numeric: tabular-nums">
+          <span style="color: #1F7A4D; background: #E3F2E9; border-radius: 999px; padding: 4px 10px; font-weight: 600">11 feitas</span>
+          <span style="color: #7C8B83; background: #F3F6F4; border-radius: 999px; padding: 4px 10px; font-weight: 600">1 não feita</span>
+          <span style="color: #8F5D0B; background: #F7EDD8; border-radius: 999px; padding: 4px 10px; font-weight: 600">3 pendentes</span>
+        </div>
+      </div>
+      <div style="background: #F8FAF9; border: 1px solid #DFE7E2; border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px">
+        <div style="font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: #0A5847; font-weight: 700">Resumo · rascunho da IA</div>
+        <div style="font-size: 13.5px; color: #17251F; line-height: 1.55">Dia estável com melhora gradual. Episódio de vômito bilioso às 14:32 (Dra. Paula notificada). Aceitou água à tarde; mucosa ainda pálida. Alimentação suspensa por jejum pré-ultrassom de amanhã. Atenção à PA das 22h (crítica) e checagem de bomba atrasada das 16h.</div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <span style="font-size: 13px; font-weight: 600; color: #1F7A4D; background: #E3F2E9; border-radius: 999px; padding: 6px 14px">Aprovado por Marina · 18:41</span>
+        <span style="font-size: 13px; font-weight: 600; color: #8F5D0B; background: #F7EDD8; border-radius: 999px; padding: 6px 14px">Aguardando aceite de Rafael</span>
+      </div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <div style="display: flex; align-items: center; gap: 10px">
+          <div style="font-weight: 600; font-size: 17px">Nina</div>
+          <div style="font-size: 13px; color: #7C8B83">Felino · Box 07</div>
+        </div>
+        <div style="display: flex; gap: 8px; font-size: 12px; font-variant-numeric: tabular-nums">
+          <span style="color: #1F7A4D; background: #E3F2E9; border-radius: 999px; padding: 4px 10px; font-weight: 600">9 feitas</span>
+          <span style="color: #A83A31; background: #F9E6E3; border-radius: 999px; padding: 4px 10px; font-weight: 700">1 atrasada</span>
+          <span style="color: #8F5D0B; background: #F7EDD8; border-radius: 999px; padding: 4px 10px; font-weight: 600">2 pendentes</span>
+        </div>
+      </div>
+      <div style="background: #F8FAF9; border: 1px solid #DFE7E2; border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px">
+        <div style="font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: #0A5847; font-weight: 700">Resumo · rascunho da IA</div>
+        <div style="font-size: 13.5px; color: #17251F; line-height: 1.55">Glicemia das 16h segue sem registro (crítica, atrasada há 2h47) — prioridade imediata do próximo turno. Comeu metade da ração da manhã; sem vômitos. Tutor ligou às 15h e foi atualizado por Marina.</div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <div style="font-size: 14px; font-weight: 600; color: #FFFFFF; background: #0C6B58; border-radius: 8px; padding: 9px 16px">Revisar e aprovar</div>
+        <span style="font-size: 12.5px; color: #7C8B83">o aceite de Rafael libera depois da aprovação</span>
+      </div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E9C4BF; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <div style="display: flex; align-items: center; gap: 10px">
+          <div style="font-weight: 600; font-size: 17px">Mel</div>
+          <div style="font-size: 13px; color: #7C8B83">Felino · UTI 01</div>
+        </div>
+        <span style="font-size: 12px; font-weight: 700; color: #A83A31; background: #F9E6E3; border-radius: 999px; padding: 5px 12px">Não revisado pelo plantonista anterior</span>
+      </div>
+      <div style="background: #F8FAF9; border: 1px solid #DFE7E2; border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px">
+        <div style="font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: #7C8B83; font-weight: 700">Resumo automático · sem revisão humana</div>
+        <div style="font-size: 13.5px; color: #17251F; line-height: 1.55">7 de 9 tarefas feitas. PA das 18h dentro da janela. Sem notas do plantonista neste turno. Todos os registros do dia seguem disponíveis na ficha.</div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <span style="font-size: 12.5px; color: #A83A31; font-weight: 600">Omissão registrada na auditoria · 18:45</span>
+        <span style="font-size: 13px; font-weight: 600; color: #8F5D0B; background: #F7EDD8; border-radius: 999px; padding: 6px 14px">Aguardando aceite de Rafael</span>
+      </div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <div style="display: flex; align-items: center; gap: 10px">
+          <div style="font-weight: 600; font-size: 17px">Bob</div>
+          <div style="font-size: 13px; color: #7C8B83">Canino · Box 02</div>
+        </div>
+        <div style="display: flex; gap: 8px; font-size: 12px; font-variant-numeric: tabular-nums">
+          <span style="color: #1F7A4D; background: #E3F2E9; border-radius: 999px; padding: 4px 10px; font-weight: 600">10 feitas</span>
+          <span style="color: #8F5D0B; background: #F7EDD8; border-radius: 999px; padding: 4px 10px; font-weight: 600">2 pendentes</span>
+        </div>
+      </div>
+      <div style="background: #F8FAF9; border: 1px solid #DFE7E2; border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px">
+        <div style="font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: #0A5847; font-weight: 700">Resumo · rascunho da IA</div>
+        <div style="font-size: 13.5px; color: #17251F; line-height: 1.55">Sem intercorrências. Fluidoterapia estável a 60 ml/h, troca de bolsa prevista para 23h. Alta provável amanhã se mantiver aceitação alimentar — Dra. Paula reavalia no round das 8h.</div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <span style="font-size: 13px; font-weight: 600; color: #1F7A4D; background: #E3F2E9; border-radius: 999px; padding: 6px 14px">Aprovado por Marina · 18:39</span>
+        <span style="font-size: 13px; font-weight: 600; color: #1F7A4D; background: #E3F2E9; border-radius: 999px; padding: 6px 14px">Recebido por Rafael · 18:46</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 12px 28px 16px; color: #7C8B83; font-size: 12.5px; border-top: 1px solid #DFE7E2; background: #FFFFFF">
+    O boletim nasce dos registros e das notas de áudio do turno · aprovação de quem entrega e aceite de quem recebe ficam na trilha de auditoria
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

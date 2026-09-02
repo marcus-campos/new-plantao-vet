@@ -1,0 +1,25 @@
+/* O paciente como lugar, não como seis páginas. */
+
+.patient { display: grid; gap: 14px; }
+
+.patient-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.patient-id { display: grid; gap: 3px; min-width: 0; }
+
+.patient-back {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-3);
+  text-decoration: none;
+}
+.patient-back:hover { color: var(--primary-dark); }
+
+.patient-name-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.patient-name { font-size: 25px; }
+.patient-meta { margin: 1px 0 0; font-size: 13.5px; color: var(--ink-2); }
+.patient-actions { display: flex; gap: 8px; flex-wrap: wrap; }

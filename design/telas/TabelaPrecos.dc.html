@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; font-family: "Instrument Sans", "Segoe UI", system-ui, sans-serif; }
+    a { color: #0C6B58; } a:hover { color: #0A5847; }
+  </style>
+</helmet>
+<div style="width: 1440px; height: 900px; background: #F3F6F4; color: #17251F; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; background: #FFFFFF; border-bottom: 1px solid #DFE7E2; padding: 12px 28px">
+    <div style="display: flex; align-items: center; gap: 18px">
+      <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 19px">Plantão<span style="color: #0C6B58">Vet</span></div>
+      <div style="color: #7C8B83; font-size: 14px">Configurações · Tabela de preços</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px">
+      <div style="font-size: 14px; font-weight: 600; color: #4A5A52; border: 1px solid #DFE7E2; border-radius: 8px; padding: 9px 16px; background: #FFFFFF">Importar planilha</div>
+      <div style="font-size: 14px; font-weight: 600; color: #FFFFFF; background: #0C6B58; border-radius: 8px; padding: 9px 16px">Novo item</div>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1; display: flex; overflow: hidden">
+
+    <div style="flex-grow: 1; padding: 22px 28px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+
+      <div style="display: flex; align-items: center; gap: 10px">
+        <div style="flex-grow: 1; display: flex; align-items: center; gap: 10px; background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 8px; padding: 11px 14px">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#7C8B83" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+          <span style="font-size: 14.5px; color: #9AA9A1">Buscar por nome ou código</span>
+        </div>
+        <span style="font-size: 13.5px; font-weight: 600; color: #FFFFFF; background: #0C6B58; border-radius: 999px; padding: 9px 16px">Todos · 64</span>
+        <span style="font-size: 13.5px; font-weight: 500; color: #4A5A52; background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 999px; padding: 9px 16px">Medicações</span>
+        <span style="font-size: 13.5px; font-weight: 500; color: #4A5A52; background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 999px; padding: 9px 16px">Procedimentos</span>
+        <span style="font-size: 13.5px; font-weight: 500; color: #4A5A52; background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 999px; padding: 9px 16px">Diárias</span>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 10px; overflow: hidden">
+        <div style="display: grid; grid-template-columns: 100px 1fr 150px 130px 130px 110px; gap: 14px; padding: 11px 18px; background: #F8FAF9; border-bottom: 1px solid #DFE7E2; font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: #7C8B83; font-weight: 600">
+          <div>Código</div><div>Item</div><div>Categoria</div><div>Unidade</div><div style="text-align: right">Preço</div><div style="text-align: right">Uso</div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 100px 1fr 150px 130px 130px 110px; gap: 14px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px">
+          <div style="font-variant-numeric: tabular-nums; color: #7C8B83">MED-018</div>
+          <div style="font-weight: 500">Dipirona sódica 500 mg/ml</div>
+          <div style="color: #4A5A52">Medicação</div>
+          <div style="color: #4A5A52">por dose</div>
+          <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 18,00</div>
+          <div style="text-align: right; font-size: 13px; color: #7C8B83; font-variant-numeric: tabular-nums">142×</div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 100px 1fr 150px 130px 130px 110px; gap: 14px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px">
+          <div style="font-variant-numeric: tabular-nums; color: #7C8B83">MED-022</div>
+          <div style="font-weight: 500">Ondansetrona 2 mg/ml</div>
+          <div style="color: #4A5A52">Medicação</div>
+          <div style="color: #4A5A52">por dose</div>
+          <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 22,00</div>
+          <div style="text-align: right; font-size: 13px; color: #7C8B83; font-variant-numeric: tabular-nums">88×</div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 100px 1fr 150px 130px 130px 110px; gap: 14px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px; background: #FCFAF6">
+          <div style="font-variant-numeric: tabular-nums; color: #7C8B83">MED-041</div>
+          <div style="font-weight: 500; display: flex; align-items: center; gap: 8px">Metadona 10 mg/ml <span style="font-size: 10.5px; font-weight: 700; color: #8F5D0B; background: #F7EDD8; border-radius: 999px; padding: 2px 8px">controlado</span></div>
+          <div style="color: #4A5A52">Medicação</div>
+          <div style="color: #4A5A52">por dose</div>
+          <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 38,00</div>
+          <div style="text-align: right; font-size: 13px; color: #7C8B83; font-variant-numeric: tabular-nums">31×</div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 100px 1fr 150px 130px 130px 110px; gap: 14px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px">
+          <div style="font-variant-numeric: tabular-nums; color: #7C8B83">PRO-007</div>
+          <div style="font-weight: 500">Aferição de pressão arterial</div>
+          <div style="color: #4A5A52">Procedimento</div>
+          <div style="color: #4A5A52">por aferição</div>
+          <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 45,00</div>
+          <div style="text-align: right; font-size: 13px; color: #7C8B83; font-variant-numeric: tabular-nums">210×</div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 100px 1fr 150px 130px 130px 110px; gap: 14px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px">
+          <div style="font-variant-numeric: tabular-nums; color: #7C8B83">PRO-012</div>
+          <div style="font-weight: 500">Checagem de bomba de infusão</div>
+          <div style="color: #4A5A52">Procedimento</div>
+          <div style="color: #4A5A52">por checagem</div>
+          <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 12,00</div>
+          <div style="text-align: right; font-size: 13px; color: #7C8B83; font-variant-numeric: tabular-nums">396×</div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 100px 1fr 150px 130px 130px 110px; gap: 14px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px; background: #F4F8F6">
+          <div style="font-variant-numeric: tabular-nums; color: #7C8B83">DIA-001</div>
+          <div style="font-weight: 500; display: flex; align-items: center; gap: 8px">Diária de internação · UTI <span style="font-size: 10.5px; font-weight: 700; color: #0A5847; background: #E4F0EB; border-radius: 999px; padding: 2px 8px">lançada sozinha</span></div>
+          <div style="color: #4A5A52">Diária</div>
+          <div style="color: #4A5A52">por dia</div>
+          <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 280,00</div>
+          <div style="text-align: right; font-size: 13px; color: #7C8B83; font-variant-numeric: tabular-nums">64×</div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 100px 1fr 150px 130px 130px 110px; gap: 14px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px; background: #F4F8F6">
+          <div style="font-variant-numeric: tabular-nums; color: #7C8B83">DIA-002</div>
+          <div style="font-weight: 500; display: flex; align-items: center; gap: 8px">Diária de internação · geral <span style="font-size: 10.5px; font-weight: 700; color: #0A5847; background: #E4F0EB; border-radius: 999px; padding: 2px 8px">lançada sozinha</span></div>
+          <div style="color: #4A5A52">Diária</div>
+          <div style="color: #4A5A52">por dia</div>
+          <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 165,00</div>
+          <div style="text-align: right; font-size: 13px; color: #7C8B83; font-variant-numeric: tabular-nums">128×</div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 100px 1fr 150px 130px 130px 110px; gap: 14px; padding: 12px 18px; align-items: center; font-size: 14px">
+          <div style="font-variant-numeric: tabular-nums; color: #7C8B83">INS-003</div>
+          <div style="font-weight: 500">Ringer Lactato 500 ml</div>
+          <div style="color: #4A5A52">Insumo</div>
+          <div style="color: #4A5A52">por bolsa</div>
+          <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 34,00</div>
+          <div style="text-align: right; font-size: 13px; color: #7C8B83; font-variant-numeric: tabular-nums">73×</div>
+        </div>
+      </div>
+
+      <div style="font-size: 13px; color: #7C8B83">Mostrando 8 de 64 itens</div>
+    </div>
+
+    <div style="width: 380px; border-left: 1px solid #DFE7E2; background: #FFFFFF; padding: 22px; display: flex; flex-direction: column; gap: 16px; overflow: hidden">
+
+      <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #0A5847; font-weight: 700">Editar item</div>
+
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <label style="font-size: 12px; font-weight: 600; color: #4A5A52; letter-spacing: 0.04em; text-transform: uppercase">Nome</label>
+        <div style="border: 2px solid #0C6B58; border-radius: 8px; padding: 11px 14px; font-size: 15px">Dipirona sódica 500 mg/ml</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label style="font-size: 12px; font-weight: 600; color: #4A5A52; letter-spacing: 0.04em; text-transform: uppercase">Categoria</label>
+          <div style="border: 1px solid #DFE7E2; border-radius: 8px; padding: 11px 14px; font-size: 15px">Medicação</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label style="font-size: 12px; font-weight: 600; color: #4A5A52; letter-spacing: 0.04em; text-transform: uppercase">Unidade</label>
+          <div style="border: 1px solid #DFE7E2; border-radius: 8px; padding: 11px 14px; font-size: 15px">por dose</div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <label style="font-size: 12px; font-weight: 600; color: #4A5A52; letter-spacing: 0.04em; text-transform: uppercase">Preço</label>
+        <div style="border: 1px solid #DFE7E2; border-radius: 8px; padding: 11px 14px; font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums">R$ 18,00</div>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #DFE7E2; padding-top: 14px">
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <div style="font-size: 14px; font-weight: 600">Medicamento controlado</div>
+          <div style="font-size: 12.5px; color: #7C8B83">Avisa na execução</div>
+        </div>
+        <div style="width: 48px; height: 28px; border-radius: 999px; background: #DFE7E2; display: flex; align-items: center; padding: 3px">
+          <div style="width: 22px; height: 22px; border-radius: 50%; background: #FFFFFF"></div>
+        </div>
+      </div>
+
+      <div style="background: #F7EDD8; border: 1px solid #E4CFA0; border-radius: 10px; padding: 13px 14px; display: flex; gap: 10px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8F5D0B" stroke-width="2" stroke-linecap="round" style="flex-shrink: 0; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg>
+        <div style="font-size: 13px; color: #6B4A0D; line-height: 1.5">Mudar o preço vale só para prescrições novas. As 142 internações que já usaram este item mantêm o valor que estava valendo na época.</div>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: auto">
+        <div style="flex-grow: 1; text-align: center; font-size: 15px; font-weight: 700; color: #FFFFFF; background: #0C6B58; border-radius: 8px; padding: 13px">Salvar</div>
+        <div style="text-align: center; font-size: 15px; font-weight: 600; color: #4A5A52; border: 1px solid #DFE7E2; border-radius: 8px; padding: 13px 20px">Desativar</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 12px 28px 16px; color: #7C8B83; font-size: 12.5px; border-top: 1px solid #DFE7E2; background: #FFFFFF">
+    Cadastrado uma vez, o preço entra sozinho em toda prescrição — e as diárias são lançadas por dia de internação conforme a área do box.
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

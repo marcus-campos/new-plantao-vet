@@ -1,0 +1,71 @@
+/* Design system do PlantãoVet: tokens únicos, usados por toda a UI.
+   Responsivo de verdade: o mesmo app serve monitor de 27", notebook e tablet. */
+:root {
+  --ground: #f3f6f4;
+  --surface: #ffffff;
+  --surface-subtle: #f8faf9;
+  --ink: #17251f;
+  --ink-2: #4a5a52;
+  --ink-3: #7c8b83;
+  --ink-muted: #9aa9a1;
+  --primary: #0c6b58;
+  --primary-dark: #0a5847;
+  --tint: #e4f0eb;
+  --line: #dfe7e2;
+  --line-soft: #edf2ef;
+  --ok: #1f7a4d;
+  --ok-bg: #e3f2e9;
+  --ok-edge: #9ccbb0;
+  --warn: #8f5d0b;
+  --warn-bg: #f7edd8;
+  --warn-edge: #d9a84e;
+  --late: #a83a31;
+  --late-bg: #f9e6e3;
+  --late-edge: #e9c4bf;
+
+  --radius: 10px;
+  --radius-lg: 12px;
+  --space: 8px;
+
+  color-scheme: light;
+  font-family: "Instrument Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: var(--ink);
+  background: var(--ground);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+button { font: inherit; cursor: pointer; }
+input, select, textarea { font: inherit; color: inherit; }
+
+/* Alvo de toque mínimo: a mesma tela roda em tablet no balcão. */
+button, [role="button"], input, select {
+  min-height: 44px;
+}
+
+.tabular { font-variant-numeric: tabular-nums; }
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

@@ -1,0 +1,384 @@
+/* Conta, prontuário e comunicação com o tutor.
+   Três telas de "fim de internação": o que foi cobrado, o que foi registrado e
+   o que o tutor ouviu. Mesma régua de responsividade do resto do app. */
+
+/* Cabeçalho de tela ---------------------------------------------------- */
+
+.billing-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.billing-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.billing-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 600;
+}
+
+.billing-footnote {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  line-height: 1.5;
+}
+
+/* Conta ---------------------------------------------------------------- */
+
+.charges-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+}
+
+.charges-figure {
+  font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(22px, 3vw, 30px);
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+/* A tabela larga rola dentro do próprio contêiner: o corpo nunca rola de lado. */
+.charges-scroll {
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.charges-table {
+  width: 100%;
+  min-width: 660px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.charges-table th {
+  text-align: left;
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 600;
+  background: var(--surface-subtle);
+  border-bottom: 1px solid var(--line);
+  padding: 11px 14px;
+  white-space: nowrap;
+}
+
+.charges-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line-soft);
+  vertical-align: top;
+}
+
+.charges-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.charges-table .num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.charges-day-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 14px;
+  border-top: 1px solid var(--line);
+  background: var(--surface-subtle);
+}
+
+.charges-source {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-2);
+  background: var(--line-soft);
+  border-radius: 999px;
+  padding: 3px 9px;
+  white-space: nowrap;
+}
+
+/* Prontuário ------------------------------------------------------------ */
+
+.record-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.record-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 13.5px;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.record-check input {
+  width: 18px;
+  height: 18px;
+  min-height: 18px;
+  accent-color: var(--primary);
+}
+
+/* A folha: o documento que o tutor recebe, dentro da tela cinza. */
+.record-stage {
+  display: flex;
+  justify-content: center;
+}
+
+.record-sheet {
+  width: min(880px, 100%);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow: 0 8px 28px rgba(23, 37, 31, 0.1);
+  padding: clamp(20px, 4vw, 44px);
+  display: grid;
+  gap: 20px;
+  color: var(--ink);
+}
+
+.record-letterhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 16px;
+}
+
+.record-identity {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.record-label {
+  font-size: 10.5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 600;
+}
+
+.record-section-title {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  font-weight: 700;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 5px;
+  margin: 0;
+}
+
+.record-note + .record-note {
+  border-top: 1px solid var(--line-soft);
+  padding-top: 8px;
+}
+
+.record-note-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+
+.record-exec {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr) minmax(0, 190px);
+  gap: 14px;
+  font-size: 13px;
+  border-top: 1px solid var(--line-soft);
+  padding-top: 6px;
+}
+
+.record-exec-head {
+  border-top: 0;
+  padding-top: 0;
+}
+
+@media (max-width: 560px) {
+  .record-exec {
+    grid-template-columns: 62px minmax(0, 1fr);
+  }
+  .record-exec > :nth-child(3) {
+    grid-column: 1 / -1;
+  }
+}
+
+.record-legal {
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+
+/* Impressão: some a navegação, sai só a folha. */
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  .app-header,
+  .record-toolbar,
+  .no-print {
+    display: none !important;
+  }
+
+  .app-main {
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  body,
+  .app-shell {
+    background: #fff !important;
+  }
+
+  .record-sheet {
+    width: 100%;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .record-note,
+  .record-exec {
+    break-inside: avoid;
+  }
+}
+
+/* Tutor ------------------------------------------------------------------ */
+
+.owner-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .owner-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.owner-column {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.owner-contact {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.owner-contact:last-child {
+  border-bottom: 0;
+}
+
+.owner-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--tint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.owner-contact-body {
+  display: grid;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.owner-contact-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.owner-stamps {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+
+.owner-stamp-read {
+  font-weight: 700;
+  color: var(--ok);
+  background: var(--ok-bg);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.owner-notice {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.owner-notice-warn {
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-edge);
+  color: var(--warn);
+}
+
+.owner-notice-info {
+  background: var(--surface-subtle);
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+}
+
+.owner-draft {
+  width: 100%;
+  min-height: 150px;
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  background: var(--surface);
+  resize: vertical;
+}

@@ -1,0 +1,129 @@
+/* O back-office da plataforma: quem vende, faz onboarding e dá suporte.
+   Herda a base de gestão (admin.css); aqui só o que é próprio. */
+
+.platform-tag {
+  margin-left: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary-dark);
+  background: var(--tint);
+  border-radius: 999px;
+  padding: 3px 9px;
+  vertical-align: middle;
+}
+
+/* Os números que abrem o dia: quantos pagam, quantos testam, quantos atrasaram. */
+.platform-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.platform-stat {
+  display: grid;
+  gap: 2px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+}
+
+.platform-stat-value {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.platform-stat-label {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.platform-stat-ok .platform-stat-value { color: var(--ok); }
+.platform-stat-late .platform-stat-value { color: var(--late); }
+
+.platform-clinic-link {
+  display: grid;
+  gap: 1px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.platform-clinic-link strong { font-size: 14.5px; }
+.platform-clinic-link:hover strong { color: var(--primary-dark); text-decoration: underline; }
+
+/* Uma clínica sem atividade há mais de uma semana é o cliente que vai
+   cancelar. Nunca só a cor: o texto diz "há 12 dias". */
+.platform-silent {
+  color: var(--warn);
+  font-weight: 600;
+}
+
+.platform-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 360px);
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 1000px) {
+  .platform-layout { grid-template-columns: 1fr; }
+}
+
+.platform-credentials {
+  display: grid;
+  gap: 6px;
+}
+
+.platform-device {
+  display: grid;
+  gap: 1px;
+  padding: 8px 0;
+  border-top: 1px solid var(--line-soft);
+  font-size: 13.5px;
+}
+
+.platform-audit {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  font-size: 12.5px;
+}
+
+.platform-audit li {
+  display: grid;
+  gap: 1px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line-soft);
+}
+
+/* Aviso de assinatura para o CLIENTE: teste acabando, boleto em atraso.
+   Uma linha, no topo, sem competir com paciente. */
+.subscription-banner {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  font-size: 13.5px;
+  background: var(--warn-bg);
+  color: var(--warn);
+  border-bottom: 1px solid var(--warn-edge);
+}
+
+.subscription-banner-late {
+  background: var(--late-bg);
+  color: var(--late);
+  border-color: var(--late-edge);
+}
+
+/* Plano aposentado continua na lista: quem está nele precisa achá-lo. Só
+   perde o peso visual. */
+.platform-plan-retired td {
+  color: var(--ink-3);
+}

@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; font-family: "Instrument Sans", "Segoe UI", system-ui, sans-serif; }
+    a { color: #0C6B58; } a:hover { color: #0A5847; }
+  </style>
+</helmet>
+<div style="width: 1440px; height: 900px; background: #F3F6F4; color: #17251F; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; background: #FFFFFF; border-bottom: 1px solid #DFE7E2; padding: 12px 28px">
+    <div style="display: flex; align-items: center; gap: 18px">
+      <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 19px">Plantão<span style="color: #0C6B58">Vet</span></div>
+      <div style="color: #7C8B83; font-size: 14px">Prontuário da internação · Thor</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px">
+      <div style="font-variant-numeric: tabular-nums; font-weight: 600; font-size: 15px; color: #4A5A52; margin-right: 8px">18:10</div>
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #4A5A52; border: 1px solid #DFE7E2; border-radius: 8px; padding: 9px 16px; background: #FFFFFF">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4A5A52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><path d="M22 2l-7 20-4-9-9-4z"></path></svg>
+        Enviar ao tutor
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #FFFFFF; background: #0C6B58; border-radius: 8px; padding: 9px 16px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="M7 10l5 5 5-5"></path><path d="M12 15V3"></path></svg>
+        Baixar PDF
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 16px; padding: 12px 28px; background: #FFFFFF; border-bottom: 1px solid #DFE7E2">
+    <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #7C8B83; font-weight: 600">Incluir no PDF</div>
+    <div style="display: flex; align-items: center; gap: 7px"><div style="width: 17px; height: 17px; border-radius: 5px; background: #0C6B58; display: flex; align-items: center; justify-content: center"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></div><div style="font-size: 13.5px; color: #17251F">Evoluções</div></div>
+    <div style="display: flex; align-items: center; gap: 7px"><div style="width: 17px; height: 17px; border-radius: 5px; background: #0C6B58; display: flex; align-items: center; justify-content: center"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></div><div style="font-size: 13.5px; color: #17251F">Medicações</div></div>
+    <div style="display: flex; align-items: center; gap: 7px"><div style="width: 17px; height: 17px; border-radius: 5px; background: #0C6B58; display: flex; align-items: center; justify-content: center"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></div><div style="font-size: 13.5px; color: #17251F">Sinais vitais</div></div>
+    <div style="display: flex; align-items: center; gap: 7px"><div style="width: 17px; height: 17px; border-radius: 5px; background: #0C6B58; display: flex; align-items: center; justify-content: center"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></div><div style="font-size: 13.5px; color: #17251F">Ocorrências</div></div>
+    <div style="display: flex; align-items: center; gap: 7px"><div style="width: 17px; height: 17px; border-radius: 5px; background: #0C6B58; display: flex; align-items: center; justify-content: center"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></div><div style="font-size: 13.5px; color: #17251F">Conta</div></div>
+    <div style="margin-left: auto; font-size: 12.5px; color: #7C8B83">pré-visualização do documento</div>
+  </div>
+
+  <div style="flex-grow: 1; overflow: hidden; display: flex; justify-content: center; padding: 22px 0 0">
+    <div style="width: 880px; background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 6px 6px 0 0; box-shadow: 0 8px 28px rgba(23, 37, 31, 0.10); padding: 36px 44px; display: flex; flex-direction: column; gap: 20px; overflow: hidden">
+
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #17251F; padding-bottom: 16px">
+        <div style="display: flex; flex-direction: column; gap: 3px">
+          <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 20px">Clínica Vida Animal</div>
+          <div style="font-size: 12px; color: #4A5A52">Rua das Acácias, 210 · São Paulo, SP · (11) 3456-7890 · CNPJ 12.345.678/0001-90</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 3px; text-align: right">
+          <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #7C8B83; font-weight: 600">Prontuário de internação</div>
+          <div style="font-size: 12px; color: #4A5A52; font-variant-numeric: tabular-nums">Internação nº 2026-0347</div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px">
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <div style="font-size: 10.5px; letter-spacing: 0.07em; text-transform: uppercase; color: #7C8B83; font-weight: 600">Paciente</div>
+          <div style="font-size: 13.5px; font-weight: 600">Thor · Canino, SRD, 8 anos, 24,3 kg</div>
+          <div style="font-size: 12.5px; color: #4A5A52">Tutora: Marina Campos · (11) 98765-4321</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <div style="font-size: 10.5px; letter-spacing: 0.07em; text-transform: uppercase; color: #7C8B83; font-weight: 600">Veterinário responsável</div>
+          <div style="font-size: 13.5px; font-weight: 600">Dra. Paula Martins</div>
+          <div style="font-size: 12.5px; color: #4A5A52">CRMV-SP 12345</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <div style="font-size: 10.5px; letter-spacing: 0.07em; text-transform: uppercase; color: #7C8B83; font-weight: 600">Período</div>
+          <div style="font-size: 13.5px; font-weight: 600; font-variant-numeric: tabular-nums">28/08/2026 — em andamento</div>
+          <div style="font-size: 12.5px; color: #4A5A52">UTI 03 · gastroenterite hemorrágica</div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #17251F; font-weight: 700; border-bottom: 1px solid #DFE7E2; padding-bottom: 5px">Evoluções diárias</div>
+
+        <div style="display: flex; flex-direction: column; gap: 4px; padding: 2px 0">
+          <div style="display: flex; justify-content: space-between; align-items: baseline">
+            <div style="font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums">29/08/2026 · 08:12</div>
+            <div style="font-size: 12px; color: #4A5A52">Assinado: Dra. Paula Martins · CRMV-SP 12345</div>
+          </div>
+          <div style="font-size: 13px; color: #17251F; line-height: 1.55">Paciente alerta, mucosas normocoradas, TPC 2s. Fezes ainda amolecidas, sem sangue vivo. Mantida fluidoterapia 60 ml/h e antieméticos. Iniciada alimentação úmida em pequenas porções, boa aceitação.</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 4px; padding: 2px 0; border-top: 1px solid #EDF2EF; padding-top: 8px">
+          <div style="display: flex; justify-content: space-between; align-items: baseline">
+            <div style="font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums">30/08/2026 · 08:05</div>
+            <div style="font-size: 12px; color: #4A5A52">Assinado: Dra. Paula Martins · CRMV-SP 12345</div>
+          </div>
+          <div style="font-size: 13px; color: #17251F; line-height: 1.55">Melhora clínica evidente: hidratado, ativo, aceitou água espontaneamente. Pressão arterial 118 mmHg. Prescrito jejum a partir de 22:00 para ultrassom de controle amanhã. Mantidas demais prescrições.</div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #17251F; font-weight: 700; border-bottom: 1px solid #DFE7E2; padding-bottom: 5px">Medicações administradas · 30/08</div>
+        <div style="display: grid; grid-template-columns: 70px 1fr 190px; gap: 14px; font-size: 10.5px; letter-spacing: 0.07em; text-transform: uppercase; color: #7C8B83; font-weight: 600">
+          <div>Hora</div><div>Medicação</div><div>Executado por</div>
+        </div>
+        <div style="display: grid; grid-template-columns: 70px 1fr 190px; gap: 14px; font-size: 13px; border-top: 1px solid #EDF2EF; padding-top: 6px">
+          <div style="font-variant-numeric: tabular-nums; color: #4A5A52">10:04</div><div>Dipirona 25 mg/kg IV</div><div style="color: #4A5A52">Marina Coelho (MC)</div>
+        </div>
+        <div style="display: grid; grid-template-columns: 70px 1fr 190px; gap: 14px; font-size: 13px; border-top: 1px solid #EDF2EF; padding-top: 6px">
+          <div style="font-variant-numeric: tabular-nums; color: #4A5A52">10:12</div><div>Ondansetrona 0,5 mg/kg IV</div><div style="color: #4A5A52">Marina Coelho (MC)</div>
+        </div>
+        <div style="display: grid; grid-template-columns: 70px 1fr 190px; gap: 14px; font-size: 13px; border-top: 1px solid #EDF2EF; padding-top: 6px">
+          <div style="font-variant-numeric: tabular-nums; color: #4A5A52">13:05</div><div>Metadona 0,2 mg/kg IM · PRN, dor à palpação</div><div style="color: #4A5A52">João Ribeiro (JR)</div>
+        </div>
+        <div style="display: grid; grid-template-columns: 70px 1fr 190px; gap: 14px; font-size: 13px; border-top: 1px solid #EDF2EF; padding-top: 6px">
+          <div style="font-variant-numeric: tabular-nums; color: #4A5A52">18:02</div><div>Dipirona 25 mg/kg IV</div><div style="color: #4A5A52">Marina Coelho (MC)</div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #17251F; font-weight: 700; border-bottom: 1px solid #DFE7E2; padding-bottom: 5px">Ocorrências</div>
+        <div style="font-size: 13px; color: #17251F; line-height: 1.55"><span style="font-variant-numeric: tabular-nums; font-weight: 600">30/08 · 13:00</span> — Vocalização e dor à palpação abdominal; administrada metadona PRN conforme prescrição, com melhora em 30 min. Registrado por João Ribeiro, ciente Dra. Paula Martins.</div>
+      </div>
+
+      <div style="margin-top: auto; border-top: 1px solid #DFE7E2; padding-top: 10px; display: flex; justify-content: space-between; align-items: center">
+        <div style="font-size: 11.5px; color: #7C8B83; font-variant-numeric: tabular-nums">Documento gerado em 30/08/2026 às 18:10 · registro sem rasuras, correções constam como adendo</div>
+        <div style="font-size: 11.5px; color: #7C8B83; font-variant-numeric: tabular-nums">Página 1 de 3</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 12px 28px 16px; color: #7C8B83; font-size: 12.5px; border-top: 1px solid #DFE7E2; background: #FFFFFF">
+    O prontuário se monta sozinho a partir do que a equipe registrou — pronto para o tutor, para outro veterinário ou para o conselho, sem digitar nada de novo.
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

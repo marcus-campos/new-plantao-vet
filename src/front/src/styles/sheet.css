@@ -1,0 +1,311 @@
+/* A ficha da internação: grade hora × tarefa.
+   Os dois eixos do papel (o tempo na horizontal, a categoria na vertical)
+   que a lista vertical de chips tinha perdido. */
+
+.sheet { display: grid; gap: 14px; }
+
+/* A grade rola DENTRO deste contêiner: o corpo da página nunca rola de lado.
+   A altura máxima existe para que o eixo de horas e a coluna de nomes fiquem
+   fixos enquanto se navega: numa ficha de vinte prescrições, rolar até o fim
+   sem cabeçalho é ler uma coluna de números sem saber que hora ela é. */
+.sheet-scroll {
+  overflow: auto;
+  max-height: min(74vh, 880px);
+  overscroll-behavior: contain;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  scrollbar-width: thin;
+}
+
+.sheet-grid {
+  --sheet-label: 236px;
+  --sheet-col: 108px;
+  display: grid;
+  min-width: min-content;
+}
+
+.sheet-cell {
+  border-bottom: 1px solid var(--line-soft);
+  border-right: 1px solid var(--line-soft);
+  padding: 6px;
+  display: grid;
+  gap: 4px;
+  align-content: start;
+  min-height: 66px;
+}
+
+/* Eixo das horas ------------------------------------------------------- */
+
+.sheet-head {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  min-height: 46px;
+  align-content: center;
+  justify-items: center;
+  padding: 5px 4px;
+}
+
+.sheet-hour { font-size: 13px; font-weight: 700; color: var(--ink-2); }
+.sheet-head.sheet-past .sheet-hour { color: var(--ink-muted); }
+
+.sheet-axis-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.sheet-head-before { justify-items: center; }
+
+/* O "agora" é uma LINHA, não uma cor de fundo: precisa ser lida de longe, num
+   monitor preso à parede, sem competir com o estado das próprias células. */
+.sheet-now { box-shadow: inset 2px 0 0 var(--primary); background: var(--tint); }
+.sheet-now-tag {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary-dark);
+}
+
+/* Hora que já passou fica levemente rebaixada: é o que dá contraste à célula
+   VAZIA no passado, que no papel é justamente o sinal de atraso. */
+.sheet-body.sheet-past { background: var(--surface-subtle); }
+
+/* Virada do dia. `border-left` e não `box-shadow` de propósito: a coluna do
+   agora usa sombra, e as duas marcas coincidem na madrugada. */
+.sheet-daybreak { border-left: 2px solid var(--line); }
+
+.sheet-corner {
+  position: sticky;
+  left: 0;
+  z-index: 4;
+  border-right: 1px solid var(--line);
+  justify-items: start;
+  align-content: center;
+}
+
+/* Coluna dos nomes ----------------------------------------------------- */
+
+.sheet-label {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--surface);
+  border-right: 1px solid var(--line);
+  padding: 9px 10px;
+  gap: 3px;
+}
+
+.sheet-label-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.sheet-rx-name { font-size: 14px; line-height: 1.25; min-width: 0; }
+.sheet-rx-meta { font-size: 11.5px; color: var(--ink-3); line-height: 1.35; }
+.sheet-badges { display: flex; gap: 4px; flex-wrap: wrap; }
+.sheet-badges:empty { display: none; }
+
+.sheet-menu {
+  min-height: 30px;
+  min-width: 30px;
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-2);
+  border-radius: 7px;
+  font-size: 15px;
+  line-height: 1;
+}
+.sheet-menu:hover { background: var(--line-soft); }
+
+/* PRN não tem coluna nenhuma para clicar: a ação mora no nome. */
+.sheet-prn {
+  justify-self: start;
+  margin-top: 3px;
+  min-height: 32px;
+  border: 1px solid var(--line);
+  background: var(--tint);
+  color: var(--primary-dark);
+  border-radius: 7px;
+  padding: 5px 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+/* Faixa de categoria --------------------------------------------------- */
+
+.sheet-group {
+  grid-column: 1 / -1;
+  background: var(--surface-subtle);
+  border-bottom: 1px solid var(--line);
+  border-top: 1px solid var(--line);
+  padding: 7px 10px;
+}
+
+/* O rótulo acompanha a rolagem horizontal: numa grade de 25 colunas, o título
+   da categoria sumiria à esquerda no primeiro arrasto. */
+.sheet-group-label {
+  position: sticky;
+  left: 10px;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+/* Célula de tarefa ----------------------------------------------------- */
+
+.cell-task {
+  border: 1px solid;
+  border-radius: 7px;
+  padding: 4px 5px;
+  display: grid;
+  gap: 2px;
+  font-size: 11.5px;
+  line-height: 1.25;
+}
+
+.cell-line { display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+.cell-time { font-weight: 700; font-size: 12.5px; }
+.cell-real { font-weight: 600; opacity: 0.95; }
+.cell-dose { color: var(--ink-2); }
+
+/* O motivo riscado é a marca de que aquela dose NÃO entrou no paciente. */
+.cell-reason { text-decoration: line-through; }
+
+.cell-flags { display: flex; gap: 3px; flex-wrap: wrap; }
+.cell-flag {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  padding: 0 3px;
+}
+
+.cell-actions { display: flex; gap: 4px; margin-top: 2px; }
+
+/* 32px em vez dos 44px do sistema: numa grade densa o alvo cheio empurraria a
+   linha para 90px de altura e mataria a leitura de várias horas de uma vez.
+   O mesmo compromisso já feito em `.chip-action`. */
+.cell-action {
+  min-height: 32px;
+  min-width: 32px;
+  flex: 1 1 0;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1;
+}
+.cell-action:disabled { opacity: 0.5; }
+
+/* Diálogos ------------------------------------------------------------- */
+
+.menu-list { display: grid; gap: 8px; }
+
+.menu-item {
+  display: grid;
+  gap: 2px;
+  text-align: left;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: var(--ink);
+}
+.menu-item:hover { background: var(--surface-subtle); }
+.menu-item strong { font-size: 14.5px; font-weight: 600; }
+.menu-item span { font-size: 12.5px; color: var(--ink-3); }
+.menu-item-danger { border-color: var(--late-edge); }
+.menu-item-danger strong { color: var(--late); }
+
+.prn-guardrail {
+  display: grid;
+  gap: 4px;
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-edge);
+  color: var(--warn);
+  border-radius: 8px;
+  padding: 11px 13px;
+  font-size: 13.5px;
+}
+.prn-guardrail-hint { color: var(--ink-2); font-size: 12.5px; }
+
+/* Tablet no balcão: a grade continua a mesma, com colunas um pouco menores. */
+@media (max-width: 900px) {
+  .sheet-grid { --sheet-label: 190px; --sheet-col: 98px; }
+  .sheet-scroll { max-height: none; }
+  /* Sem altura máxima não há rolagem vertical interna, e `sticky` no topo
+     deixaria o cabeçalho preso no lugar errado. O canto continua colado à
+     esquerda: ele acompanha a coluna dos nomes, não o eixo das horas. */
+  .sheet-head:not(.sheet-corner) { position: static; }
+}
+
+/* O que ficou para trás.
+   A grade começa AGORA: a hora corrente encostada na borda é o que se lê
+   primeiro e é o que a pessoa foi ali fazer. Mas dose vencida escondida atrás
+   da rolagem é o erro clássico de eMAR (pesquisa §4): a pessoa dá baixa no que
+   vê, o contador não se move, e o sistema parece quebrado. Então o passado não
+   some. Ele se anuncia. */
+
+.sheet-head-before {
+  display: grid;
+  gap: 2px;
+  align-content: center;
+  justify-items: center;
+  background: var(--surface-subtle);
+  border: 0;
+  border-right: 1px solid var(--line);
+  cursor: pointer;
+}
+.sheet-head-before:hover { background: var(--line-soft); }
+.sheet-behind-count { font-size: 11px; font-weight: 700; color: var(--ink-3); }
+.sheet-head-behind-late { background: var(--late-bg); }
+.sheet-head-behind-late .sheet-behind-count,
+.sheet-head-behind-late .sheet-hour { color: var(--late); }
+
+/* E quando o que ficou para trás está VENCIDO, a coluna é discreta demais:
+   um aviso acima da grade, que é o único alerta ativo desta tela. */
+.sheet-behind-banner {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  width: 100%;
+  text-align: left;
+  background: var(--late-bg);
+  border: 1px solid var(--late-edge);
+  border-radius: var(--radius);
+  padding: 11px 15px;
+  margin-bottom: 8px;
+  min-height: 44px;
+}
+.sheet-behind-banner strong { color: var(--late); font-size: 14.5px; }
+.sheet-behind-banner span { color: var(--ink-2); font-size: 13px; }
+
+/* Papel que não executa ato clínico vê a grade e nenhuma ação.
+   Esconder o botão está certo: a API recusaria de qualquer jeito. Calar o
+   motivo não: sem uma linha explicando, a leitura natural é que a tela
+   quebrou, e foi exatamente essa a conclusão. */
+.sheet-readonly {
+  margin: 0 0 12px;
+  border: 1px solid var(--line);
+  background: var(--surface-subtle);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 13.5px;
+  color: var(--ink-2);
+}

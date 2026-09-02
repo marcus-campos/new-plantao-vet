@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; font-family: "Instrument Sans", "Segoe UI", system-ui, sans-serif; }
+    a { color: #0C6B58; } a:hover { color: #0A5847; }
+  </style>
+</helmet>
+<div style="width: 1440px; height: 900px; background: #F3F6F4; color: #17251F; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; background: #FFFFFF; border-bottom: 1px solid #DFE7E2; padding: 12px 28px">
+    <div style="display: flex; align-items: center; gap: 18px">
+      <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 19px">Plantão<span style="color: #0C6B58">Vet</span></div>
+      <div style="color: #7C8B83; font-size: 14px">Internados</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px">
+      <div style="font-size: 13px; font-weight: 600; color: #0A5847; background: #E4F0EB; border-radius: 999px; padding: 6px 14px">Plantão diurno · vira 19:00</div>
+      <div style="font-variant-numeric: tabular-nums; font-weight: 600; font-size: 15px; color: #4A5A52">18:10</div>
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #FFFFFF; background: #0C6B58; border-radius: 8px; padding: 9px 16px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+        Internar paciente
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 28px 4px">
+    <div style="display: flex; align-items: center; gap: 8px">
+      <div style="font-size: 13.5px; font-weight: 600; color: #FFFFFF; background: #0C6B58; border-radius: 999px; padding: 7px 16px">Todos <span style="font-variant-numeric: tabular-nums">11</span></div>
+      <div style="font-size: 13.5px; font-weight: 600; color: #A83A31; background: #F9E6E3; border-radius: 999px; padding: 7px 16px">Críticos <span style="font-variant-numeric: tabular-nums">3</span></div>
+      <div style="font-size: 13.5px; font-weight: 600; color: #8F5D0B; background: #F7EDD8; border-radius: 999px; padding: 7px 16px">Com atraso <span style="font-variant-numeric: tabular-nums">1</span></div>
+      <div style="font-size: 13.5px; font-weight: 600; color: #1F7A4D; background: #E3F2E9; border-radius: 999px; padding: 7px 16px">Alta prevista hoje <span style="font-variant-numeric: tabular-nums">2</span></div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px; background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 8px; padding: 9px 14px; width: 280px">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7C8B83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+      <div style="font-size: 14px; color: #9AA9A1">Buscar por paciente ou tutor</div>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1; padding: 14px 28px 10px; display: flex; flex-direction: column; gap: 10px; overflow: hidden">
+
+    <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column">
+      <div style="display: grid; grid-template-columns: 250px 90px 70px 180px 1fr 150px 130px; gap: 16px; padding: 11px 18px; background: #F8FAF9; border-bottom: 1px solid #DFE7E2; font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: #7C8B83; font-weight: 600">
+        <div>Paciente</div><div>Box</div><div>Dias</div><div>Veterinário</div><div>Próxima tarefa</div><div>Tarefas hoje</div><div style="text-align: right">Conta</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 250px 90px 70px 180px 1fr 150px 130px; gap: 16px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px">
+        <div style="display: flex; flex-direction: column; gap: 1px">
+          <div style="display: flex; align-items: center; gap: 8px"><span style="font-weight: 600; font-size: 15px">Thor</span><span style="font-size: 11px; font-weight: 700; color: #A83A31; background: #F9E6E3; border-radius: 999px; padding: 2px 8px">crítico</span></div>
+          <div style="font-size: 12.5px; color: #7C8B83">Canino · SRD</div>
+        </div>
+        <div style="color: #4A5A52">UTI 03</div>
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">3</div>
+        <div style="color: #4A5A52">Dra. Paula M.</div>
+        <div style="font-variant-numeric: tabular-nums">Checagem de bomba · <span style="font-weight: 600">20:00</span></div>
+        <div style="font-variant-numeric: tabular-nums; font-size: 13px; color: #1F7A4D; font-weight: 600">9 de 12 feitas</div>
+        <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 1.912,00</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 250px 90px 70px 180px 1fr 150px 130px; gap: 16px; padding: 12px 18px 12px 14px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px; background: #F9E6E3; border-left: 4px solid #A83A31">
+        <div style="display: flex; flex-direction: column; gap: 1px">
+          <div style="display: flex; align-items: center; gap: 8px"><span style="font-weight: 600; font-size: 15px">Nina</span></div>
+          <div style="font-size: 12.5px; color: #7C8B83">Felino · Siamês</div>
+        </div>
+        <div style="color: #4A5A52">Box 07</div>
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">5</div>
+        <div style="color: #4A5A52">Dra. Paula M.</div>
+        <div style="font-variant-numeric: tabular-nums; color: #A83A31; font-weight: 600">Glicemia · 17:30 · atrasada 40 min</div>
+        <div style="font-variant-numeric: tabular-nums; font-size: 13px; color: #A83A31; font-weight: 600">6 de 8 feitas</div>
+        <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 1.146,00</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 250px 90px 70px 180px 1fr 150px 130px; gap: 16px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px">
+        <div style="display: flex; flex-direction: column; gap: 1px">
+          <div style="display: flex; align-items: center; gap: 8px"><span style="font-weight: 600; font-size: 15px">Mel</span><span style="font-size: 11px; font-weight: 700; color: #A83A31; background: #F9E6E3; border-radius: 999px; padding: 2px 8px">crítico</span></div>
+          <div style="font-size: 12.5px; color: #7C8B83">Felino · SRD</div>
+        </div>
+        <div style="color: #4A5A52">UTI 01</div>
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">2</div>
+        <div style="color: #4A5A52">Dra. Paula M.</div>
+        <div style="font-variant-numeric: tabular-nums">Pressão arterial · <span style="font-weight: 600">22:00</span></div>
+        <div style="font-variant-numeric: tabular-nums; font-size: 13px; color: #1F7A4D; font-weight: 600">7 de 10 feitas</div>
+        <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 1.038,00</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 250px 90px 70px 180px 1fr 150px 130px; gap: 16px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px">
+        <div style="display: flex; flex-direction: column; gap: 1px">
+          <div style="display: flex; align-items: center; gap: 8px"><span style="font-weight: 600; font-size: 15px">Bob</span><span style="font-size: 11px; font-weight: 700; color: #1F7A4D; background: #E3F2E9; border-radius: 999px; padding: 2px 8px">alta hoje</span></div>
+          <div style="font-size: 12.5px; color: #7C8B83">Canino · Beagle</div>
+        </div>
+        <div style="color: #4A5A52">Box 02</div>
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">3</div>
+        <div style="color: #4A5A52">Dra. Paula M.</div>
+        <div style="font-variant-numeric: tabular-nums">Orientações de alta · <span style="font-weight: 600">18:30</span></div>
+        <div style="font-variant-numeric: tabular-nums; font-size: 13px; color: #1F7A4D; font-weight: 600">5 de 5 feitas</div>
+        <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 1.284,00</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 250px 90px 70px 180px 1fr 150px 130px; gap: 16px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px">
+        <div style="display: flex; flex-direction: column; gap: 1px">
+          <div style="display: flex; align-items: center; gap: 8px"><span style="font-weight: 600; font-size: 15px">Luna</span><span style="font-size: 11px; font-weight: 700; color: #1F7A4D; background: #E3F2E9; border-radius: 999px; padding: 2px 8px">alta hoje</span></div>
+          <div style="font-size: 12.5px; color: #7C8B83">Felino · Persa</div>
+        </div>
+        <div style="color: #4A5A52">Box 04</div>
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">4</div>
+        <div style="color: #4A5A52">Dra. Paula M.</div>
+        <div style="font-variant-numeric: tabular-nums">Contato com tutor · <span style="font-weight: 600">18:30</span></div>
+        <div style="font-variant-numeric: tabular-nums; font-size: 13px; color: #1F7A4D; font-weight: 600">6 de 6 feitas</div>
+        <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 812,00</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 250px 90px 70px 180px 1fr 150px 130px; gap: 16px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px">
+        <div style="display: flex; flex-direction: column; gap: 1px">
+          <div style="font-weight: 600; font-size: 15px">Fred</div>
+          <div style="font-size: 12.5px; color: #7C8B83">Canino · Poodle</div>
+        </div>
+        <div style="color: #4A5A52">Box 01</div>
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">1</div>
+        <div style="color: #4A5A52">Dra. Paula M.</div>
+        <div style="font-variant-numeric: tabular-nums">Curativo · <span style="font-weight: 600">19:00</span></div>
+        <div style="font-variant-numeric: tabular-nums; font-size: 13px; color: #4A5A52; font-weight: 600">3 de 7 feitas</div>
+        <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 412,00</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 250px 90px 70px 180px 1fr 150px 130px; gap: 16px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px">
+        <div style="display: flex; flex-direction: column; gap: 1px">
+          <div style="display: flex; align-items: center; gap: 8px"><span style="font-weight: 600; font-size: 15px">Simba</span><span style="font-size: 11px; font-weight: 700; color: #A83A31; background: #F9E6E3; border-radius: 999px; padding: 2px 8px">crítico</span></div>
+          <div style="font-size: 12.5px; color: #7C8B83">Felino · Maine Coon</div>
+        </div>
+        <div style="color: #4A5A52">UTI 02</div>
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">6</div>
+        <div style="color: #4A5A52">Dra. Paula M.</div>
+        <div style="font-variant-numeric: tabular-nums">Checagem de bomba · <span style="font-weight: 600">19:00</span></div>
+        <div style="font-variant-numeric: tabular-nums; font-size: 13px; color: #4A5A52; font-weight: 600">10 de 14 feitas</div>
+        <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 2.480,00</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 250px 90px 70px 180px 1fr 150px 130px; gap: 16px; padding: 12px 18px; align-items: center; font-size: 14px">
+        <div style="display: flex; flex-direction: column; gap: 1px">
+          <div style="font-weight: 600; font-size: 15px">Amora</div>
+          <div style="font-size: 12.5px; color: #7C8B83">Canino · SRD</div>
+        </div>
+        <div style="color: #4A5A52">Box 05</div>
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">2</div>
+        <div style="color: #4A5A52">Dra. Paula M.</div>
+        <div style="font-variant-numeric: tabular-nums">Dipirona 25 mg/kg IV · <span style="font-weight: 600">20:00</span></div>
+        <div style="font-variant-numeric: tabular-nums; font-size: 13px; color: #4A5A52; font-weight: 600">5 de 6 feitas</div>
+        <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 486,00</div>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 4px">
+      <div style="font-size: 13px; color: #7C8B83">Mostrando 8 de 11 internados · role para ver os demais</div>
+      <div style="font-size: 13px; color: #7C8B83"><span style="font-variant-numeric: tabular-nums; font-weight: 600; color: #4A5A52">11/25</span> leitos ocupados · plano Hospital</div>
+    </div>
+  </div>
+
+  <div style="padding: 12px 28px 16px; color: #7C8B83; font-size: 12.5px; border-top: 1px solid #DFE7E2; background: #FFFFFF">
+    Um olhar e o plantão inteiro está na mão: quem está crítico, quem tem tarefa atrasada e quem vai para casa hoje — sem passar box por box.
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

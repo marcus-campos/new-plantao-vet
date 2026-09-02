@@ -1,0 +1,456 @@
+/* Passagem de plantão, escala e evolução diária.
+   Mesmas quebras do resto do app: ≥1280px duas colunas, 768–1279 as laterais
+   viram blocos empilhados, <768 uma coluna. Nenhuma largura fixa. */
+
+/* Cabeçalho de tela ---------------------------------------------------- */
+
+.hv-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hv-head-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.hv-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary-dark);
+}
+
+.hv-muted {
+  font-size: 12.5px;
+  color: var(--ink-3);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Entrega → recebe ------------------------------------------------------ */
+
+.hv-baton {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hv-baton-arrow {
+  color: var(--ink-3);
+  font-size: 20px;
+  line-height: 1;
+}
+
+/* Barra de progresso do aceite ------------------------------------------ */
+
+.hv-progress {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--line-soft);
+  overflow: hidden;
+}
+
+.hv-progress-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 999px;
+  transition: width 200ms ease;
+}
+
+/* Grade de boletins ------------------------------------------------------ */
+
+.hv-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  align-content: start;
+}
+
+@media (min-width: 1100px) {
+  .hv-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* O cartão precisa de um invólucro com caixa própria: é nele que a tela
+   observa a entrada em cena para medir o tempo de leitura DAQUELE boletim.
+   `display: contents` não serviria. Elemento sem caixa não é observável. */
+.hv-card-wrap {
+  display: grid;
+}
+
+.hv-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hv-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hv-count-chip {
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+
+.hv-narrative {
+  background: var(--surface-subtle);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hv-narrative-text {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink);
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* Pendências no ato do aceite ------------------------------------------- */
+
+.hv-tasks-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hv-tasks {
+  list-style: none;
+  margin: 0;
+  padding: 8px 10px;
+  display: grid;
+  gap: 6px;
+  border: 1px solid var(--warn-edge);
+  border-radius: 10px;
+  background: var(--warn-bg);
+}
+
+.hv-task {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+}
+
+.hv-task + .hv-task {
+  border-top: 1px solid var(--warn-edge);
+}
+
+.hv-task-time {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.hv-task-title {
+  font-size: 13.5px;
+  color: var(--ink-2);
+  min-width: 0;
+}
+
+.hv-task-state {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.hv-task-late {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--late);
+  white-space: nowrap;
+}
+
+/* Numa coluna estreita o estado desce para a própria linha em vez de espremer
+   o título da tarefa, que é o que a pessoa está lendo. */
+@media (max-width: 560px) {
+  .hv-task {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .hv-task-state {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+}
+
+.hv-context-warn {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--warn);
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-edge);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.hv-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hv-seal {
+  font-size: 12.5px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 5px 12px;
+  white-space: normal;
+}
+
+/* Bloco de alerta (sem veterinário, não revisado) ------------------------ */
+
+.hv-alert {
+  background: var(--late-bg);
+  border: 1px solid var(--late-edge);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hv-alert-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--late);
+}
+
+.hv-alert-text {
+  font-size: 12.5px;
+  color: var(--late);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.hv-note-block {
+  background: var(--surface-subtle);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+
+/* Layout de duas colunas com lateral ------------------------------------ */
+
+.hv-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (min-width: 1280px) {
+  .hv-layout {
+    grid-template-columns: minmax(0, 1fr) 360px;
+  }
+}
+
+.hv-aside {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+/* Escala ----------------------------------------------------------------- */
+
+.hv-day {
+  display: grid;
+  gap: 10px;
+}
+
+.hv-day-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  text-transform: capitalize;
+}
+
+.hv-slots {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 900px) {
+  .hv-slots {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+.hv-slot {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hv-slot-now {
+  border: 2px solid var(--primary);
+}
+
+.hv-person {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.hv-avatar {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--tint);
+  color: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 11.5px;
+}
+
+/* Evolução --------------------------------------------------------------- */
+
+.hv-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+  gap: 10px;
+}
+
+.hv-stat {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hv-stat-value {
+  font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.hv-textarea {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 15px;
+  line-height: 1.55;
+  background: var(--surface);
+  width: 100%;
+  min-height: 108px;
+  resize: vertical;
+}
+
+.hv-timeline {
+  display: grid;
+  gap: 10px;
+}
+
+.hv-entry {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hv-entry-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hv-soap {
+  display: grid;
+  gap: 6px;
+}
+
+.hv-soap-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary-dark);
+}
+
+.hv-soap-text {
+  font-size: 14px;
+  line-height: 1.55;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* Entregar e receber são dois atos opostos, e a tela mostrava um só. */
+
+.hv-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 16px; display: grid; gap: 12px; }
+.hv-card-unreviewed { border-color: var(--late-edge); }
+
+.hv-card-who { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; min-width: 0; }
+.hv-card-who strong { font-size: 16.5px; }
+.hv-card-who span { font-size: 12.5px; color: var(--ink-3); }
+.hv-open { font-size: 12.5px; font-weight: 600; color: var(--primary-dark); text-decoration: none; }
+
+/* Escrever o boletim é primeira classe: gerar é ajuda, não o caminho. */
+.hv-editor {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 11px 13px;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.55;
+  background: var(--surface);
+  resize: vertical;
+}
+.hv-editor:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+.hv-editor-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* O que fica em aberto: escrito, não contado. É o elemento nº 1 do I-PASS. */
+.hv-open-tasks { background: var(--warn-bg); border: 1px solid var(--warn-edge); border-radius: var(--radius); padding: 11px 13px; display: grid; gap: 6px; }
+.hv-open-tasks ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.hv-open-tasks li { display: flex; align-items: baseline; gap: 9px; font-size: 13.5px; flex-wrap: wrap; }
+.hv-open-tasks li span:first-child { font-weight: 700; color: var(--ink-2); }
+.hv-open-late em { font-style: normal; color: var(--late); font-weight: 600; font-size: 12.5px; }
+
+.hv-open-none { background: var(--ok-bg); border: 1px solid var(--ok-edge); border-radius: var(--radius); padding: 10px 13px; display: grid; gap: 2px; }
+.hv-open-none .eyebrow { color: var(--ok); }

@@ -1,0 +1,22 @@
+{
+  "task.check": "Check: {name}",
+  "ceremony.owner_contact": "Owner contact",
+  "ceremony.daily_progress_note": "Daily progress note",
+  "compliance.br.license_authority_label": "CRMV",
+  "handover.narrative.tasks": "In the period: {done} completed, {partial} partial, {not_done} not done and {pending} pending, of which {overdue} overdue.",
+  "handover.narrative.events": "Off-schedule events: {count}.",
+  "handover.narrative.no_events": "No off-schedule events.",
+  "handover.narrative.prescriptions": "Prescriptions: {created} created, {adjusted} adjusted, {suspended} suspended.",
+  "handover.narrative.notes": "Recorded by the shift: {texts}",
+  "handover.narrative.no_notes": "No shift notes in the period.",
+  "compliance.br_human.license_authority_label": "CRM",
+  "identifier.microchip": "Microchip",
+  "identifier.rga": "Animal registry (RGA)",
+  "identifier.cpf": "Taxpayer ID (CPF)",
+  "identifier.cns": "National health card (CNS)",
+  "identifier.mrn": "Medical record number",
+  "responsible.owner": "Owner",
+  "responsible.guardian": "Responsible party",
+  "compliance.profile.br": "Veterinary",
+  "compliance.profile.br_human": "Human health"
+}

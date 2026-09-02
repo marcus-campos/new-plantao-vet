@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; font-family: "Instrument Sans", "Segoe UI", system-ui, sans-serif; }
+    a { color: #0C6B58; } a:hover { color: #0A5847; }
+  </style>
+</helmet>
+<div style="width: 1440px; height: 900px; background: #F3F6F4; color: #17251F; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; background: #FFFFFF; border-bottom: 1px solid #DFE7E2; padding: 12px 28px">
+    <div style="display: flex; align-items: center; gap: 18px">
+      <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 19px">Plantão<span style="color: #0C6B58">Vet</span></div>
+      <div style="color: #7C8B83; font-size: 14px">Configurações · Equipe e acessos</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 14px">
+      <div style="font-size: 13px; font-weight: 600; color: #0A5847; background: #E4F0EB; border-radius: 999px; padding: 7px 14px">Operador: Rafael S. · trocar (PIN)</div>
+      <div style="font-variant-numeric: tabular-nums; font-weight: 600; font-size: 15px; color: #4A5A52">18:10</div>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1; display: flex; overflow: hidden">
+
+    <div style="flex-grow: 1; padding: 22px 28px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+
+      <div style="display: flex; align-items: center; gap: 10px">
+        <div style="flex-grow: 1; display: flex; align-items: center; gap: 10px; background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 8px; padding: 11px 14px">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#7C8B83" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+          <span style="font-size: 14.5px; color: #9AA9A1">Buscar pessoa</span>
+        </div>
+        <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #FFFFFF; background: #0C6B58; border-radius: 8px; padding: 9px 16px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg> Convidar pessoa</div>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 10px; overflow: hidden">
+        <div style="display: grid; grid-template-columns: 250px 130px 140px 120px 130px 1fr; gap: 14px; padding: 11px 18px; background: #F8FAF9; border-bottom: 1px solid #DFE7E2; font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: #7C8B83; font-weight: 600">
+          <div>Nome</div><div>Papel</div><div>Registro</div><div>PIN</div><div>Último acesso</div><div>Status</div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 250px 130px 140px 120px 130px 1fr; gap: 14px; padding: 11px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #E4F0EB; color: #0A5847; font-size: 12.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0">PM</div>
+            <div style="font-weight: 600">Dra. Paula Martins</div>
+          </div>
+          <div style="color: #4A5A52">Veterinária</div>
+          <div style="color: #4A5A52; font-variant-numeric: tabular-nums">CRMV-SP 12345</div>
+          <div style="display: flex; align-items: center; gap: 6px; color: #1F7A4D; font-size: 13px; font-weight: 600"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1F7A4D" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4 10-10"></path></svg> Definido</div>
+          <div style="color: #4A5A52; font-size: 13px; font-variant-numeric: tabular-nums">hoje · 17:48</div>
+          <div><span style="font-size: 12px; font-weight: 600; color: #1F7A4D; background: #E3F2E9; border-radius: 999px; padding: 4px 12px">Ativa</span></div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 250px 130px 140px 120px 130px 1fr; gap: 14px; padding: 11px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px; background: #F4F8F6; border-left: 3px solid #0C6B58">
+          <div style="display: flex; align-items: center; gap: 10px; margin-left: -3px">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #E4F0EB; color: #0A5847; font-size: 12.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0">MC</div>
+            <div style="font-weight: 600">Marina Coelho</div>
+          </div>
+          <div style="color: #4A5A52">Técnica</div>
+          <div style="color: #9AA9A1">—</div>
+          <div style="display: flex; align-items: center; gap: 6px; color: #1F7A4D; font-size: 13px; font-weight: 600"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1F7A4D" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4 10-10"></path></svg> Definido</div>
+          <div style="color: #4A5A52; font-size: 13px; font-variant-numeric: tabular-nums">hoje · 18:02</div>
+          <div><span style="font-size: 12px; font-weight: 600; color: #1F7A4D; background: #E3F2E9; border-radius: 999px; padding: 4px 12px">Ativa</span></div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 250px 130px 140px 120px 130px 1fr; gap: 14px; padding: 11px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #E4F0EB; color: #0A5847; font-size: 12.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0">JR</div>
+            <div style="font-weight: 600">João Ribeiro</div>
+          </div>
+          <div style="color: #4A5A52">Técnico</div>
+          <div style="color: #9AA9A1">—</div>
+          <div style="display: flex; align-items: center; gap: 6px; color: #1F7A4D; font-size: 13px; font-weight: 600"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1F7A4D" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4 10-10"></path></svg> Definido</div>
+          <div style="color: #4A5A52; font-size: 13px; font-variant-numeric: tabular-nums">hoje · 14:55</div>
+          <div><span style="font-size: 12px; font-weight: 600; color: #1F7A4D; background: #E3F2E9; border-radius: 999px; padding: 4px 12px">Ativo</span></div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 250px 130px 140px 120px 130px 1fr; gap: 14px; padding: 11px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #E4F0EB; color: #0A5847; font-size: 12.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0">RS</div>
+            <div style="font-weight: 600">Rafael Souza</div>
+          </div>
+          <div style="color: #4A5A52">Administrador</div>
+          <div style="color: #9AA9A1">—</div>
+          <div style="display: flex; align-items: center; gap: 6px; color: #1F7A4D; font-size: 13px; font-weight: 600"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1F7A4D" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4 10-10"></path></svg> Definido</div>
+          <div style="color: #4A5A52; font-size: 13px; font-variant-numeric: tabular-nums">hoje · 18:05</div>
+          <div><span style="font-size: 12px; font-weight: 600; color: #1F7A4D; background: #E3F2E9; border-radius: 999px; padding: 4px 12px">Ativo</span></div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 250px 130px 140px 120px 130px 1fr; gap: 14px; padding: 11px 18px; align-items: center; font-size: 14px; background: #FCFAF6">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <div style="width: 32px; height: 32px; border-radius: 50%; border: 1.5px dashed #D9A84E; color: #8F5D0B; font-size: 12.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0">CN</div>
+            <div style="display: flex; flex-direction: column">
+              <div style="font-weight: 600">Carla Nunes</div>
+              <div style="font-size: 12px; color: #7C8B83">carla.nunes@vidaanimal.com.br</div>
+            </div>
+          </div>
+          <div style="color: #4A5A52">Veterinária</div>
+          <div style="color: #9AA9A1">—</div>
+          <div style="color: #9AA9A1; font-size: 13px">—</div>
+          <div style="color: #9AA9A1; font-size: 13px">—</div>
+          <div style="display: flex; align-items: center; gap: 10px">
+            <span style="font-size: 12px; font-weight: 600; color: #8F5D0B; background: #F7EDD8; border-radius: 999px; padding: 4px 12px">Convite pendente</span>
+            <span style="font-size: 12.5px; font-weight: 600; color: #0C6B58">reenviar</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 10px; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px">
+        <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #7C8B83; font-weight: 600">O que cada papel pode fazer</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px">
+          <div style="display: flex; flex-direction: column; gap: 7px">
+            <div style="font-size: 14px; font-weight: 700">Veterinária</div>
+            <div style="display: flex; align-items: center; gap: 7px; font-size: 13px; color: #4A5A52"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1F7A4D" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4 10-10"></path></svg> Executar tarefas do plantão</div>
+            <div style="display: flex; align-items: center; gap: 7px; font-size: 13px; color: #4A5A52"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1F7A4D" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4 10-10"></path></svg> Prescrever</div>
+            <div style="display: flex; align-items: center; gap: 7px; font-size: 13px; color: #4A5A52"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1F7A4D" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4 10-10"></path></svg> Dar alta</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 7px">
+            <div style="font-size: 14px; font-weight: 700">Técnica / Técnico</div>
+            <div style="display: flex; align-items: center; gap: 7px; font-size: 13px; color: #4A5A52"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1F7A4D" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4 10-10"></path></svg> Executar tarefas do plantão</div>
+            <div style="display: flex; align-items: center; gap: 7px; font-size: 13px; color: #9AA9A1"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C9D6CF" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"></path></svg> Não prescreve nem dá alta</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 7px">
+            <div style="font-size: 14px; font-weight: 700">Administrador</div>
+            <div style="display: flex; align-items: center; gap: 7px; font-size: 13px; color: #4A5A52"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1F7A4D" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4 10-10"></path></svg> Ver auditoria</div>
+            <div style="display: flex; align-items: center; gap: 7px; font-size: 13px; color: #4A5A52"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1F7A4D" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4 10-10"></path></svg> Configurar a clínica</div>
+            <div style="display: flex; align-items: center; gap: 7px; font-size: 13px; color: #4A5A52"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1F7A4D" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4 10-10"></path></svg> Gerenciar equipe e convites</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="width: 380px; border-left: 1px solid #DFE7E2; background: #FFFFFF; padding: 20px 22px; display: flex; flex-direction: column; gap: 13px; overflow: hidden">
+
+      <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #0A5847; font-weight: 700">Editar acesso</div>
+
+      <div style="display: flex; align-items: center; gap: 12px">
+        <div style="width: 40px; height: 40px; border-radius: 50%; background: #E4F0EB; color: #0A5847; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0">MC</div>
+        <div style="display: flex; flex-direction: column; gap: 1px">
+          <div style="font-size: 17px; font-weight: 700">Marina Coelho</div>
+          <div style="font-size: 12.5px; color: #7C8B83">Técnica · na clínica desde mar 2025</div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <label style="font-size: 12px; font-weight: 600; color: #4A5A52; letter-spacing: 0.04em; text-transform: uppercase">Papel</label>
+        <div style="border: 1px solid #DFE7E2; border-radius: 8px; padding: 11px 14px; font-size: 15px; display: flex; align-items: center; justify-content: space-between">Técnica <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9AA9A1" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg></div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <label style="font-size: 12px; font-weight: 600; color: #4A5A52; letter-spacing: 0.04em; text-transform: uppercase">Permissões</label>
+          <div style="font-size: 12px; color: #7C8B83">Vêm do papel Técnica — para mudar, troque o papel.</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px">
+          <div style="width: 20px; height: 20px; border-radius: 6px; background: #0C6B58; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4 10-10"></path></svg></div>
+          <span style="font-size: 14px; font-weight: 500">Executar tarefas do plantão</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px">
+          <div style="width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid #DFE7E2; background: #FFFFFF; flex-shrink: 0"></div>
+          <span style="font-size: 14px; color: #9AA9A1">Prescrever</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px">
+          <div style="width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid #DFE7E2; background: #FFFFFF; flex-shrink: 0"></div>
+          <span style="font-size: 14px; color: #9AA9A1">Dar alta</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px">
+          <div style="width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid #DFE7E2; background: #FFFFFF; flex-shrink: 0"></div>
+          <span style="font-size: 14px; color: #9AA9A1">Ver auditoria</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px">
+          <div style="width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid #DFE7E2; background: #FFFFFF; flex-shrink: 0"></div>
+          <span style="font-size: 14px; color: #9AA9A1">Configurar a clínica</span>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #DFE7E2; padding-top: 12px">
+        <div style="display: flex; flex-direction: column; gap: 1px">
+          <div style="font-size: 14px; font-weight: 600">PIN de acesso</div>
+          <div style="font-size: 12px; color: #7C8B83">definido em 12 ago</div>
+        </div>
+        <div style="font-size: 13px; font-weight: 600; color: #4A5A52; border: 1px solid #DFE7E2; border-radius: 8px; padding: 8px 14px; background: #FFFFFF">Redefinir PIN</div>
+      </div>
+
+      <div style="background: #F8FAF9; border: 1px solid #DFE7E2; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0A5847" stroke-width="2" stroke-linecap="round"><path d="M14 7a4 4 0 1 1 3 6.9L9 22H6v-3l8-8.1A4 4 0 0 1 14 7z"></path><circle cx="16.5" cy="9.5" r=".5"></circle></svg>
+          <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #4A5A52; font-weight: 700">Chave da estação</div>
+        </div>
+        <div style="font-size: 12.5px; color: #4A5A52; line-height: 1.5">A estação é o computador compartilhado da clínica: entra uma vez com a chave, e cada pessoa se identifica pelo próprio PIN.</div>
+        <div style="align-self: flex-start; font-size: 13px; font-weight: 600; color: #4A5A52; border: 1px solid #DFE7E2; border-radius: 8px; padding: 8px 14px; background: #FFFFFF">Gerar nova chave</div>
+        <div style="background: #F7EDD8; border: 1px solid #E4CFA0; border-radius: 8px; padding: 10px 12px; display: flex; gap: 8px">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8F5D0B" stroke-width="2" stroke-linecap="round" style="flex-shrink: 0; margin-top: 1px"><path d="M12 3L2 20h20L12 3z"></path><path d="M12 10v4"></path><path d="M12 17h.01"></path></svg>
+          <div style="font-size: 12px; color: #6B4A0D; line-height: 1.45">Gerar uma nova chave desconecta todos os dispositivos da clínica na hora — cada estação precisa entrar de novo.</div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: auto">
+        <div style="flex-grow: 1; text-align: center; font-size: 15px; font-weight: 700; color: #FFFFFF; background: #0C6B58; border-radius: 8px; padding: 13px">Salvar</div>
+        <div style="text-align: center; font-size: 15px; font-weight: 600; color: #4A5A52; border: 1px solid #DFE7E2; border-radius: 8px; padding: 13px 18px">Desativar</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 12px 28px 16px; color: #7C8B83; font-size: 12.5px; border-top: 1px solid #DFE7E2; background: #FFFFFF">
+    Toda ação clínica — dose dada, evolução, alta — grava o nome e o registro profissional de quem digitou o PIN. É isso que aparece na auditoria e nos documentos.
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

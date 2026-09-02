@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; font-family: "Instrument Sans", "Segoe UI", system-ui, sans-serif; }
+    a { color: #0C6B58; } a:hover { color: #0A5847; }
+  </style>
+</helmet>
+<div style="width: 1440px; height: 900px; background: #F3F6F4; color: #17251F; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; background: #FFFFFF; border-bottom: 1px solid #DFE7E2; padding: 12px 28px">
+    <div style="display: flex; align-items: center; gap: 18px">
+      <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 19px">Plantão<span style="color: #0C6B58">Vet</span></div>
+      <div style="color: #7C8B83; font-size: 14px">Nova prescrição · Thor · UTI 03</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px">
+      <div style="font-size: 13px; font-weight: 600; color: #0A5847; background: #E4F0EB; border-radius: 999px; padding: 7px 14px">Dra. Paula M. · CRMV-SP 12345</div>
+      <div style="font-variant-numeric: tabular-nums; font-weight: 600; font-size: 15px; color: #4A5A52">14:00</div>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1; display: flex; overflow: hidden">
+
+    <div style="width: 760px; padding: 24px 28px; display: flex; flex-direction: column; gap: 16px; overflow: hidden">
+
+      <div style="display: flex; gap: 8px">
+        <span style="font-size: 13.5px; font-weight: 600; color: #FFFFFF; background: #0C6B58; border-radius: 8px; padding: 10px 16px">Medicação</span>
+        <span style="font-size: 13.5px; font-weight: 500; color: #4A5A52; background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 8px; padding: 10px 16px">Fluidoterapia</span>
+        <span style="font-size: 13.5px; font-weight: 500; color: #4A5A52; background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 8px; padding: 10px 16px">Monitoramento</span>
+        <span style="font-size: 13.5px; font-weight: 500; color: #4A5A52; background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 8px; padding: 10px 16px">Alimentação</span>
+        <span style="font-size: 13.5px; font-weight: 500; color: #4A5A52; background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 8px; padding: 10px 16px">Cuidado</span>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 14px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label style="font-size: 12px; font-weight: 600; color: #4A5A52; letter-spacing: 0.04em; text-transform: uppercase">Fármaco</label>
+            <div style="border: 2px solid #0C6B58; border-radius: 8px; padding: 11px 14px; font-size: 15px; font-weight: 500; background: #FFFFFF">Dipirona sódica 500 mg/ml</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label style="font-size: 12px; font-weight: 600; color: #4A5A52; letter-spacing: 0.04em; text-transform: uppercase">Dose</label>
+            <div style="border: 1px solid #DFE7E2; border-radius: 8px; padding: 11px 14px; font-size: 15px; background: #FFFFFF; font-variant-numeric: tabular-nums">25 mg/kg</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label style="font-size: 12px; font-weight: 600; color: #4A5A52; letter-spacing: 0.04em; text-transform: uppercase">Via</label>
+            <div style="border: 1px solid #DFE7E2; border-radius: 8px; padding: 11px 14px; font-size: 15px; background: #FFFFFF">Intravenosa</div>
+          </div>
+        </div>
+
+        <div style="background: #F8FAF9; border: 1px solid #DFE7E2; border-radius: 8px; padding: 12px 14px; display: flex; align-items: center; gap: 10px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0C6B58" stroke-width="2" stroke-linecap="round"><path d="M12 3v18"></path><path d="M5 8h14"></path><path d="M7 21h10"></path></svg>
+          <div style="font-size: 13.5px; color: #4A5A52">Thor pesa <b style="color: #17251F">24,3 kg</b> → volume calculado: <b style="color: #17251F; font-variant-numeric: tabular-nums">1,2 ml</b> por dose</div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label style="font-size: 12px; font-weight: 600; color: #4A5A52; letter-spacing: 0.04em; text-transform: uppercase">Frequência</label>
+            <div style="border: 1px solid #DFE7E2; border-radius: 8px; padding: 11px 14px; font-size: 15px; background: #FFFFFF">A cada 8 horas</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label style="font-size: 12px; font-weight: 600; color: #4A5A52; letter-spacing: 0.04em; text-transform: uppercase">Duração</label>
+            <div style="border: 1px solid #DFE7E2; border-radius: 8px; padding: 11px 14px; font-size: 15px; background: #FFFFFF">3 dias</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label style="font-size: 12px; font-weight: 600; color: #4A5A52; letter-spacing: 0.04em; text-transform: uppercase">Criticidade</label>
+            <div style="display: flex; gap: 6px">
+              <span style="flex-grow: 1; text-align: center; font-size: 13.5px; font-weight: 600; color: #FFFFFF; background: #0C6B58; border-radius: 8px; padding: 11px 8px">Normal</span>
+              <span style="flex-grow: 1; text-align: center; font-size: 13.5px; font-weight: 500; color: #A83A31; background: #FFFFFF; border: 1px solid #E9C4BF; border-radius: 8px; padding: 11px 8px">Crítica</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #DFE7E2; padding-top: 16px">
+          <div style="display: flex; flex-direction: column; gap: 2px">
+            <div style="font-size: 14.5px; font-weight: 600">Primeira dose agora</div>
+            <div style="font-size: 13px; color: #7C8B83">O paciente entrou fora do horário padrão e precisa da dose imediatamente</div>
+          </div>
+          <div style="width: 52px; height: 30px; border-radius: 999px; background: #0C6B58; display: flex; align-items: center; justify-content: flex-end; padding: 3px">
+            <div style="width: 24px; height: 24px; border-radius: 50%; background: #FFFFFF"></div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between">
+          <div style="display: flex; flex-direction: column; gap: 2px">
+            <div style="font-size: 14.5px; font-weight: 600">Medicamento controlado</div>
+            <div style="font-size: 13px; color: #7C8B83">Exibe aviso na execução e entra no relatório de movimentação</div>
+          </div>
+          <div style="width: 52px; height: 30px; border-radius: 999px; background: #DFE7E2; display: flex; align-items: center; padding: 3px">
+            <div style="width: 24px; height: 24px; border-radius: 50%; background: #FFFFFF"></div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; border-top: 1px solid #DFE7E2; padding-top: 16px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label style="font-size: 12px; font-weight: 600; color: #4A5A52; letter-spacing: 0.04em; text-transform: uppercase">Tolerância de atraso</label>
+            <div style="border: 1px solid #DFE7E2; border-radius: 8px; padding: 11px 14px; font-size: 15px; background: #FFFFFF; display: flex; justify-content: space-between">
+              <span>60 minutos</span><span style="color: #7C8B83; font-size: 13px">padrão da criticidade</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label style="font-size: 12px; font-weight: 600; color: #4A5A52; letter-spacing: 0.04em; text-transform: uppercase">Valor por dose</label>
+            <div style="border: 1px solid #DFE7E2; border-radius: 8px; padding: 11px 14px; font-size: 15px; background: #FFFFFF; display: flex; justify-content: space-between; align-items: center">
+              <span style="font-variant-numeric: tabular-nums">R$ 18,00</span>
+              <span style="font-size: 12px; color: #7C8B83">da tabela · MED-018</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 12px; align-items: center">
+        <div style="font-size: 15px; font-weight: 700; color: #FFFFFF; background: #0C6B58; border-radius: 8px; padding: 13px 24px">Prescrever</div>
+        <div style="font-size: 15px; font-weight: 600; color: #4A5A52; border: 1px solid #DFE7E2; background: #FFFFFF; border-radius: 8px; padding: 13px 24px">Cancelar</div>
+        <div style="font-size: 13px; color: #7C8B83">Assinado como Dra. Paula M. · CRMV-SP 12345</div>
+      </div>
+    </div>
+
+    <div style="flex-grow: 1; border-left: 1px solid #DFE7E2; background: #FFFFFF; padding: 24px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+      <div style="display: flex; flex-direction: column; gap: 3px">
+        <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #0A5847; font-weight: 700">Horários que serão criados</div>
+        <div style="font-size: 13px; color: #7C8B83">9 doses até 2 de setembro, nos horários-padrão desta clínica (10h / 18h / 02h)</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 7px">
+        <div style="display: flex; align-items: center; gap: 12px; background: #E4F0EB; border: 1px solid #9CCBB0; border-radius: 8px; padding: 11px 14px">
+          <span style="font-weight: 700; font-size: 15px; font-variant-numeric: tabular-nums; width: 78px">Hoje 14:00</span>
+          <span style="font-size: 13px; font-weight: 600; color: #0A5847">primeira dose, agora</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; background: #F3F6F4; border: 1px dashed #C6D3CB; border-radius: 8px; padding: 11px 14px">
+          <span style="font-weight: 600; font-size: 15px; font-variant-numeric: tabular-nums; width: 78px; color: #9AA9A1; text-decoration: line-through">Hoje 18:00</span>
+          <span style="font-size: 13px; color: #7C8B83">suprimida — ficaria a 4h da primeira dose</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; border: 1px solid #DFE7E2; border-radius: 8px; padding: 11px 14px">
+          <span style="font-weight: 600; font-size: 15px; font-variant-numeric: tabular-nums; width: 78px">Amanhã 02:00</span>
+          <span style="font-size: 13px; color: #7C8B83">plantão noturno</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; border: 1px solid #DFE7E2; border-radius: 8px; padding: 11px 14px">
+          <span style="font-weight: 600; font-size: 15px; font-variant-numeric: tabular-nums; width: 78px">Amanhã 10:00</span>
+          <span style="font-size: 13px; color: #7C8B83">plantão diurno</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; border: 1px solid #DFE7E2; border-radius: 8px; padding: 11px 14px">
+          <span style="font-weight: 600; font-size: 15px; font-variant-numeric: tabular-nums; width: 78px">Amanhã 18:00</span>
+          <span style="font-size: 13px; color: #7C8B83">plantão diurno</span>
+        </div>
+        <div style="text-align: center; font-size: 13px; color: #7C8B83; padding: 6px">+ 4 doses até 2 de setembro</div>
+      </div>
+
+      <div style="margin-top: auto; background: #F8FAF9; border: 1px solid #DFE7E2; border-radius: 10px; padding: 14px; font-size: 13px; color: #4A5A52; line-height: 1.55">
+        Você prescreve a regra uma vez. O sistema cria cada dose no horário certo, cobra o plantonista quando vencer e registra quem executou — sem ninguém recalcular horário no papel.
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; font-family: "Instrument Sans", "Segoe UI", system-ui, sans-serif; }
+    a { color: #0C6B58; } a:hover { color: #0A5847; }
+  </style>
+</helmet>
+<div style="width: 1440px; height: 900px; background: #F3F6F4; color: #17251F; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; background: #FFFFFF; border-bottom: 1px solid #DFE7E2; padding: 12px 28px">
+    <div style="display: flex; align-items: center; gap: 18px">
+      <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 19px">Plantão<span style="color: #0C6B58">Vet</span></div>
+      <div style="color: #7C8B83; font-size: 14px">Configurações · Boxes e ocupação</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 14px">
+      <div style="display: flex; align-items: center; gap: 16px; font-size: 13.5px; color: #4A5A52">
+        <span><b style="color: #17251F; font-variant-numeric: tabular-nums">11</b> ocupados</span>
+        <span><b style="color: #17251F; font-variant-numeric: tabular-nums">4</b> livres</span>
+        <span><b style="color: #8F5D0B; font-variant-numeric: tabular-nums">1</b> em higienização</span>
+      </div>
+      <div style="font-size: 14px; font-weight: 600; color: #FFFFFF; background: #0C6B58; border-radius: 8px; padding: 9px 16px">Novo box</div>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1; display: flex; overflow: hidden">
+
+    <div style="flex-grow: 1; padding: 22px 28px; display: flex; flex-direction: column; gap: 22px; overflow: hidden">
+
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <div style="display: flex; align-items: baseline; gap: 12px">
+          <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #0A5847; font-weight: 700">UTI</div>
+          <div style="font-size: 13px; color: #7C8B83">2 de 3 ocupados · diária R$ 280,00</div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px">
+          <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-left: 4px solid #D9A84E; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+            <div style="display: flex; justify-content: space-between; align-items: center">
+              <div style="font-weight: 700; font-size: 15px">UTI 01</div>
+              <div style="width: 9px; height: 9px; border-radius: 50%; background: #D9A84E"></div>
+            </div>
+            <div style="font-weight: 500; font-size: 14px">Mel</div>
+            <div style="font-size: 12.5px; color: #7C8B83">Felino · 2º dia</div>
+          </div>
+          <div style="background: #FFFFFF; border: 1px dashed #C6D3CB; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+            <div style="font-weight: 700; font-size: 15px; color: #7C8B83">UTI 02</div>
+            <div style="font-weight: 500; font-size: 14px; color: #9AA9A1">livre</div>
+            <div style="font-size: 12.5px; color: #9AA9A1">pronto para receber</div>
+          </div>
+          <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-left: 4px solid #A83A31; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+            <div style="display: flex; justify-content: space-between; align-items: center">
+              <div style="font-weight: 700; font-size: 15px">UTI 03</div>
+              <div style="width: 9px; height: 9px; border-radius: 50%; background: #A83A31"></div>
+            </div>
+            <div style="font-weight: 500; font-size: 14px">Thor</div>
+            <div style="font-size: 12.5px; color: #7C8B83">Canino · 2º dia · crítico</div>
+          </div>
+          <div></div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <div style="display: flex; align-items: baseline; gap: 12px">
+          <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #0A5847; font-weight: 700">Internação geral</div>
+          <div style="font-size: 13px; color: #7C8B83">4 de 6 ocupados · diária R$ 165,00</div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px">
+          <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-left: 4px solid #9CCBB0; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+            <div style="display: flex; justify-content: space-between; align-items: center">
+              <div style="font-weight: 700; font-size: 15px">Box 01</div>
+              <div style="width: 9px; height: 9px; border-radius: 50%; background: #9CCBB0"></div>
+            </div>
+            <div style="font-weight: 500; font-size: 14px">Fred</div>
+            <div style="font-size: 12.5px; color: #7C8B83">Canino · 1º dia</div>
+          </div>
+          <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-left: 4px solid #9CCBB0; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+            <div style="display: flex; justify-content: space-between; align-items: center">
+              <div style="font-weight: 700; font-size: 15px">Box 02</div>
+              <div style="width: 9px; height: 9px; border-radius: 50%; background: #9CCBB0"></div>
+            </div>
+            <div style="font-weight: 500; font-size: 14px">Bob</div>
+            <div style="font-size: 12.5px; color: #7C8B83">Canino · 3º dia · alta prevista</div>
+          </div>
+          <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-left: 4px solid #9CCBB0; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+            <div style="display: flex; justify-content: space-between; align-items: center">
+              <div style="font-weight: 700; font-size: 15px">Box 04</div>
+              <div style="width: 9px; height: 9px; border-radius: 50%; background: #9CCBB0"></div>
+            </div>
+            <div style="font-weight: 500; font-size: 14px">Luna</div>
+            <div style="font-size: 12.5px; color: #7C8B83">Felino · 1º dia</div>
+          </div>
+          <div style="background: #FFFFFF; border: 1px dashed #C6D3CB; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+            <div style="font-weight: 700; font-size: 15px; color: #7C8B83">Box 05</div>
+            <div style="font-weight: 500; font-size: 14px; color: #9AA9A1">livre</div>
+            <div style="font-size: 12.5px; color: #9AA9A1">pronto para receber</div>
+          </div>
+          <div style="background: #FFFFFF; border: 1px dashed #C6D3CB; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+            <div style="font-weight: 700; font-size: 15px; color: #7C8B83">Box 06</div>
+            <div style="font-weight: 500; font-size: 14px; color: #9AA9A1">livre</div>
+            <div style="font-size: 12.5px; color: #9AA9A1">pronto para receber</div>
+          </div>
+          <div style="background: #FFFFFF; border: 1px solid #E9C4BF; border-left: 4px solid #A83A31; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+            <div style="display: flex; justify-content: space-between; align-items: center">
+              <div style="font-weight: 700; font-size: 15px">Box 07</div>
+              <div style="width: 9px; height: 9px; border-radius: 50%; background: #A83A31"></div>
+            </div>
+            <div style="font-weight: 500; font-size: 14px">Nina</div>
+            <div style="font-size: 12.5px; color: #A83A31; font-weight: 600">tarefa atrasada</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <div style="display: flex; align-items: baseline; gap: 12px">
+          <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #0A5847; font-weight: 700">Isolamento</div>
+          <div style="font-size: 13px; color: #7C8B83">nenhum ocupado · diária R$ 210,00</div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px">
+          <div style="background: #FFFFFF; border: 1px dashed #C6D3CB; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+            <div style="font-weight: 700; font-size: 15px; color: #7C8B83">ISO 01</div>
+            <div style="font-weight: 500; font-size: 14px; color: #9AA9A1">livre</div>
+            <div style="font-size: 12.5px; color: #9AA9A1">pronto para receber</div>
+          </div>
+          <div style="background: #FDF8EE; border: 1px solid #E4CFA0; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px">
+            <div style="display: flex; justify-content: space-between; align-items: center">
+              <div style="font-weight: 700; font-size: 15px; color: #8F5D0B">ISO 02</div>
+              <div style="width: 9px; height: 9px; border-radius: 50%; background: #D9A84E"></div>
+            </div>
+            <div style="font-weight: 600; font-size: 14px; color: #8F5D0B">em higienização</div>
+            <div style="font-size: 12.5px; color: #8F5D0B">liberado às 19:30</div>
+          </div>
+          <div></div><div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="width: 360px; border-left: 1px solid #DFE7E2; background: #FFFFFF; padding: 22px; display: flex; flex-direction: column; gap: 16px; overflow: hidden">
+      <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #0A5847; font-weight: 700">Editar box</div>
+
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <label style="font-size: 12px; font-weight: 600; color: #4A5A52; letter-spacing: 0.04em; text-transform: uppercase">Nome</label>
+        <div style="border: 2px solid #0C6B58; border-radius: 8px; padding: 11px 14px; font-size: 15px">UTI 03</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <label style="font-size: 12px; font-weight: 600; color: #4A5A52; letter-spacing: 0.04em; text-transform: uppercase">Área</label>
+        <div style="border: 1px solid #DFE7E2; border-radius: 8px; padding: 11px 14px; font-size: 15px">UTI</div>
+      </div>
+
+      <div style="border: 1px solid #DFE7E2; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 8px">
+        <div style="font-size: 12px; font-weight: 600; color: #4A5A52; letter-spacing: 0.04em; text-transform: uppercase">Diária desta área</div>
+        <div style="display: flex; align-items: baseline; justify-content: space-between">
+          <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 24px; font-variant-numeric: tabular-nums">R$ 280,00</div>
+          <div style="font-size: 13px; font-weight: 600; color: #0A5847">editar na tabela</div>
+        </div>
+        <div style="font-size: 12.5px; color: #7C8B83; line-height: 1.5">Lançada sozinha a cada dia de internação em qualquer box desta área.</div>
+      </div>
+
+      <div style="border-top: 1px solid #DFE7E2; padding-top: 16px; display: flex; flex-direction: column; gap: 8px">
+        <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #7C8B83; font-weight: 600">Ocupação do plano</div>
+        <div style="display: flex; align-items: baseline; gap: 10px">
+          <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 30px; font-variant-numeric: tabular-nums">11<span style="font-size: 18px; color: #7C8B83">/25</span></div>
+          <div style="font-size: 13px; color: #7C8B83">leitos no plano Hospital</div>
+        </div>
+        <div style="height: 8px; border-radius: 999px; background: #EDF2EF; overflow: hidden">
+          <div style="width: 44%; height: 100%; background: #0C6B58"></div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: auto">
+        <div style="flex-grow: 1; text-align: center; font-size: 15px; font-weight: 700; color: #FFFFFF; background: #0C6B58; border-radius: 8px; padding: 13px">Salvar</div>
+        <div style="text-align: center; font-size: 15px; font-weight: 600; color: #4A5A52; border: 1px solid #DFE7E2; border-radius: 8px; padding: 13px 20px">Desativar</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 12px 28px 16px; color: #7C8B83; font-size: 12.5px; border-top: 1px solid #DFE7E2; background: #FFFFFF">
+    Box desativado some das listas de internação, mas continua no histórico das internações que passaram por ele — nada é apagado.
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

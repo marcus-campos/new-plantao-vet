@@ -1,0 +1,59 @@
+[project]
+name = "plantaovet-backend"
+version = "0.1.0"
+description = "PlantaoVet API"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "sqlalchemy[asyncio]",
+    "asyncpg",
+    "alembic",
+    "pydantic-settings",
+    "pyjwt",
+    "bcrypt",
+    "apscheduler",
+    # Um cliente HTTP para TODAS as integrações: Meta Cloud API, Vertex, OpenAI
+    # e FCM falam REST. Provedor novo é uma classe, não uma árvore de
+    # dependências – foi o que decidiu a camada própria em vez de um framework.
+    "httpx",
+    # Só para assinar o JWT de service account do Google (Vertex e FCM).
+    "google-auth",
+    # PDF do prontuário gerado no servidor: `window.print()` prometia arquivo e
+    # entregava diálogo de impressão, sem timbre e sem paginação.
+    "reportlab",
+    # A nota de áudio sobe como multipart; sem isto o FastAPI recusa a rota
+    # de UploadFile na importação e a API inteira deixa de subir.
+    "python-multipart",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "httpx",
+    "ruff",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+# conftest.py precisa fixar DATABASE_URL no ambiente ANTES de importar módulos do app
+"tests/conftest.py" = ["E402"]

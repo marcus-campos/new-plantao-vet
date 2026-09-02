@@ -1,0 +1,389 @@
+/* A escala como agenda.
+ *
+ * A pilha de cartões escondia a única coisa que a escala precisa responder:
+ * quando há gente e quando não há. Quatro turnos "Diurno" no mesmo dia,
+ * começando às 00:51, 11:08, 11:11 e 11:16, viravam quatro cartões iguais lado
+ * a lado. Sobrepostos três a três, e nada dizia isso. Um buraco de duas horas
+ * também não aparecia: cartão não tem eixo de tempo, e sem eixo o vazio não
+ * ocupa espaço nenhum.
+ *
+ * Aqui o tempo é o eixo, e a sobreposição vira coluna. */
+
+.agenda {
+  display: grid;
+  grid-template-columns: 56px repeat(7, minmax(0, 1fr));
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.agenda-corner {
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-subtle);
+}
+
+.agenda-col-head {
+  display: grid;
+  gap: 1px;
+  justify-items: center;
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--line);
+  border-left: 1px solid var(--line-soft);
+  background: var(--surface-subtle);
+}
+
+.agenda-weekday {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.agenda-daynum {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+/* Hoje não é uma cor a mais: é a coluna que a pessoa procura primeiro. */
+.agenda-col-head.is-today {
+  background: var(--tint);
+}
+
+.agenda-col-head.is-today .agenda-weekday,
+.agenda-col-head.is-today .agenda-daynum {
+  color: var(--primary-dark);
+}
+
+.agenda-hours {
+  display: grid;
+  border-right: 1px solid var(--line);
+  background: var(--surface-subtle);
+}
+
+.agenda-hour {
+  height: var(--hour-px);
+  padding: 0 8px;
+  font-size: 11px;
+  color: var(--ink-3);
+  /* Alinhada com a LINHA da hora, não com o meio da faixa: o rótulo marca
+     onde a hora começa. */
+  transform: translateY(-6px);
+  text-align: right;
+}
+
+.agenda-col {
+  position: relative;
+  border-left: 1px solid var(--line-soft);
+  cursor: copy;
+}
+
+.agenda-col.is-today {
+  background: color-mix(in srgb, var(--tint) 45%, transparent);
+}
+
+.agenda-line {
+  border-bottom: 1px solid var(--line-soft);
+  pointer-events: none;
+}
+
+/* Onde o relógio da clínica está agora. Numa escala, "quem está aí neste
+   momento" é a primeira pergunta, e ela some numa lista de cartões. */
+.agenda-now {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--late);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.agenda-now::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: -3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--late);
+}
+
+.agenda-block {
+  position: absolute;
+  /* Linha, não coluna: num turno de uma hora o bloco tem 32px e só a primeira
+     linha aparece. Hora e nome juntos ali garantem que o essencial sobrevive
+     ao corte; avatares e aviso ficam para quando há espaço. */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 6px;
+  align-items: baseline;
+  align-content: flex-start;
+  overflow: hidden;
+  min-height: 0;
+  margin-left: 2px;
+  padding: 3px 6px;
+  border: 1px solid var(--ok-edge);
+  border-left: 3px solid var(--ok);
+  border-radius: 6px;
+  background: var(--ok-bg);
+  color: var(--ink);
+  text-align: left;
+  z-index: 2;
+}
+
+/* O bloco de cima na cascata é o que se lê inteiro. Passar o mouse traz o de
+   baixo para a frente, senão os recuados nunca ficam legíveis. */
+.agenda-block:hover {
+  filter: brightness(0.97);
+  z-index: 20 !important;
+}
+
+.agenda-block:focus-visible {
+  z-index: 20;
+}
+
+.agenda-block.is-selected {
+  outline: 2px solid var(--primary);
+  outline-offset: -1px;
+}
+
+/* Turno em andamento: é o que está valendo agora, e pesa mais que os outros. */
+.agenda-block.is-now {
+  border-left-color: var(--primary);
+  box-shadow: 0 1px 6px rgba(12, 107, 88, 0.18);
+}
+
+/* Turno sem veterinário responsável não fica quieto: é a evidência que a
+   fiscalização pede, e ela falta. Nunca só a cor: o bloco diz por escrito. */
+.agenda-block.no-vet {
+  border-color: var(--late-edge);
+  border-left-color: var(--late);
+  background: var(--late-bg);
+}
+
+/* Encerrado é passado: continua legível, para de disputar atenção. */
+.agenda-block.is-closed {
+  border-color: var(--line);
+  border-left-color: var(--ink-muted);
+  background: var(--surface-subtle);
+  color: var(--ink-3);
+}
+
+.agenda-block-time {
+  font-size: 11px;
+  font-weight: 700;
+  opacity: 0.75;
+}
+
+.agenda-block-name {
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.agenda-block-people {
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.agenda-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--ink-2);
+}
+
+/* O aviso continua ESCRITO, nunca só a cor: numa escala impressa em preto e
+   branco, ou para quem não distingue vermelho, a cor sozinha não informa. Mas
+   em caixa alta ele quebrava em duas linhas e comia o bloco inteiro. */
+.agenda-block-warn {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--late);
+  white-space: nowrap;
+}
+
+/* Navegação da semana ---------------------------------------------------- */
+
+.agenda-toolbar {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.agenda-nav {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.agenda-nav button {
+  min-height: 38px;
+  padding: 0 14px;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.agenda-nav button + button {
+  border-left: 1px solid var(--line);
+}
+
+.agenda-nav button:hover {
+  background: var(--tint);
+  color: var(--primary-dark);
+}
+
+.agenda-range {
+  font-size: 15px;
+}
+
+.agenda-close {
+  justify-self: start;
+  border: none;
+  background: none;
+  padding: 0;
+  min-height: 0;
+  font-size: 13px;
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+/* Em tela estreita a semana inteira não cabe. Ela ROLA: encolher sete colunas
+   até caber deixaria cada dia com 40px, onde nem o nome do turno entra. */
+.agenda-scroll {
+  overflow-x: auto;
+}
+
+@media (max-width: 900px) {
+  .agenda {
+    min-width: 720px;
+  }
+}
+
+/* A equipe do turno e os turnos-modelo -----------------------------------
+ *
+ * O objeto é o TURNO, e ele tem uma equipe. A tela tratava o objeto errado:
+ * pôr a segunda pessoa no mesmo plantão exigia descrever o turno de novo, e
+ * alguns segundos de diferença na digitação viravam um turno separado. */
+
+.shift-person {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 0;
+  border-top: 1px solid var(--line-soft);
+}
+
+.shift-person:first-of-type {
+  border-top: none;
+}
+
+.shift-add {
+  justify-self: start;
+  border: 1px dashed var(--line);
+  background: var(--surface-subtle);
+  border-radius: var(--radius);
+  padding: 9px 14px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--primary);
+  min-height: 0;
+}
+
+.shift-add:hover {
+  border-color: var(--primary);
+  background: var(--tint);
+}
+
+/* Os turnos que a clínica já usa. Escolher entre "Diurno" e "Noturno" é uma
+   decisão; descrever duas datas do zero são quatro, toda semana. */
+.shift-templates {
+  display: grid;
+  gap: 8px;
+}
+
+.shift-chip {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  justify-content: space-between;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  text-align: left;
+  min-height: 0;
+}
+
+.shift-chip strong {
+  font-size: 14px;
+}
+
+.shift-chip span {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+/* Passar o mouse é "posso escolher", escolher é "escolhi". Os dois tinham o
+   mesmo verde e a mesma borda: com o cursor sobre uma opção, duas apareciam
+   marcadas ao mesmo tempo. O hover agora é cinza e discreto. */
+.shift-chip:hover {
+  border-color: var(--ink-3);
+  background: var(--surface-subtle);
+}
+
+/* Escolhido tem uma marca, não só uma cor: quem não distingue verde de cinza
+   continua vendo qual está valendo. */
+.shift-chip.is-on {
+  border-color: var(--primary);
+  background: var(--tint);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.shift-chip.is-on::before {
+  content: "✓";
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.shift-chip.is-on:hover {
+  border-color: var(--primary);
+  background: var(--tint);
+}
+
+/* "Outro horário" NÃO é uma terceira opção do grupo: é a saída para quem
+   precisa de um horário que a clínica não usa. Desenhá-la como chip fazia
+   parecer que havia três turnos para escolher. */
+.shift-other {
+  justify-self: start;
+  margin-top: 2px;
+  border: none;
+  background: none;
+  padding: 0;
+  min-height: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: underline;
+}

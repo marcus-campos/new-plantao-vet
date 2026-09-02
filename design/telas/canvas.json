@@ -1,0 +1,74 @@
+{
+  "pages": [
+    { "id": "page-1", "name": "Rotina do plantão" },
+    { "id": "page-2", "name": "Gestão e prontuário" },
+    { "id": "page-3", "name": "App do plantonista" }
+  ],
+  "artboards": [
+    { "file": "Painel.dc.html", "page": "page-1", "x": 0, "y": 0, "w": 1440, "h": 900, "title": "1 · Painel da internação" },
+    { "file": "Main.dc.html", "page": "page-1", "x": 1560, "y": 0, "w": 1440, "h": 900, "title": "2 · Ficha da internação" },
+    { "file": "NovaPrescricao.dc.html", "page": "page-1", "x": 3120, "y": 0, "w": 1440, "h": 900, "title": "3 · Nova prescrição" },
+    { "file": "Passagem.dc.html", "page": "page-1", "x": 0, "y": 1060, "w": 1440, "h": 900, "title": "4 · Passagem de plantão" },
+    { "file": "Evolucao.dc.html", "page": "page-1", "x": 1560, "y": 1060, "w": 1440, "h": 900, "title": "5 · Evolução diária" },
+    { "file": "Escala.dc.html", "page": "page-1", "x": 3120, "y": 1060, "w": 1440, "h": 900, "title": "6 · Escala de plantão" },
+
+    { "file": "Pacientes.dc.html", "page": "page-2", "x": 0, "y": 0, "w": 1440, "h": 900, "title": "7 · Internados" },
+    { "file": "Admissao.dc.html", "page": "page-2", "x": 1560, "y": 0, "w": 1440, "h": 900, "title": "8 · Internar um paciente" },
+    { "file": "Alta.dc.html", "page": "page-2", "x": 3120, "y": 0, "w": 1440, "h": 900, "title": "9 · Dar alta" },
+    { "file": "ContaInternacao.dc.html", "page": "page-2", "x": 0, "y": 1060, "w": 1440, "h": 900, "title": "10 · Conta da internação" },
+    { "file": "Prontuario.dc.html", "page": "page-2", "x": 1560, "y": 1060, "w": 1440, "h": 900, "title": "11 · Prontuário em PDF" },
+    { "file": "Tutor.dc.html", "page": "page-2", "x": 3120, "y": 1060, "w": 1440, "h": 900, "title": "12 · Comunicação com o tutor" },
+    { "file": "TabelaPrecos.dc.html", "page": "page-2", "x": 0, "y": 2120, "w": 1440, "h": 900, "title": "13 · Tabela de preços" },
+    { "file": "Configuracoes.dc.html", "page": "page-2", "x": 1560, "y": 2120, "w": 1440, "h": 900, "title": "14 · Configurações da clínica" },
+    { "file": "Equipe.dc.html", "page": "page-2", "x": 3120, "y": 2120, "w": 1440, "h": 900, "title": "15 · Equipe e acessos" },
+    { "file": "Boxes.dc.html", "page": "page-2", "x": 0, "y": 3180, "w": 1440, "h": 900, "title": "16 · Boxes e ocupação" },
+    { "file": "Auditoria.dc.html", "page": "page-2", "x": 1560, "y": 3180, "w": 1440, "h": 900, "title": "17 · Trilha de auditoria" },
+    { "file": "Login.dc.html", "page": "page-2", "x": 3120, "y": 3180, "w": 1440, "h": 900, "title": "18 · Entrar" },
+
+    { "file": "AppTurno.dc.html", "page": "page-3", "x": 0, "y": 0, "w": 390, "h": 844, "title": "Meu turno" },
+    { "file": "AppTarefa.dc.html", "page": "page-3", "x": 510, "y": 0, "w": 390, "h": 844, "title": "Dar baixa" },
+    { "file": "AppPin.dc.html", "page": "page-3", "x": 1020, "y": 0, "w": 390, "h": 844, "title": "PIN do operador" },
+    { "file": "AppNaoRealizada.dc.html", "page": "page-3", "x": 1530, "y": 0, "w": 390, "h": 844, "title": "Não realizada" },
+    { "file": "AppEvento.dc.html", "page": "page-3", "x": 2040, "y": 0, "w": 390, "h": 844, "title": "Registrar evento" },
+    { "file": "AppAudio.dc.html", "page": "page-3", "x": 0, "y": 964, "w": 390, "h": 844, "title": "Nota de áudio" },
+    { "file": "AppPaciente.dc.html", "page": "page-3", "x": 510, "y": 964, "w": 390, "h": 844, "title": "Paciente" },
+    { "file": "AppPassagem.dc.html", "page": "page-3", "x": 1020, "y": 964, "w": 390, "h": 844, "title": "Receber plantão" },
+    { "file": "AppAlerta.dc.html", "page": "page-3", "x": 1530, "y": 964, "w": 390, "h": 844, "title": "Alerta no bolso" },
+    { "file": "AppLogin.dc.html", "page": "page-3", "x": 2040, "y": 964, "w": 390, "h": 844, "title": "Entrar no app" }
+  ],
+  "annotations": [
+    {
+      "id": "contexto",
+      "page": "page-1",
+      "x": 0,
+      "y": -250,
+      "w": 620,
+      "text": "PlantãoVet — telas da primeira versão\n\nSistema para a rotina de internação: cada medicação e cuidado no horário certo, atraso visível sozinho, e a passagem de plantão registrada.\n\nEsta página tem o que a equipe usa no dia a dia. Nas outras duas (menu de páginas, no topo): gestão e prontuário, e o app do plantonista.\n\nSão desenhos de tela, não é o sistema funcionando. Horário simulado: 30 de agosto, 18:10, virando o plantão diurno para o noturno."
+    },
+    {
+      "id": "pergunta",
+      "page": "page-1",
+      "x": 680,
+      "y": -250,
+      "w": 520,
+      "text": "O que eu gostaria de saber\n\n1. Isso se parece com a rotina da sua internação?\n2. Falta alguma coisa que a sua equipe faz todo dia?\n3. Tem algo aqui que não serve para vocês?\n4. Qual dessas telas resolveria a maior dor?"
+    },
+    {
+      "id": "gestao",
+      "page": "page-2",
+      "x": 0,
+      "y": -170,
+      "w": 620,
+      "text": "Gestão e prontuário\n\nO que a clínica configura uma vez (preços, horários das doses, equipe, boxes) e o que ela precisa provar depois (prontuário em PDF, trilha de auditoria, comunicação com o tutor)."
+    },
+    {
+      "id": "app",
+      "page": "page-3",
+      "x": 0,
+      "y": -170,
+      "w": 620,
+      "text": "App do plantonista\n\nPara quem está entre os boxes, de luva, sem tempo de voltar ao computador. Funciona na conta pessoal com biometria ou num único celular da clínica, em que cada baixa pede o PIN de quem executou."
+    }
+  ],
+  "launch": { "view": "canvas", "page": "page-1" }
+}

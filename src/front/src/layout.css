@@ -1,0 +1,436 @@
+/* Layout responsivo do PlantãoVet.
+   ≥1280px: duas colunas, como nos mockups.
+   768–1279px (tablet no balcão): laterais viram blocos empilhados, a grade rola.
+   <768px: uma coluna; a operação de verdade no celular é o app. */
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  padding: 12px clamp(16px, 3vw, 28px);
+  flex-wrap: wrap;
+}
+
+.app-main {
+  flex: 1;
+  padding: clamp(16px, 3vw, 24px) clamp(16px, 3vw, 28px);
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* Painel ------------------------------------------------------------- */
+
+.board-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.board-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 240px) 1fr 160px 130px;
+  gap: 16px;
+  align-items: center;
+}
+
+@media (max-width: 1100px) {
+  .board-row {
+    grid-template-columns: minmax(150px, 1fr) 1fr 120px;
+  }
+  .board-day {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .board-row {
+    grid-template-columns: 1fr auto;
+    row-gap: 8px;
+  }
+  .board-row > :nth-child(2) {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Ficha --------------------------------------------------------------- */
+
+.sheet-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.prescription-row {
+  display: grid;
+  grid-template-columns: minmax(200px, 280px) 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .prescription-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* A grade de horários rola dentro do próprio contêiner: o corpo da página
+   nunca rola de lado (regra de responsividade do spec). */
+.task-strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+
+.task-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.chip-action {
+  min-height: 32px;
+  min-width: 32px;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* Formulários --------------------------------------------------------- */
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* Mínima · padrão · máxima: os três lados da mesma faixa se leem juntos. */
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.prescribe-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 20px;
+}
+
+@media (max-width: 1000px) {
+  .prescribe-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .form-grid-2,
+  .form-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* O mesmo, medido pelo CONTAINER quando existe um.
+ *
+ * A consulta de janela sozinha erra dentro de um diálogo: num monitor de 27"
+ * ela responde "cabe" e dois campos são espremidos em 130px cada. Fora de um
+ * container declarado nada disto casa, e o padrão de duas colunas continua
+ * valendo nas páginas. */
+@container (max-width: 520px) {
+  .form-grid-2,
+  .form-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Login ---------------------------------------------------------------- */
+
+.login-layout {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(320px, 42%) 1fr;
+}
+
+.login-aside {
+  background: var(--primary);
+  color: #fff;
+  padding: clamp(24px, 5vw, 56px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+}
+
+.login-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(24px, 5vw, 56px);
+  background: var(--surface);
+}
+
+@media (max-width: 860px) {
+  .login-layout {
+    grid-template-columns: 1fr;
+  }
+  .login-aside {
+    gap: 16px;
+  }
+}
+
+/* Diálogos ------------------------------------------------------------- */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(23, 37, 31, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 20;
+}
+
+/* Os três tamanhos de diálogo moram JUNTOS, e aqui.
+ *
+ * `.admin-modal-wide` e `.admin-modal-xwide` viviam em `admin.css`, com a
+ * mesma especificidade de `.modal-card` e antes dela no bundle: a largura
+ * base ganhava a cascata e todo diálogo largo era desenhado com 420px. O
+ * sintoma não era um diálogo estreito, era um diálogo QUEBRADO, porque o
+ * conteúdo de duas colunas continuava pedindo o espaço que não tinha. */
+
+.modal-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  width: min(420px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  display: grid;
+  gap: 14px;
+  /* O diálogo é o container de referência do que está dentro dele: quem
+     decide se duas colunas cabem é esta largura, não a da janela. */
+  container-type: inline-size;
+}
+
+.admin-modal-wide {
+  width: min(560px, 100%);
+}
+
+.admin-modal-xwide {
+  width: min(1320px, 100%);
+}
+
+/* Abaixo disto o diálogo de duas colunas não é mais um cartão sobre a tela:
+ * ele É a tela. Um cartão de 1320px espremido em 1100px com margem dos dois
+ * lados desperdiça a única coisa escassa aqui, que é largura, e cada coluna
+ * paga o preço em campos de 80px. */
+@media (max-width: 1100px) {
+  .modal-backdrop:has(.admin-modal-xwide) {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .admin-modal-xwide {
+    width: 100%;
+    max-height: none;
+    min-height: 100dvh;
+    border-radius: 0;
+    padding: 20px 18px 32px;
+  }
+}
+
+/* Chips de escolha (categoria e tipo da prescrição) ---------------------- */
+
+.chip-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-weight: 500;
+  font-size: 13.5px;
+  text-align: left;
+}
+
+.chip-on {
+  border: 2px solid var(--primary);
+  background: var(--tint);
+  font-weight: 600;
+}
+
+.chip-stacked {
+  display: grid;
+  gap: 2px;
+  flex: 1 1 190px;
+}
+
+.chip-hint {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-3);
+}
+
+/* Navegação: no desktop tudo à mostra; no tablet/celular a gestão vai para um menu. */
+
+.nav-primary {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.nav-more {
+  position: relative;
+}
+
+.nav-more-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 6px;
+  display: grid;
+  gap: 2px;
+  min-width: 190px;
+  box-shadow: 0 8px 24px rgba(23, 37, 31, 0.12);
+  z-index: 15;
+}
+
+@media (max-width: 900px) {
+  .nav-secondary-inline {
+    display: none !important;
+  }
+}
+
+@media (min-width: 901px) {
+  .nav-more {
+    display: none;
+  }
+}
+
+/* A dose ---------------------------------------------------------------
+   A calculadora não é uma tela: ela desaparece dentro do prescrever. Uma
+   calculadora aonde você precisa ir é uma calculadora que ninguém usa: o vet
+   faz a conta de cabeça e digita o resultado. */
+
+.dose {
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--primary);
+  border-radius: var(--radius);
+  background: var(--surface-subtle);
+  padding: 13px 15px;
+  display: grid;
+  gap: 7px;
+}
+.dose-warn { border-left-color: var(--warn-edge); background: var(--warn-bg); }
+.dose-danger { border-left-color: var(--late); background: var(--late-bg); }
+
+.dose-row { display: grid; grid-template-columns: minmax(150px, 210px) 1fr; gap: 20px; align-items: end; }
+.dose-adjust { font-size: 12px; color: var(--ink-3); }
+
+/* UM número, e é o que se aspira na seringa. Havia três competindo (mg/kg, mg
+   e ml), e quem prescreve tinha de decidir qual era a resposta. */
+.dose-answer { display: grid; gap: 1px; }
+.dose-answer strong {
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 38px;
+  line-height: 1.05;
+  color: var(--primary-dark);
+}
+.dose-of { font-size: 13.5px; color: var(--ink-2); }
+.dose-none { color: var(--ink-muted) !important; }
+
+/* A conta, sempre visível: é ela que se confere, não o resultado. */
+.dose-math { margin: 0; font-size: 13px; color: var(--ink-2); }
+.dose-provenance { margin: 0; font-size: 12.5px; color: var(--ink-3); }
+.dose-warning { margin: 0; font-size: 13px; font-weight: 500; color: var(--warn); }
+.dose-danger .dose-warning { color: var(--late); font-weight: 600; }
+
+@media (max-width: 620px) {
+  .dose-row { grid-template-columns: 1fr; }
+}
+
+/* Prescrever é um ato SOBRE alguém, e a rota de página inteira perdia o
+   cabeçalho do paciente que as abas mantêm na tela o tempo todo. */
+.prescribe-head { display: grid; gap: 3px; margin-bottom: 16px; }
+.prescribe-for { font-size: 14px; color: var(--ink-2); }
+
+/* Aparelho já liberado --------------------------------------------------
+ *
+ * O tablet do corredor liga e está pronto: o segredo é dele e está guardado
+ * aqui. A chave de estação obrigava a redigitar, a cada 12 horas, um segredo
+ * que circulava pela clínica em papel e em conversa. */
+
+.device-known {
+  display: grid;
+  gap: 2px;
+  border: 1px solid var(--line);
+  background: var(--surface-subtle);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+
+.device-known strong {
+  font-size: 17px;
+}
+
+.device-known-clinic {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.device-forget {
+  justify-self: start;
+  margin-top: 6px;
+  border: none;
+  background: none;
+  padding: 0;
+  min-height: 0;
+  font-size: 13px;
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+/* A porta de quem vende e dá suporte, na tela de login. Discreta de
+   propósito: 99% de quem abre esta tela trabalha numa clínica. */
+.login-platform-link {
+  justify-self: start;
+  border: none;
+  background: none;
+  padding: 0;
+  min-height: 0;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  text-decoration: underline;
+}

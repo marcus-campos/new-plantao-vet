@@ -1,0 +1,257 @@
+/* Chrome comum a todas as telas.
+   O produto tinha 18 páginas com cabeçalho, vazio e "carregando" próprios,
+   desenhados em estilo inline, daí a sensação de que cada tela foi feita por
+   uma equipe diferente. Aqui mora o padrão. */
+
+/* Navegação ------------------------------------------------------------- */
+
+.brand {
+  font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 19px;
+  text-decoration: none;
+  color: inherit;
+  white-space: nowrap;
+}
+.brand em { font-style: normal; color: var(--primary); }
+
+.nav-link {
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-2);
+  border-radius: 8px;
+  padding: 8px 12px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+/* `.nav-link` veste tanto o link de navegação quanto o botão de ação da barra
+   ("Sair", "Trocar meu PIN"). Sem zerar borda e fundo, o botão saía com o
+   desenho NATIVO do navegador: duas caixas cinzas de borda grossa ao lado de
+   links sem caixa nenhuma, no canto mais visível da tela. E os 44px de alvo
+   mínimo do sistema, pensados para a beira do box, deixavam a barra do topo
+   mais alta que o próprio logotipo. */
+button.nav-link {
+  border: none;
+  background: none;
+  min-height: 36px;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+
+.nav-link:hover { background: var(--line-soft); }
+.nav-link[aria-current="page"] { color: var(--primary-dark); background: var(--tint); }
+
+/* Contador no item de menu: leva a exceção para fora da tela em que ela mora.
+   É o único aviso ativo do produto: o resto é escalonamento visual, porque só
+   5–13% dos alarmes de UTI são acionáveis (pesquisa §4). */
+.nav-count {
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 3px 6px;
+  border-radius: 999px;
+  background: var(--late);
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.identity-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  background: var(--tint);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 7px 14px;
+  min-height: 38px;
+}
+.identity-chip-anon { color: var(--warn); background: var(--warn-bg); border-color: var(--warn-edge); }
+
+/* Página ---------------------------------------------------------------- */
+
+.page { display: grid; gap: 18px; }
+
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.page-head-text { display: grid; gap: 3px; min-width: 0; }
+.page-title { font-size: 25px; }
+.page-subtitle { margin: 0; font-size: 13.5px; color: var(--ink-2); }
+.page-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+.eyebrow {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.section { display: grid; gap: 10px; }
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.section-title { font-size: 15px; font-weight: 700; letter-spacing: -0.005em; }
+.section-hint { margin: 2px 0 0; font-size: 12.5px; color: var(--ink-3); }
+.section-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* Estados --------------------------------------------------------------- */
+
+.empty {
+  background: var(--surface);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 22px 20px;
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+}
+/* O plantão em dia é o caso NORMAL: ele confirma, não alarma. */
+.empty-good { border-style: solid; border-color: var(--ok-edge); background: var(--ok-bg); }
+.empty-title { font-size: 15px; }
+.empty-good .empty-title { color: var(--ok); }
+.empty-hint { margin: 0; font-size: 13.5px; color: var(--ink-2); max-width: 62ch; }
+.empty-action { margin-top: 6px; }
+
+.skeleton-stack { display: grid; gap: 10px; }
+.skeleton {
+  background: linear-gradient(90deg, var(--line-soft), var(--surface), var(--line-soft));
+  background-size: 200% 100%;
+  border-radius: var(--radius);
+  animation: skeleton 1.4s ease-in-out infinite;
+}
+@keyframes skeleton { to { background-position: -200% 0; } }
+
+.error-state {
+  background: var(--late-bg);
+  border: 1px solid var(--late-edge);
+  color: var(--late);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 14px;
+}
+
+/* Selos e números ------------------------------------------------------- */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border-radius: 999px;
+  padding: 3px 9px;
+  white-space: nowrap;
+}
+.badge-neutral { color: var(--ink-2); background: var(--line-soft); }
+.badge-good { color: var(--ok); background: var(--ok-bg); }
+.badge-warn { color: var(--warn); background: var(--warn-bg); }
+.badge-late { color: var(--late); background: var(--late-bg); }
+.badge-accent { color: var(--primary-dark); background: var(--tint); }
+
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 15px 17px;
+}
+.stat-value {
+  font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 29px;
+  line-height: 1;
+}
+.stat-ink { color: var(--ink); }
+.stat-good { color: var(--ok); }
+.stat-warn { color: var(--warn); }
+.stat-late { color: var(--late); }
+.stat-accent { color: var(--primary-dark); }
+.stat-label { font-size: 13px; color: var(--ink-2); font-weight: 500; margin-top: 4px; }
+.stat-hint { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+
+/* Abas do paciente ------------------------------------------------------ */
+
+.tabs {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.tab {
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-2);
+  padding: 10px 14px;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.tab:hover { color: var(--ink); }
+.tab[aria-current="page"] { color: var(--primary-dark); border-bottom-color: var(--primary); }
+
+/* Push neste navegador ---------------------------------------------------- */
+
+.push-on { color: var(--primary-dark); background: var(--tint); }
+.push-blocked { color: var(--ink-3); cursor: help; }
+
+/* Celular ------------------------------------------------------------------
+   O web sai antes do app da loja, e o técnico vai abrir isto no telefone. O
+   cabeçalho deixa de disputar uma linha: marca e identidade em cima, a
+   navegação numa segunda linha que rola de lado sem quebrar. */
+@media (max-width: 640px) {
+  .app-header {
+    padding: 8px 12px;
+    gap: 8px 10px;
+  }
+
+  .nav-primary {
+    order: 3;
+    width: 100%;
+    display: flex;
+    gap: 2px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -12px;
+    padding: 0 12px;
+  }
+
+  .nav-primary::-webkit-scrollbar { display: none; }
+
+  .nav-link { padding: 8px 10px; font-size: 13.5px; }
+
+  .identity { gap: 4px; }
+
+  .identity-chip { padding: 6px 10px; font-size: 12.5px; min-height: 34px; }
+}

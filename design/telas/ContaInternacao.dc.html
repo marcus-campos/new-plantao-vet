@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; font-family: "Instrument Sans", "Segoe UI", system-ui, sans-serif; }
+    a { color: #0C6B58; } a:hover { color: #0A5847; }
+  </style>
+</helmet>
+<div style="width: 1440px; height: 900px; background: #F3F6F4; color: #17251F; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; background: #FFFFFF; border-bottom: 1px solid #DFE7E2; padding: 12px 28px">
+    <div style="display: flex; align-items: center; gap: 18px">
+      <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 19px">Plantão<span style="color: #0C6B58">Vet</span></div>
+      <div style="color: #7C8B83; font-size: 14px">Conta da internação · Thor · UTI 03</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px">
+      <div style="font-size: 14px; font-weight: 600; color: #4A5A52; border: 1px solid #DFE7E2; border-radius: 8px; padding: 9px 16px; background: #FFFFFF">Exportar CSV</div>
+      <div style="font-size: 14px; font-weight: 600; color: #FFFFFF; background: #0C6B58; border-radius: 8px; padding: 9px 16px">Exportar PDF</div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; padding: 22px 28px 6px">
+    <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 2px">
+      <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 30px; font-variant-numeric: tabular-nums">R$ 1.912,00</div>
+      <div style="font-size: 13px; color: #4A5A52; font-weight: 500">acumulado da internação</div>
+    </div>
+    <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 2px">
+      <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 30px; font-variant-numeric: tabular-nums">R$ 486,00</div>
+      <div style="font-size: 13px; color: #4A5A52; font-weight: 500">gerado hoje · 14 execuções</div>
+    </div>
+    <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 2px">
+      <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 30px; font-variant-numeric: tabular-nums">3</div>
+      <div style="font-size: 13px; color: #4A5A52; font-weight: 500">dias internado</div>
+    </div>
+    <div style="background: #E4F0EB; border: 1px solid #9CCBB0; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 2px">
+      <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 30px; font-variant-numeric: tabular-nums; color: #0A5847">0</div>
+      <div style="font-size: 13px; color: #0A5847; font-weight: 600">executado e não cobrado</div>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1; padding: 14px 28px 10px; display: flex; flex-direction: column; gap: 10px; overflow: hidden">
+
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #7C8B83; font-weight: 600">Hoje · 30 de agosto</div>
+      <div style="font-size: 13px; color: #7C8B83">cada linha nasceu de uma execução registrada na ficha</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 10px; overflow: hidden">
+      <div style="display: grid; grid-template-columns: 92px 1fr 200px 130px 120px; gap: 16px; padding: 11px 18px; background: #F8FAF9; border-bottom: 1px solid #DFE7E2; font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: #7C8B83; font-weight: 600">
+        <div>Hora</div><div>Item</div><div>Quem executou</div><div>Qtd.</div><div style="text-align: right">Valor</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 92px 1fr 200px 130px 120px; gap: 16px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px">
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">08:01</div>
+        <div>Checagem de fluidoterapia</div>
+        <div style="color: #4A5A52">Marina C.</div>
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">1</div>
+        <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 12,00</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 92px 1fr 200px 130px 120px; gap: 16px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px">
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">10:03</div>
+        <div>Pressão arterial <span style="font-size: 11px; font-weight: 700; color: #A83A31; background: #F9E6E3; border-radius: 999px; padding: 2px 8px; margin-left: 6px">crítica</span></div>
+        <div style="color: #4A5A52">Dra. Paula M.</div>
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">1</div>
+        <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 45,00</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 92px 1fr 200px 130px 120px; gap: 16px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px">
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">10:04</div>
+        <div>Dipirona 25 mg/kg IV</div>
+        <div style="color: #4A5A52">Marina C.</div>
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">1 dose</div>
+        <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 18,00</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 92px 1fr 200px 130px 120px; gap: 16px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px">
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">10:12</div>
+        <div>Ondansetrona 0,5 mg/kg IV</div>
+        <div style="color: #4A5A52">Marina C.</div>
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">1 dose</div>
+        <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 22,00</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 92px 1fr 200px 130px 120px; gap: 16px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px; background: #FCFAF6">
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">13:05</div>
+        <div>Metadona 0,2 mg/kg IM <span style="font-size: 11px; font-weight: 600; color: #8F5D0B; background: #F7EDD8; border-radius: 999px; padding: 2px 8px; margin-left: 6px">se necessário</span></div>
+        <div style="color: #4A5A52">João R.</div>
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">1 dose</div>
+        <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 38,00</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 92px 1fr 200px 130px 120px; gap: 16px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px">
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">14:11</div>
+        <div>Checagem de fluidoterapia</div>
+        <div style="color: #4A5A52">João R.</div>
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">1</div>
+        <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 12,00</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 92px 1fr 200px 130px 120px; gap: 16px; padding: 12px 18px; border-bottom: 1px solid #EDF2EF; align-items: center; font-size: 14px; background: #FAFBFA">
+        <div style="font-variant-numeric: tabular-nums; color: #9AA9A1">10:00</div>
+        <div style="color: #7C8B83">Alimentação úmida <span style="font-size: 11px; font-weight: 600; color: #7C8B83; background: #EDF2EF; border-radius: 999px; padding: 2px 8px; margin-left: 6px">não realizada · jejum</span></div>
+        <div style="color: #9AA9A1">Marina C.</div>
+        <div style="font-variant-numeric: tabular-nums; color: #9AA9A1">—</div>
+        <div style="text-align: right; font-variant-numeric: tabular-nums; color: #9AA9A1">não cobrado</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 92px 1fr 200px 130px 120px; gap: 16px; padding: 12px 18px; align-items: center; font-size: 14px">
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">—</div>
+        <div>Diária de internação · UTI</div>
+        <div style="color: #4A5A52">automático</div>
+        <div style="font-variant-numeric: tabular-nums; color: #4A5A52">1 diária</div>
+        <div style="text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">R$ 280,00</div>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; background: #FFFFFF; border: 1px solid #DFE7E2; border-radius: 10px; padding: 14px 18px">
+      <div style="font-size: 14px; color: #4A5A52">Subtotal de hoje · 8 lançamentos, 1 sem cobrança</div>
+      <div style="font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 22px; font-variant-numeric: tabular-nums">R$ 486,00</div>
+    </div>
+  </div>
+
+  <div style="padding: 12px 28px 16px; color: #7C8B83; font-size: 12.5px; border-top: 1px solid #DFE7E2; background: #FFFFFF">
+    A conta se monta sozinha conforme a equipe executa. Nada de conferir prancheta no fim do plantão para descobrir o que foi feito e não foi cobrado.
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

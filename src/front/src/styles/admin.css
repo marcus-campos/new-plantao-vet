@@ -1,0 +1,733 @@
+/* Telas de gestão: configurações, equipe, preços, boxes e auditoria.
+   Mesma regra de responsividade do resto do app:
+   ≥1280px duas colunas · 768–1279px laterais viram blocos empilhados ·
+   <768px uma coluna. Tabela larga rola dentro do próprio contêiner. */
+
+/* Cabeçalho de tela ---------------------------------------------------- */
+
+.admin-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.admin-title {
+  font-size: 22px;
+}
+
+.admin-subtitle {
+  font-size: 13.5px;
+  color: var(--ink-2);
+  margin: 2px 0 0;
+  max-width: 68ch;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-footnote {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  line-height: 1.5;
+  max-width: 92ch;
+}
+
+.admin-section-label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 600;
+}
+
+/* Configurações: navegação lateral + conteúdo ------------------------- */
+
+.admin-layout {
+  display: grid;
+  grid-template-columns: 232px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.admin-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: sticky;
+  top: 16px;
+}
+
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-2);
+  text-align: left;
+  width: 100%;
+}
+
+.admin-nav-item-on {
+  color: var(--primary-dark);
+  background: var(--tint);
+  border-color: var(--tint);
+  font-weight: 600;
+}
+
+.admin-content {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  min-width: 0;
+}
+
+@media (max-width: 1023px) {
+  /* Tablet e celular: a navegação vira uma faixa de chips e as seções empilham. */
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+  .admin-nav {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .admin-nav-item {
+    width: auto;
+    border-color: var(--line);
+    background: var(--surface);
+  }
+}
+
+/* Horários-âncora ------------------------------------------------------ */
+
+.anchor-row {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-top: 1px solid var(--line-soft);
+}
+
+.anchor-label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.anchor-times {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 620px) {
+  .anchor-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+.time-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--line);
+  background: var(--surface-subtle);
+  border-radius: 999px;
+  padding: 6px 8px 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 32px é o alvo dos botões dentro de chip no app (ver .chip-action). */
+.time-chip-remove {
+  min-height: 32px;
+  min-width: 32px;
+  border: none;
+  background: transparent;
+  color: var(--ink-3);
+  border-radius: 999px;
+  font-size: 15px;
+  line-height: 1;
+  padding: 0;
+}
+
+.time-chip-remove:hover {
+  color: var(--late);
+  background: var(--late-bg);
+}
+
+.anchor-add {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.anchor-add input {
+  width: 120px;
+  min-width: 100px;
+}
+
+/* Tabelas -------------------------------------------------------------- */
+
+.admin-table-wrap {
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+}
+
+.admin-table th {
+  text-align: left;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding: 0 12px 10px;
+  white-space: nowrap;
+}
+
+.admin-table td {
+  padding: 12px;
+  border-top: 1px solid var(--line-soft);
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.admin-table tbody tr.admin-row-click {
+  cursor: pointer;
+}
+
+.admin-table tbody tr.admin-row-click:hover,
+.admin-table tbody tr.admin-row-on {
+  background: var(--surface-subtle);
+}
+
+.admin-cell-muted {
+  color: var(--ink-3);
+}
+
+.admin-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--tint);
+  color: var(--primary-dark);
+  font-size: 12.5px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 11.5px;
+  font-weight: 700;
+  background: var(--line-soft);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.admin-badge-on {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+
+.admin-badge-warn {
+  background: var(--warn-bg);
+  color: var(--warn);
+}
+
+.admin-badge-off {
+  background: var(--late-bg);
+  color: var(--late);
+}
+
+.admin-toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.admin-toolbar input[type="search"],
+.admin-toolbar input[type="text"] {
+  flex: 1 1 220px;
+  width: auto;
+}
+
+/* Aviso destacado (reajuste de preço, rotação de chave) ----------------- */
+
+.admin-note {
+  display: flex;
+  gap: 10px;
+  border-radius: 8px;
+  padding: 11px 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-edge);
+  color: var(--warn);
+}
+
+.admin-note-neutral {
+  background: var(--surface-subtle);
+  border-color: var(--line);
+  color: var(--ink-2);
+}
+
+.admin-note-danger {
+  background: var(--late-bg);
+  border-color: var(--late-edge);
+  color: var(--late);
+}
+
+.admin-secret {
+  font-family: ui-monospace, "SFMono-Regular", "Menlo", monospace;
+  font-size: 14px;
+  word-break: break-all;
+  background: var(--surface-subtle);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+/* Boxes ---------------------------------------------------------------- */
+
+.kennel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 12px;
+}
+
+.kennel-card {
+  display: grid;
+  gap: 4px;
+  text-align: left;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  min-height: 92px;
+  align-content: start;
+}
+
+.kennel-card-free {
+  border-style: dashed;
+  background: var(--surface-subtle);
+}
+
+.kennel-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.kennel-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-2);
+  letter-spacing: 0.02em;
+}
+
+.kennel-patient {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.kennel-hint {
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+/* Auditoria ------------------------------------------------------------ */
+
+.audit-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 18px;
+  align-items: start;
+}
+
+@media (max-width: 1279px) {
+  .audit-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.audit-panel {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  position: sticky;
+  top: 16px;
+}
+
+@media (max-width: 1279px) {
+  .audit-panel {
+    position: static;
+  }
+}
+
+.diff-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 560px) {
+  .diff-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.diff-box {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: var(--surface-subtle);
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  min-width: 0;
+}
+
+.diff-title {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--ink-3);
+}
+
+.diff-line {
+  font-size: 12.5px;
+  line-height: 1.45;
+  word-break: break-word;
+  min-width: 0;
+}
+
+.diff-key {
+  color: var(--ink-3);
+}
+
+.diff-changed {
+  background: var(--warn-bg);
+  border-radius: 4px;
+  padding: 1px 4px;
+}
+
+.integrity-seal {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  border: 1px solid var(--ok-edge);
+  background: var(--ok-bg);
+  color: var(--ok);
+  border-radius: 8px;
+  padding: 11px 14px;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.integrity-hash {
+  font-family: ui-monospace, "SFMono-Regular", "Menlo", monospace;
+  font-weight: 700;
+}
+
+
+/* Posologia ------------------------------------------------------------
+ *
+ * Um bloco DENTRO do item de preço, separado por uma linha e não por uma
+ * aba: a posologia é uma propriedade do fármaco, não um cadastro paralelo.
+ * Quem abriu o item para corrigir o preço vê a dose logo abaixo, e a
+ * pergunta "onde configuro isso?" deixa de existir. */
+
+.dose-rules {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.dose-rules h3 {
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.dose-rules-lead {
+  margin: -4px 0 0;
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+
+.dose-hint {
+  display: block;
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+/* A regra inteira é o alvo do clique. Um botão "Editar" ao lado seria um
+   segundo alvo para a mesma intenção, e a linha já é a intenção. */
+.dose-rule {
+  display: grid;
+  gap: 3px;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--line);
+  background: var(--surface-subtle);
+  border-radius: var(--radius);
+  padding: 11px 14px;
+  min-height: 0;
+}
+
+.dose-rule:hover {
+  border-color: var(--primary);
+  background: var(--tint);
+}
+
+.dose-rule-species {
+  font-weight: 700;
+  font-size: 14.5px;
+}
+
+.dose-rule-species em {
+  font-style: normal;
+  font-weight: 500;
+  color: var(--ink-3);
+  margin-left: 8px;
+}
+
+.dose-rule-what {
+  font-size: 14px;
+  color: var(--ink-2);
+}
+
+.dose-rule-seal {
+  font-size: 12.5px;
+  color: var(--ok);
+}
+
+/* Regra que ninguém conferiu não pré-preenche dose nenhuma. Se isso não
+   estiver visível na lista, o cadastro parece pronto e não está. */
+.dose-rule-unsealed {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--warn);
+}
+
+/* Cerimônias da admissão ------------------------------------------------
+ *
+ * Liga/desliga à esquerda e horário à direita, na mesma linha: são a mesma
+ * decisão ("esta clínica faz isso, e a que horas"), e separá-las em dois
+ * blocos faria a pessoa cruzar a tela para responder metade da pergunta. */
+
+.ceremony-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border: 1px solid var(--line);
+  background: var(--surface-subtle);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+}
+
+.ceremony-time {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 13px;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+/* Item de preço com posologia: duas colunas ----------------------------
+ *
+ * O item e a posologia dele são dois objetos, e empilhá-los punha o botão
+ * "Salvar" do item no meio do diálogo, com uma seção inteira depois: quem
+ * salvava o item achava que tinha terminado, e quem via a posologia primeiro
+ * não achava mais o preço. Lado a lado, cada coluna tem começo, meio e fim.
+ *
+ * A quebra é por CONTAINER, não por viewport. A primeira versão usava
+ * `@media (max-width: 900px)`, que pergunta o tamanho da JANELA: num monitor
+ * largo a resposta era sempre "cabe", e as duas colunas eram desenhadas dentro
+ * de um diálogo estreito, uma por cima da outra. Quem decide se cabe é a
+ * largura do diálogo, e é ela que a consulta lê. */
+
+.item-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.item-col {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
+@container (min-width: 720px) {
+  /* A posologia tem MAIS campos que o item, e ganhava a coluna estreita: a
+     faixa de dose acabava em três caixas de 80px com o rótulo quebrado em
+     duas linhas, e os campos desalinhavam entre si. Espaço igual para os
+     dois lados é o que faz a faixa caber numa linha. */
+  .item-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 32px;
+  }
+
+  /* Em coluna a posologia não é um apêndice do formulário: a separação é a
+     linha vertical entre as duas, não uma régua horizontal por cima dela. */
+  .item-layout .dose-rules {
+    margin-top: 0;
+    padding-top: 0;
+    padding-left: 24px;
+    border-top: none;
+    border-left: 1px solid var(--line);
+  }
+}
+
+/* Aparelhos compartilhados ---------------------------------------------- */
+
+.device-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.device-id {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.device-id strong {
+  font-size: 16px;
+}
+
+.device-state,
+.device-by {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+/* O código é lido em voz alta ou copiado para o aparelho na mão de quem
+   acabou de clicar: precisa se ler de longe e sem ambiguidade. */
+.device-code {
+  font-size: clamp(2.2rem, 8vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-align: center;
+  padding: 18px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface-subtle);
+}
+
+.settings-link {
+  justify-self: start;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* Faixa de dose: um rótulo de unidade para os três campos ---------------
+ *
+ * "Mínima (mg/kg)" quebrava em duas linhas ao lado de "Padrão (mg/kg)" numa
+ * só, e os três inputs desalinhavam verticalmente por causa da altura
+ * diferente do rótulo. A unidade é a mesma nos três: dizê-la uma vez alinha
+ * os campos e tira duas repetições da tela. */
+
+.dose-range {
+  display: grid;
+  gap: 8px;
+}
+
+.dose-range-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-2);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Dentro do grupo, os rótulos são a variação (mínima, padrão, máxima) e não
+   competem com o rótulo da unidade acima deles. */
+.dose-range .form-grid-3 span {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  color: var(--ink-3);
+}
+
+/* Plano e limite, em leitura. O leito é a unidade de cobrança e ficava num
+   campo editável pelo administrador da clínica. */
+.settings-plan {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border: 1px solid var(--line);
+  background: var(--surface-subtle);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+}
+
+.settings-plan-name {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.settings-plan-beds {
+  font-weight: 500;
+  color: var(--ink-3);
+}
+
+.settings-plan-occupancy {
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
