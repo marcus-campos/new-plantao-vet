@@ -109,3 +109,27 @@ async def test_ips_diferentes_nao_compartilham_o_limite(client):
         headers={"X-Forwarded-For": "203.0.113.7"},
     )
     assert outro.status_code == 201, outro.text
+
+
+@pytest.mark.asyncio
+async def test_hop_forjado_nao_escapa_do_limite(client):
+    """O primeiro elemento de X-Forwarded-For é do cliente; o último é do proxy.
+
+    Sem isto, sortear um valor novo no header a cada chamada daria cadastros
+    ilimitados na única rota que cria clínica sem credencial."""
+    # Cinco cadastros "do mesmo proxy", cada um alegando vir de um IP diferente.
+    for i in range(5):
+        resposta = await client.post(
+            "/api/v1/signup",
+            json={**CORPO, "email": f"vet{i}@vida.vet"},
+            headers={"X-Forwarded-For": f"10.0.0.{i}, 198.51.100.9"},
+        )
+        assert resposta.status_code == 201, resposta.text
+
+    barrado = await client.post(
+        "/api/v1/signup",
+        json={**CORPO, "email": "sexto@vida.vet"},
+        headers={"X-Forwarded-For": "10.0.0.99, 198.51.100.9"},
+    )
+    assert barrado.status_code == 429
+    assert barrado.json()["error"]["code"] == "signup_rate_limited"
