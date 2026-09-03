@@ -4,6 +4,8 @@ O back-office e o site chamam o MESMO método. Duas cópias divergiriam no dia
 em que o onboarding ganhar um passo.
 """
 
+from datetime import UTC, datetime
+
 import pytest
 import sqlalchemy as sa
 
@@ -81,6 +83,25 @@ async def test_cria_clinica_admin_e_vinculo(session):
     assert membership is not None
     assert membership.role == "admin"
     assert membership.clinic_id == clinic.id
+
+
+@pytest.mark.asyncio
+async def test_trial_days_zero_explicito_nao_vira_trinta(session):
+    # "starter" é plano PAGO (trial_days=0): quando quem vende manda um teste
+    # negociado de 0 dias, o teste já nasce vencido. 0 é um valor legítimo e
+    # diferente de "não informado" — `or 30` engoliria o zero por ser falsy.
+    spec = ClinicSpec(
+        name="Vida Animal",
+        admin_name="Paula",
+        admin_email="p@vida.vet",
+        plan_code="starter",
+        subscription_status="trial",
+        trial_days=0,
+    )
+    antes = datetime.now(UTC)
+    clinic, _, _, _ = await OnboardingService.create_clinic(session, spec=spec, actor=SITE)
+    assert clinic.trial_ends_at is not None
+    assert (clinic.trial_ends_at - antes).total_seconds() < 5
 
 
 @pytest.mark.asyncio

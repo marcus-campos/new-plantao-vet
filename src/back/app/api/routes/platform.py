@@ -10,7 +10,6 @@ isso, o back-office seria uma porta dos fundos numa trilha que se vende como
 íntegra.
 """
 
-import secrets
 import uuid
 from datetime import UTC, datetime, timedelta
 from typing import Annotated
@@ -67,15 +66,6 @@ def _support_actor(operator: User) -> ActorInfo:
         license_authority=None,
         role=None,
     )
-
-
-def _temporary_password() -> str:
-    """Legível ao telefone: sem 0/O, 1/l, e em grupos.
-
-    Uma senha ditada por voz precisa sobreviver à ligação ruim."""
-    alphabet = "abcdefghjkmnpqrstuvwxyz23456789"
-    raw = "".join(secrets.choice(alphabet) for _ in range(12))
-    return f"{raw[:4]}-{raw[4:8]}-{raw[8:]}"
 
 
 # --- Sessão ------------------------------------------------------------------
@@ -351,7 +341,7 @@ async def reset_password(
     Sorteia uma senha ditável ao telefone e a devolve UMA vez. Fica na
     trilha da clínica que foi o suporte, e para quem."""
     membership, user = await _member(session, clinic_id, membership_id)
-    password = _temporary_password()
+    password = OnboardingService.temporary_password()
     user.password_hash = hash_password(password)
     await session.flush()
     await AuditService.record(

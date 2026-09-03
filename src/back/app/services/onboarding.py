@@ -132,7 +132,8 @@ class OnboardingService:
         # Teste com prazo negociado num plano PAGO: o plano não traz duração,
         # então quem vende diz quantos dias.
         if spec.subscription_status == "trial" and clinic.trial_ends_at is None:
-            clinic.trial_ends_at = datetime.now(UTC) + timedelta(days=spec.trial_days or 30)
+            dias = spec.trial_days if spec.trial_days is not None else 30
+            clinic.trial_ends_at = datetime.now(UTC) + timedelta(days=dias)
         session.add(clinic)
         await session.flush()
 
