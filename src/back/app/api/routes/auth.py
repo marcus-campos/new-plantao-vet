@@ -73,7 +73,12 @@ async def login(body: LoginRequest, session: AsyncSession = Depends(get_session)
 
 
 @router.get("/me")
-async def me(auth: AuthContext = Depends(get_current_auth)) -> MeResponse:
+async def me(
+    auth: AuthContext = Depends(get_current_auth),
+    session: AsyncSession = Depends(get_session),
+) -> MeResponse:
+    clinic = await session.get(Clinic, auth.clinic_id)
+    read_only = clinic is not None and clinic.is_read_only
     role = auth.membership.role if auth.membership else None
     return MeResponse(
         kind=auth.kind,
@@ -82,8 +87,9 @@ async def me(auth: AuthContext = Depends(get_current_auth)) -> MeResponse:
         role=role,
         # A estação não tem papel próprio: quem age é o dono do PIN, e a
         # capacidade é conferida no ato. Aqui vai vazio de propósito.
-        capabilities=sorted(capabilities_of(role)),
+        capabilities=sorted(capabilities_of(role, read_only=read_only)),
         has_pin=auth.membership is not None and auth.membership.pin_hash is not None,
+        read_only=read_only,
     )
 
 
