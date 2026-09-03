@@ -26,6 +26,7 @@ from app.api.routes import price_list as price_list_routes
 from app.api.routes import progress_notes as progress_note_routes
 from app.api.routes import records as record_routes
 from app.api.routes import shifts as shift_routes
+from app.api.routes import signup as signup_routes
 from app.api.routes import station_devices as station_device_routes
 from app.api.routes import tasks as task_routes
 from app.core.config import settings
@@ -103,6 +104,7 @@ def create_app() -> FastAPI:
     app.include_router(owner_contact_routes.router)
     app.include_router(device_routes.router)
     app.include_router(station_device_routes.router)
+    app.include_router(signup_routes.router)
     app.include_router(platform_routes.router)
 
     @app.get("/health")

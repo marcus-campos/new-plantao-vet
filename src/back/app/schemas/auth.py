@@ -26,6 +26,10 @@ class MeResponse(BaseModel):
     #: valor que não existe deixaria de fora justamente quem nunca definiu um.
     #: Nunca o hash, que não sai da API em rota nenhuma.
     has_pin: bool = False
+    #: O teste venceu: a escrita parou. NÃO autoriza nada — quem autoriza é
+    #: `capabilities`, que já vem encolhida. Existe para a interface conseguir
+    #: EXPLICAR por que os botões sumiram, em vez de parecer quebrada.
+    read_only: bool = False
 
 
 class OperatorResponse(BaseModel):

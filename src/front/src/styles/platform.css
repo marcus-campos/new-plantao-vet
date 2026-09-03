@@ -122,6 +122,19 @@
   border-color: var(--late-edge);
 }
 
+/* Vencido não é "atrasado": o atraso avisa, isto explica uma mudança que já
+   aconteceu na tela. Mesma família de cor do atraso, com o link em destaque. */
+.subscription-banner-expired {
+  background: var(--late-bg);
+  border-bottom: 1px solid var(--late-edge);
+  color: var(--late);
+  font-weight: 600;
+}
+.subscription-banner-expired a {
+  color: var(--late);
+  font-weight: 700;
+}
+
 /* Plano aposentado continua na lista: quem está nele precisa achá-lo. Só
    perde o peso visual. */
 .platform-plan-retired td {

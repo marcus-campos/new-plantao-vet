@@ -146,3 +146,19 @@ class Clinic(Base):
     created_at: Mapped[datetime] = mapped_column(
         sa.TIMESTAMP(timezone=True), default=lambda: datetime.now(UTC)
     )
+
+    @property
+    def is_read_only(self) -> bool:
+        """O teste venceu: lê tudo, escreve quase nada.
+
+        DERIVADO, não gravado. Um status `expired` no banco dependeria de um
+        job ter rodado; derivar da data está sempre certo, inclusive no
+        segundo seguinte ao vencimento.
+
+        Só `trial` vence. Quem assinou carrega um `trial_ends_at` antigo, e
+        deixar a data mandar sozinha suspenderia cliente pagante."""
+        return (
+            self.subscription_status == "trial"
+            and self.trial_ends_at is not None
+            and self.trial_ends_at < datetime.now(UTC)
+        )

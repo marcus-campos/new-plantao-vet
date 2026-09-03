@@ -4,7 +4,9 @@ import uuid
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+from app.schemas.signup import senha_cabe_no_bcrypt
 
 SubscriptionStatus = Literal["trial", "active", "past_due", "suspended", "cancelled"]
 
@@ -115,7 +117,16 @@ class PlatformClinicCreate(BaseModel):
     admin_name: str = Field(min_length=2, max_length=120)
     admin_email: str = Field(pattern=r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
     #: Vazio = o sistema sorteia uma e devolve.
-    admin_password: str | None = Field(default=None, min_length=8, max_length=128)
+    admin_password: str | None = Field(default=None, min_length=8)
+
+    @field_validator("admin_password")
+    @classmethod
+    def _valida_senha(cls, value: str | None) -> str | None:
+        # Mesmo limite do cadastro público (`schemas/signup.py`), pelo mesmo
+        # motivo — bytes, não caracteres — mas só quando o suporte DIGITA uma
+        # senha: vazio é o caminho comum (o sistema sorteia) e não passa por
+        # `.encode()`.
+        return senha_cabe_no_bcrypt(value) if value is not None else value
 
 
 class PlatformClinicCreated(BaseModel):

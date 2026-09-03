@@ -22,6 +22,7 @@ import { PriceList } from "./pages/PriceList";
 import { ProgressNotes } from "./pages/ProgressNotes";
 import { ShiftConsole } from "./pages/ShiftConsole";
 import { ShiftSchedule } from "./pages/ShiftSchedule";
+import { Signup } from "./pages/Signup";
 import { StationDevices } from "./pages/StationDevices";
 import { MyPinDialog } from "./components/MyPinDialog";
 import { PushButton } from "./components/PushButton";
@@ -38,7 +39,18 @@ import { useBoard } from "./hooks/useBoard";
 
 export default function App() {
   const { session } = useSession();
-  if (!session) return <Login />;
+  // Sem sessão, a raiz é a landing: é o link que se divulga, e quem chega por
+  // ele nunca ouviu falar do produto. Quem já é cliente vai direto para
+  // /entrar — e quem tem sessão nunca vê nenhuma das duas, porque o teste de
+  // sessão continua vindo antes.
+  if (!session)
+    return (
+      <Routes>
+        <Route path="/" element={<Signup />} />
+        <Route path="/cadastro" element={<Signup />} />
+        <Route path="*" element={<Login />} />
+      </Routes>
+    );
   // Outra porta, outra casca: quem vende e dá suporte não é membro de clínica
   // nenhuma, e o token da plataforma é recusado por toda rota de clínica. Não
   // há o que montar do shell da clínica para essa sessão.
@@ -84,7 +96,13 @@ const NAV = [
   { to: "/plantao", label: "nav.shift", capability: CAN.taskExecute },
   { to: "/internados", label: "nav.inpatients", capability: null },
   { to: "/passagem", label: "nav.handover", capability: CAN.shiftOperate },
-  { to: "/gestao", label: "nav.management", capability: CAN.clinicConfigure },
+  // Mesma lista do guard de "/gestao": clinic.configure é escrita e some
+  // quando o teste vence, mas audit.read sobrevive de propósito. Com só
+  // clinic.configure aqui, o menu esconderia uma página que a pessoa ainda
+  // pode abrir — exatamente o defeito que este arquivo documenta como
+  // corrigido ("ninguém vê o que não pode usar, e ninguém chega por URL onde
+  // o menu não leva").
+  { to: "/gestao", label: "nav.management", capability: [CAN.clinicConfigure, CAN.auditRead] },
 ] as const;
 
 function Shell() {
@@ -93,7 +111,13 @@ function Shell() {
   const location = useLocation();
   const board = useBoard();
 
-  const items = NAV.filter((item) => item.capability === null || can(item.capability));
+  const items = NAV.filter((item) => {
+    const capability: string | readonly string[] | null = item.capability;
+    if (capability === null) return true;
+    // Item de menu com lista de capacidades (caso de "/gestao"): aparece se
+    // QUALQUER uma delas for concedida.
+    return typeof capability === "string" ? can(capability) : capability.some(can);
+  });
 
   return (
     <div className="app-shell">
@@ -191,18 +215,84 @@ function Shell() {
           <Route
             path="/gestao"
             element={
-              <RequireCapability can={CAN.clinicConfigure} redirectTo="/internados">
+              // clinic.configure é escrita e some da lista quando o teste vence;
+              // se o portão exigisse só ela, a trilha de auditoria — rota filha,
+              // que sobrevive ao teste vencido por causa de audit.read — ficaria
+              // trancada atrás de uma exigência que ela não precisa cumprir.
+              // Cada aba dentro de Management já se guarda pela própria
+              // capacidade (ver SUB em Management.tsx); este portão só decide
+              // quem entra no prédio, não o que se faz lá dentro.
+              <RequireCapability can={[CAN.clinicConfigure, CAN.auditRead]} redirectTo="/internados">
                 <Management />
               </RequireCapability>
             }
           >
             <Route index element={<Navigate to="equipe" replace />} />
-            <Route path="equipe" element={<Team />} />
-            <Route path="escala" element={<ShiftSchedule />} />
-            <Route path="precos" element={<PriceList />} />
-            <Route path="aparelhos" element={<StationDevices />} />
-            <Route path="auditoria" element={<AuditTrail />} />
-            <Route path="configuracoes" element={<ClinicSettings />} />
+            {/* "Esconder do menu sem guardar a rota é teatro" (authz.tsx): o
+                portão do PAI só decide quem entra no prédio — aceita
+                clinicConfigure OU auditRead —, mas cada sala continua exigindo
+                a chave própria. Sem isso, um vet (que tem auditRead e por
+                tanto atravessa o portão) digitaria a URL de Equipe, Preços,
+                Aparelhos ou Configurações e veria a tela inteira renderizar,
+                porque o <Gate> de Management.tsx só filtra o LINK da aba, não
+                a rota casada pelo <Outlet/>. redirectTo aponta para Auditoria
+                porque é a única aba que sobrevive ao teste vencido e que,
+                portanto, qualquer um que passou pelo portão do pai consegue
+                abrir — clinicConfigure e auditRead nunca faltam os dois ao
+                mesmo tempo (admin tem os dois; vet só tem auditRead). */}
+            <Route
+              path="equipe"
+              element={
+                <RequireCapability can={CAN.teamManage} redirectTo="/gestao/auditoria">
+                  <Team />
+                </RequireCapability>
+              }
+            />
+            <Route
+              path="escala"
+              element={
+                <RequireCapability can={CAN.shiftSchedule} redirectTo="/gestao/auditoria">
+                  <ShiftSchedule />
+                </RequireCapability>
+              }
+            />
+            <Route
+              path="precos"
+              element={
+                <RequireCapability can={CAN.priceListManage} redirectTo="/gestao/auditoria">
+                  <PriceList />
+                </RequireCapability>
+              }
+            />
+            <Route
+              path="aparelhos"
+              element={
+                <RequireCapability can={CAN.clinicConfigure} redirectTo="/gestao/auditoria">
+                  <StationDevices />
+                </RequireCapability>
+              }
+            />
+            <Route
+              path="auditoria"
+              element={
+                // Guarda por si mesma, e não só pelo portão do pai: manter o
+                // padrão explícito de cada filha, mesmo sabendo que quem
+                // atravessou o portão sempre tem auditRead ou clinicConfigure
+                // (e admin tem os dois). redirectTo cai fora de Gestão — não
+                // há outra aba universalmente segura para onde mandar aqui.
+                <RequireCapability can={CAN.auditRead} redirectTo="/internados">
+                  <AuditTrail />
+                </RequireCapability>
+              }
+            />
+            <Route
+              path="configuracoes"
+              element={
+                <RequireCapability can={CAN.clinicConfigure} redirectTo="/gestao/auditoria">
+                  <ClinicSettings />
+                </RequireCapability>
+              }
+            />
           </Route>
 
           {/* Rotas antigas continuam funcionando: link salvo e favorito não
@@ -275,8 +365,28 @@ function Identity() {
  *  não decide isso. */
 function SubscriptionBanner() {
   const { t } = useTranslation();
-  const { can } = useSession();
+  const { can, me } = useSession();
   const { profile } = useClinic();
+
+  // O vencido vem ANTES da guarda de capacidade, e para todo mundo: quem
+  // acabou de perder o botão de dar baixa precisa saber por quê, e
+  // `clinic.configure` é escrita — some da lista justamente agora, o que
+  // esconderia este aviso de quem mais precisa dele.
+  if (me?.read_only) {
+    return (
+      <div className="subscription-banner subscription-banner-expired" role="status">
+        {t("subscription.expired")}{" "}
+        <a
+          href="https://wa.me/5561983031823?text=Ol%C3%A1%21%20Meu%20teste%20do%20Plant%C3%A3oVet%20terminou"
+          target="_blank"
+          rel="noreferrer"
+        >
+          {t("subscription.expiredCta")}
+        </a>
+      </div>
+    );
+  }
+
   if (!profile || !can(CAN.clinicConfigure)) return null;
   if (profile.subscription_status === "past_due") {
     return <div className="subscription-banner subscription-banner-late">{t("subscription.pastDue")}</div>;

@@ -13,7 +13,7 @@ from app.core.security import decode_jwt
 from app.models.clinic import Clinic
 from app.models.membership import Membership
 from app.models.user import User
-from app.permissions import can
+from app.permissions import READ_ONLY_CAPABILITIES, can
 from app.services.audit import ActorInfo
 
 
@@ -165,6 +165,35 @@ async def get_optional_operator(
         return None
 
 
+async def _ensure_writable(session: AsyncSession, clinic_id: uuid.UUID, capability: str) -> None:
+    """A escrita para quando o teste vence. A leitura, não.
+
+    Recebe a capacidade que AUTORIZOU o ator, nunca a lista da rota: em
+    `require_any` as duas coisas são diferentes, e passar a lista deixaria
+    uma rota que misture `hospitalization.discharge` com uma capacidade de
+    escrita liberar a escrita para quem só tem a escrita — o gate nem
+    chegaria a olhar a clínica.
+
+    Fica aqui, e não em cada rota, porque TODA mutação clínica passa por
+    `require` ou `require_any` — as únicas escritas de fora são login, troca do
+    próprio PIN e registro de token de push, e as três devem mesmo continuar
+    funcionando com o teste vencido.
+
+    O que sobrevive está em `READ_ONLY_CAPABILITIES` (permissions.py), a mesma
+    lista que encolhe a resposta de `/auth/me`: uma fonte, dois usos."""
+    if capability in READ_ONLY_CAPABILITIES:
+        return
+    clinic = await session.get(Clinic, clinic_id)
+    if clinic is None or not clinic.is_read_only:
+        return
+    raise AppError(
+        "trial_expired",
+        403,
+        capability=capability,
+        trial_ends_at=clinic.trial_ends_at.isoformat() if clinic.trial_ends_at else None,
+    )
+
+
 def require_read(capability: str) -> Any:
     """Autoriza uma LEITURA sensível.
 
@@ -200,9 +229,17 @@ def require_any(*capabilities: str) -> Any:
     o veterinário sem poder corrigir uma dose errada sem chamar o administrador,
     fricção no caminho onde ela custa mais caro."""
 
-    async def dependency(actor: ActorInfo = Depends(get_operator)) -> ActorInfo:
-        if not any(can(actor.role, capability) for capability in capabilities):
+    async def dependency(
+        actor: ActorInfo = Depends(get_operator),
+        auth: AuthContext = Depends(get_current_auth),
+        session: AsyncSession = Depends(get_session),
+    ) -> ActorInfo:
+        # QUAL capacidade autorizou, não apenas SE alguma autorizou: é ela que
+        # o gate do teste vencido precisa julgar.
+        autorizada = next((c for c in capabilities if can(actor.role, c)), None)
+        if autorizada is None:
             raise AppError("forbidden", 403, capability=capabilities[0], role=actor.role)
+        await _ensure_writable(session, auth.clinic_id, autorizada)
         return actor
 
     return dependency
@@ -216,9 +253,14 @@ def require(capability: str) -> Any:
     dono do PIN: checar o token do aparelho deixaria o técnico prescrever
     usando a estação."""
 
-    async def dependency(actor: ActorInfo = Depends(get_operator)) -> ActorInfo:
+    async def dependency(
+        actor: ActorInfo = Depends(get_operator),
+        auth: AuthContext = Depends(get_current_auth),
+        session: AsyncSession = Depends(get_session),
+    ) -> ActorInfo:
         if not can(actor.role, capability):
             raise AppError("forbidden", 403, capability=capability, role=actor.role)
+        await _ensure_writable(session, auth.clinic_id, capability)
         return actor
 
     return dependency

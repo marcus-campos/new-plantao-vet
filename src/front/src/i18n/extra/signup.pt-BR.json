@@ -1,0 +1,51 @@
+{
+  "signup.brand": "PlantãoVet",
+  "signup.hero.title": "A ficha de internação que faz o plantão passar direito",
+  "signup.hero.subtitle": "Prescrição, aprazamento e passagem de plantão num lugar só. Teste 14 dias, sem cartão.",
+  "signup.hero.trustline": "Sem cartão · Sem instalação · Cancele quando quiser",
+
+  "signup.form.title": "Criar conta grátis",
+  "signup.form.clinicName": "Nome da clínica",
+  "signup.form.adminName": "Seu nome",
+  "signup.form.email": "E-mail",
+  "signup.form.password": "Senha",
+  "signup.form.passwordHint": "Ao menos 8 caracteres.",
+  "signup.form.phone": "WhatsApp (opcional)",
+  "signup.form.submit": "Começar os 14 dias",
+  "signup.form.busy": "Criando sua clínica…",
+  "signup.form.hasAccount": "Já tem conta?",
+  "signup.form.signIn": "Entrar",
+  "signup.form.emailTaken": "Esse e-mail já tem conta. Entre por aqui.",
+
+  "signup.problem.title": "O plantão vira pelo WhatsApp e pela memória",
+  "signup.problem.body": "A prancheta fica presa no box, a dose atrasada só aparece quando alguém olha, e quem entra às 19h descobre o que aconteceu perguntando. O que se perde na troca de turno é o que mais custa caro.",
+
+  "signup.promises.title": "O que muda",
+  "signup.promise.onTime.title": "A dose sai na hora",
+  "signup.promise.onTime.body": "A prescrição vira horários concretos pelos horários-âncora da sua clínica. q8h vira 10h, 18h e 02h, e a grade mostra o que venceu.",
+  "signup.promise.overdue.title": "O atraso aparece sozinho",
+  "signup.promise.overdue.body": "Cada tarefa tem janela de tolerância por criticidade. Passou, sobe no painel — ninguém precisa lembrar de olhar.",
+  "signup.promise.handover.title": "A passagem fica registrada",
+  "signup.promise.handover.body": "O boletim do turno sai pronto: feitas, não feitas, pendentes e o que mudou de prescrição. Quem recebe aceita paciente a paciente.",
+
+  "signup.how.title": "Como começa",
+  "signup.how.step1.title": "Você cria a conta",
+  "signup.how.step1.body": "Quatro campos. A clínica existe no minuto seguinte, com os horários-âncora e as janelas de tolerância já configurados.",
+  "signup.how.step2.title": "Cadastra a equipe e os boxes",
+  "signup.how.step2.body": "Cada pessoa entra com o papel dela e um PIN. No tablet do corredor, o PIN é quem assina cada ato.",
+  "signup.how.step3.title": "Interna o primeiro paciente",
+  "signup.how.step3.body": "Prescreve, e a grade de tarefas nasce sozinha. É a partir daí que a passagem de plantão muda.",
+
+  "signup.faq.title": "Perguntas que todo mundo faz",
+  "signup.faq.card.q": "Precisa de cartão para testar?",
+  "signup.faq.card.a": "Não. Você cria a conta e usa 14 dias. Não pedimos cartão em momento nenhum do teste.",
+  "signup.faq.after.q": "O que acontece no dia 15?",
+  "signup.faq.after.a": "A clínica passa a ser somente-leitura: você continua vendo tudo — ficha, prontuário, conta, trilha de auditoria — e continua podendo dar alta e exportar o prontuário dos seus pacientes. O que para é a escrita nova: prescrever, dar baixa em tarefa, internar. Nada é apagado.",
+  "signup.faq.data.q": "Meus dados ficam comigo?",
+  "signup.faq.data.a": "Ficam. O prontuário sai em PDF a qualquer momento, inclusive depois do teste, como o CFMV exige que a clínica consiga entregar ao tutor.",
+  "signup.faq.size.q": "Serve para uma clínica pequena?",
+  "signup.faq.size.a": "O teste vem com 10 leitos, que é um paciente internado por vez em cada um. O limite avisa, nunca bloqueia uma internação.",
+
+  "signup.footer.talk": "Falar com a gente no WhatsApp",
+  "signup.footer.signIn": "Já sou cliente"
+}

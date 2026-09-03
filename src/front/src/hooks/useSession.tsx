@@ -10,12 +10,15 @@ import {
   saveSession,
   setUnauthorizedHandler,
 } from "../api/client";
-import type { DeviceCredential, Session } from "../api/client";
+import type { DeviceCredential, Session, SignupPayload } from "../api/client";
 import type { Me, Operator, PlatformMe } from "../api/types";
 
 interface SessionContextValue {
   session: Session | null;
   loginPersonal: (email: string, password: string) => Promise<void>;
+  /** Cria a clínica e já entra. Pedir login logo depois de criar a conta é
+   *  onde a pessoa desiste. */
+  signupClinic: (payload: SignupPayload) => Promise<void>;
   /** A porta de quem vende e dá suporte. Outro token, nenhuma clínica. */
   loginPlatform: (email: string, password: string) => Promise<void>;
   /** Quem está logado na plataforma. Null fora dela. */
@@ -166,6 +169,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       can: (capability) => capabilities.includes(capability),
       loginPersonal: async (email, password) => {
         const token = await api.login(email, password);
+        persist({ kind: "personal", accessToken: token.access_token });
+      },
+      signupClinic: async (payload) => {
+        const token = await api.signup(payload);
         persist({ kind: "personal", accessToken: token.access_token });
       },
       loginPlatform: async (email, password) => {

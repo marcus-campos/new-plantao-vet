@@ -42,7 +42,13 @@ export function RequireCapability({
   redirectTo = "/",
   children,
 }: {
-  can: string;
+  /** Uma capacidade, ou uma lista: a rota abre se QUALQUER uma da lista for
+   *  concedida. Existe por causa de "/gestao" — o portão de fora não pode
+   *  exigir só a capacidade de ESCRITA (`clinic.configure`, que some quando o
+   *  teste vence) quando uma rota filha (a trilha de auditoria) sobrevive ao
+   *  teste vencido por leitura (`audit.read`). Uma string continua
+   *  funcionando como sempre: é o caso comum, de todas as outras rotas. */
+  can: string | string[];
   redirectTo?: string;
   children: ReactNode;
 }) {
@@ -57,7 +63,8 @@ export function RequireCapability({
   // home escondia o motivo; pedir o PIN é a resposta honesta.
   if (needsOperator) return <IdentifyFirst />;
 
-  if (!can(capability)) return <Navigate to={redirectTo} replace state={{ from: location }} />;
+  const allowed = Array.isArray(capability) ? capability.some(can) : can(capability);
+  if (!allowed) return <Navigate to={redirectTo} replace state={{ from: location }} />;
   return <>{children}</>;
 }
 

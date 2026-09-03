@@ -1,0 +1,51 @@
+{
+  "signup.brand": "PlantãoVet",
+  "signup.hero.title": "The treatment sheet that makes handover work",
+  "signup.hero.subtitle": "Prescriptions, dose scheduling and shift handover in one place. 14-day trial, no card.",
+  "signup.hero.trustline": "No card · No install · Cancel anytime",
+
+  "signup.form.title": "Create a free account",
+  "signup.form.clinicName": "Clinic name",
+  "signup.form.adminName": "Your name",
+  "signup.form.email": "Email",
+  "signup.form.password": "Password",
+  "signup.form.passwordHint": "At least 8 characters.",
+  "signup.form.phone": "WhatsApp (optional)",
+  "signup.form.submit": "Start your 14 days",
+  "signup.form.busy": "Creating your clinic…",
+  "signup.form.hasAccount": "Already have an account?",
+  "signup.form.signIn": "Sign in",
+  "signup.form.emailTaken": "That email already has an account. Sign in instead.",
+
+  "signup.problem.title": "Handover happens over WhatsApp and memory",
+  "signup.problem.body": "The clipboard stays stuck in the box, a late dose only shows up when someone happens to look, and whoever comes on at 7pm finds out what happened by asking around. What gets lost at shift change is what costs the most.",
+
+  "signup.promises.title": "What changes",
+  "signup.promise.onTime.title": "The dose goes out on time",
+  "signup.promise.onTime.body": "The prescription becomes real times, set from your clinic's anchor hours. q8h becomes 10am, 6pm and 2am, and the grid shows what's overdue.",
+  "signup.promise.overdue.title": "Overdue shows up on its own",
+  "signup.promise.overdue.body": "Every task has a tolerance window based on how critical it is. Once it's past, it rises on the board — nobody has to remember to check.",
+  "signup.promise.handover.title": "Handover is on the record",
+  "signup.promise.handover.body": "The shift bulletin comes out ready: done, not done, pending, and what changed in the prescription. Whoever takes over accepts patient by patient.",
+
+  "signup.how.title": "How it starts",
+  "signup.how.step1.title": "You create the account",
+  "signup.how.step1.body": "Four fields. The clinic exists a minute later, with anchor hours and tolerance windows already set.",
+  "signup.how.step2.title": "Add the team and the boxes",
+  "signup.how.step2.body": "Each person signs in with their role and a PIN. On the hallway tablet, the PIN is who signs off on each act.",
+  "signup.how.step3.title": "Admit the first patient",
+  "signup.how.step3.body": "Prescribe, and the task grid appears on its own. That's when shift handover changes.",
+
+  "signup.faq.title": "Questions everyone asks",
+  "signup.faq.card.q": "Do I need a card to try it?",
+  "signup.faq.card.a": "No. You create the account and use it for 14 days. We never ask for a card during the trial.",
+  "signup.faq.after.q": "What happens on day 15?",
+  "signup.faq.after.a": "The clinic becomes read-only: you keep seeing everything — sheet, record, statement, audit trail — and you can still discharge patients and export their records. What stops is new writes: prescribing, checking off a task, admitting a patient. Nothing is deleted.",
+  "signup.faq.data.q": "Is my data mine to keep?",
+  "signup.faq.data.a": "Yes. The record exports as a PDF at any time, even after the trial, the way Brazil's CFMV requires a clinic to be able to hand a tutor.",
+  "signup.faq.size.q": "Does it work for a small clinic?",
+  "signup.faq.size.a": "The trial comes with 10 beds, one patient admitted at a time in each. The limit warns you, it never blocks an admission.",
+
+  "signup.footer.talk": "Talk to us on WhatsApp",
+  "signup.footer.signIn": "I'm already a customer"
+}
