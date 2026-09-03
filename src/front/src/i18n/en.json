@@ -476,6 +476,8 @@
   "subscription.trialEnding_one": "Your trial ends tomorrow. Contact PlantãoVet to continue.",
   "subscription.trialEnding_other": "Your trial ends in {{count}} days. Contact PlantãoVet to continue.",
   "subscription.pastDue": "A payment is overdue. Access continues; settle it to keep the system on the next shift.",
+  "subscription.expired": "Your trial ended. You can still see everything and discharge patients; to prescribe again, talk to us.",
+  "subscription.expiredCta": "Message us on WhatsApp",
   "platform.tag": "Platform",
   "platform.clinics": "Clinics",
   "platform.clinicsHint": "Who pays, who is trialling, who stopped using it. Sorted by who needs attention first.",

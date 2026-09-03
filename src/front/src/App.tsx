@@ -287,8 +287,28 @@ function Identity() {
  *  não decide isso. */
 function SubscriptionBanner() {
   const { t } = useTranslation();
-  const { can } = useSession();
+  const { can, me } = useSession();
   const { profile } = useClinic();
+
+  // O vencido vem ANTES da guarda de capacidade, e para todo mundo: quem
+  // acabou de perder o botão de dar baixa precisa saber por quê, e
+  // `clinic.configure` é escrita — some da lista justamente agora, o que
+  // esconderia este aviso de quem mais precisa dele.
+  if (me?.read_only) {
+    return (
+      <div className="subscription-banner subscription-banner-expired" role="status">
+        {t("subscription.expired")}{" "}
+        <a
+          href="https://wa.me/5561983031823?text=Ol%C3%A1%21%20Meu%20teste%20do%20Plant%C3%A3oVet%20terminou"
+          target="_blank"
+          rel="noreferrer"
+        >
+          {t("subscription.expiredCta")}
+        </a>
+      </div>
+    );
+  }
+
   if (!profile || !can(CAN.clinicConfigure)) return null;
   if (profile.subscription_status === "past_due") {
     return <div className="subscription-banner subscription-banner-late">{t("subscription.pastDue")}</div>;

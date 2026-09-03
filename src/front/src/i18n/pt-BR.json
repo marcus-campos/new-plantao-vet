@@ -476,6 +476,8 @@
   "subscription.trialEnding_one": "Seu período de teste termina amanhã. Fale com o PlantãoVet para continuar.",
   "subscription.trialEnding_other": "Seu período de teste termina em {{count}} dias. Fale com o PlantãoVet para continuar.",
   "subscription.pastDue": "Há uma mensalidade em atraso. O acesso continua; regularize para não perder o sistema no próximo plantão.",
+  "subscription.expired": "Seu teste terminou. Você continua vendo tudo e pode dar alta; para voltar a prescrever, fale com a gente.",
+  "subscription.expiredCta": "Falar no WhatsApp",
   "platform.tag": "Plataforma",
   "platform.clinics": "Clínicas",
   "platform.clinicsHint": "Quem assina, quem testa, quem parou de usar. Ordenado por quem precisa de atenção primeiro.",

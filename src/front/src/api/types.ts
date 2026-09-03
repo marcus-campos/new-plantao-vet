@@ -31,6 +31,10 @@ export interface Me {
   /** Se já existe um PIN. Decide se a troca pede o atual: exigir um valor que
    *  não existe deixaria de fora quem nunca definiu um. */
   has_pin: boolean;
+  /** O teste venceu: a escrita parou. Não autoriza nada — quem autoriza é
+   *  `capabilities`, que já vem encolhida da API. Existe para a interface
+   *  conseguir EXPLICAR por que os botões sumiram. */
+  read_only: boolean;
 }
 
 /** Quem digitou o PIN, e o que pode.
