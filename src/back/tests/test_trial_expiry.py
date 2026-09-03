@@ -112,3 +112,48 @@ async def test_me_com_teste_vigente_traz_tudo(client, session):
     corpo = (await client.get("/api/v1/auth/me", headers=bearer(personal_token(vet)))).json()
     assert corpo["read_only"] is False
     assert "prescription.create" in corpo["capabilities"]
+
+
+@pytest.mark.asyncio
+async def test_require_any_com_lista_mista_nao_libera_a_escrita(session, monkeypatch):
+    """A capacidade que AUTORIZA é que manda, não a mais permissiva da lista.
+
+    Com o `any()` antigo, bastava `hospitalization.discharge` aparecer na
+    lista de capacidades da ROTA para o gate inteiro ser pulado — inclusive
+    para quem só tinha a capacidade de escrita, porque `_ensure_writable`
+    recebia a lista da rota, não a capacidade que de fato autorizou o ator.
+
+    Hoje nenhum papel real tem `prescription.create` sem também ter
+    `hospitalization.discharge` (os dois vêm juntos em `LICENSED_ONLY`), então
+    para reproduzir o cenário este teste chama o `dependency()` de
+    `require_any` diretamente — sem inventar rota nova em produção — e finge,
+    via monkeypatch de `can`, um papel que só tem a capacidade de escrita."""
+    import app.api.deps as deps_module
+    from app.core.errors import AppError
+    from app.permissions import HOSPITALIZATION_DISCHARGE, PRESCRIPTION_CREATE
+    from app.services.audit import ActorInfo
+
+    clinic = await _clinica_vencida(session)
+    vet = await make_membership(session, clinic=clinic, role="vet")
+    await session.flush()
+
+    actor = ActorInfo(
+        membership_id=vet.id,
+        name="Dra. Teste",
+        license_number=None,
+        license_authority=None,
+        role="vet",
+    )
+    auth = deps_module.AuthContext(kind="personal", clinic_id=clinic.id, membership=vet)
+
+    # Só a capacidade de ESCREVER autoriza; a de dar alta nunca autoriza aqui.
+    monkeypatch.setattr(
+        deps_module,
+        "can",
+        lambda role, capability: capability == PRESCRIPTION_CREATE,
+    )
+
+    dependency = deps_module.require_any(PRESCRIPTION_CREATE, HOSPITALIZATION_DISCHARGE)
+    with pytest.raises(AppError) as exc:
+        await dependency(actor=actor, auth=auth, session=session)
+    assert exc.value.code == "trial_expired"
