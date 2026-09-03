@@ -134,6 +134,32 @@ async def test_senha_de_73_bytes_e_422_nao_500(client):
 
 
 @pytest.mark.asyncio
+async def test_senha_de_72_caracteres_com_acento_e_422_nao_500(client):
+    """72 caracteres, 73 bytes: o bcrypt conta bytes, e o produto é pt-BR.
+
+    O limite em caracteres deixava passar exatamente a senha que um brasileiro
+    escreve, e o ValueError do bcrypt virava 500 sem handler."""
+    senha = "a" * 71 + "ç"
+    assert len(senha) == 72
+    assert len(senha.encode("utf-8")) == 73
+
+    resposta = await client.post("/api/v1/signup", json={**CORPO, "password": senha})
+    assert resposta.status_code == 422, resposta.text
+
+
+@pytest.mark.asyncio
+async def test_senha_de_72_bytes_com_acento_e_aceita(client):
+    """O limite não pode ficar mais restritivo do que o bcrypt exige: 71
+    caracteres com um acento são 72 bytes, e isto precisa continuar passando."""
+    senha = "a" * 70 + "ç"
+    assert len(senha) == 71
+    assert len(senha.encode("utf-8")) == 72
+
+    resposta = await client.post("/api/v1/signup", json={**CORPO, "password": senha})
+    assert resposta.status_code == 201, resposta.text
+
+
+@pytest.mark.asyncio
 async def test_o_sexto_cadastro_do_mesmo_ip_na_mesma_hora_e_barrado(client):
     for i in range(5):
         resposta = await client.post("/api/v1/signup", json={**CORPO, "email": f"vet{i}@vida.vet"})
