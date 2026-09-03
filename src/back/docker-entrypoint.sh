@@ -2,6 +2,10 @@
 # Sobe a API já com o banco no lugar: espera o Postgres, migra e (opcionalmente) semeia.
 set -e
 
+# Em produção o socket do Cloud SQL demora alguns segundos a aparecer; o laço
+# abaixo já cobre isso. Teto de 60 s: banco que não vem é erro de deploy, e
+# um contêiner que espera para sempre esconde o erro do Cloud Run.
+tentativas=0
 echo "› esperando o Postgres…"
 until python -c "
 import asyncio, sys
@@ -18,6 +22,11 @@ try:
 except Exception:
     sys.exit(1)
 " 2>/dev/null; do
+  tentativas=$((tentativas + 1))
+  if [ "$tentativas" -ge 60 ]; then
+    echo "› Postgres não respondeu em 60 s; abortando"
+    exit 1
+  fi
   sleep 1
 done
 

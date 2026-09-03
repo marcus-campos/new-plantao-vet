@@ -8,6 +8,9 @@ RUN npm ci
 
 COPY . .
 # O Vite injeta a URL da API no build; o navegador roda no host, então localhost serve.
+# Vazio em produção: o Caddy serve o web e a API no MESMO domínio, então o
+# cliente monta caminhos relativos (/api/v1/...). Uma URL absoluta aqui
+# amarraria o build a um domínio e traria CORS de volta.
 ARG VITE_API_URL=http://localhost:8000
 ENV VITE_API_URL=$VITE_API_URL
 # Push no navegador. Vazio = o botão "receber alertas" não aparece, e nada

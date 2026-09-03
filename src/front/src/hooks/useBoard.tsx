@@ -51,13 +51,35 @@ export function useBoard(): BoardState {
     }
   }, [describeError]);
 
+  // Aba escondida não pergunta. A fila só interessa a quem está olhando, e a
+  // pergunta custa: num quiosque de parede aberto o dia inteiro são ~10 mil
+  // leituras por mês, e cada aba de fundo esquecida custava o mesmo. Ao
+  // voltar, uma leitura imediata: ninguém pode olhar a tela e ver a fila de
+  // dez minutos atrás.
   useEffect(() => {
     alive.current = true;
-    void reload();
-    const timer = setInterval(() => void reload(), POLL_MS);
+    let timer: ReturnType<typeof setInterval> | null = null;
+
+    const parar = () => {
+      if (timer !== null) {
+        clearInterval(timer);
+        timer = null;
+      }
+    };
+
+    const acompanhar = () => {
+      parar();
+      if (typeof document !== "undefined" && document.hidden) return;
+      void reload();
+      timer = setInterval(() => void reload(), POLL_MS);
+    };
+
+    acompanhar();
+    document.addEventListener("visibilitychange", acompanhar);
     return () => {
       alive.current = false;
-      clearInterval(timer);
+      parar();
+      document.removeEventListener("visibilitychange", acompanhar);
     };
   }, [reload]);
 
