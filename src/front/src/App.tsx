@@ -96,7 +96,13 @@ const NAV = [
   { to: "/plantao", label: "nav.shift", capability: CAN.taskExecute },
   { to: "/internados", label: "nav.inpatients", capability: null },
   { to: "/passagem", label: "nav.handover", capability: CAN.shiftOperate },
-  { to: "/gestao", label: "nav.management", capability: CAN.clinicConfigure },
+  // Mesma lista do guard de "/gestao": clinic.configure é escrita e some
+  // quando o teste vence, mas audit.read sobrevive de propósito. Com só
+  // clinic.configure aqui, o menu esconderia uma página que a pessoa ainda
+  // pode abrir — exatamente o defeito que este arquivo documenta como
+  // corrigido ("ninguém vê o que não pode usar, e ninguém chega por URL onde
+  // o menu não leva").
+  { to: "/gestao", label: "nav.management", capability: [CAN.clinicConfigure, CAN.auditRead] },
 ] as const;
 
 function Shell() {
@@ -105,7 +111,13 @@ function Shell() {
   const location = useLocation();
   const board = useBoard();
 
-  const items = NAV.filter((item) => item.capability === null || can(item.capability));
+  const items = NAV.filter((item) => {
+    const capability: string | readonly string[] | null = item.capability;
+    if (capability === null) return true;
+    // Item de menu com lista de capacidades (caso de "/gestao"): aparece se
+    // QUALQUER uma delas for concedida.
+    return typeof capability === "string" ? can(capability) : capability.some(can);
+  });
 
   return (
     <div className="app-shell">
@@ -203,7 +215,14 @@ function Shell() {
           <Route
             path="/gestao"
             element={
-              <RequireCapability can={CAN.clinicConfigure} redirectTo="/internados">
+              // clinic.configure é escrita e some da lista quando o teste vence;
+              // se o portão exigisse só ela, a trilha de auditoria — rota filha,
+              // que sobrevive ao teste vencido por causa de audit.read — ficaria
+              // trancada atrás de uma exigência que ela não precisa cumprir.
+              // Cada aba dentro de Management já se guarda pela própria
+              // capacidade (ver SUB em Management.tsx); este portão só decide
+              // quem entra no prédio, não o que se faz lá dentro.
+              <RequireCapability can={[CAN.clinicConfigure, CAN.auditRead]} redirectTo="/internados">
                 <Management />
               </RequireCapability>
             }
