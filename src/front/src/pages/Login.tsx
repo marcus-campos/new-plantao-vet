@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 import { Button, ErrorBanner, Field, inputStyle, useApiErrorMessage } from "../components/ui";
 import { useSession } from "../hooks/useSession";
@@ -196,6 +197,10 @@ export function Login() {
                 ? t("login.enterAs", { device: device.deviceName })
                 : t("login.submit")}
           </Button>
+
+          <p style={{ margin: 0, fontSize: 14, color: "var(--ink-3)", textAlign: "center" }}>
+            {t("login.noAccount")} <Link to="/">{t("login.createAccount")}</Link>
+          </p>
         </form>
       </main>
     </div>

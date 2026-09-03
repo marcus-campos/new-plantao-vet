@@ -22,6 +22,7 @@ import { PriceList } from "./pages/PriceList";
 import { ProgressNotes } from "./pages/ProgressNotes";
 import { ShiftConsole } from "./pages/ShiftConsole";
 import { ShiftSchedule } from "./pages/ShiftSchedule";
+import { Signup } from "./pages/Signup";
 import { StationDevices } from "./pages/StationDevices";
 import { MyPinDialog } from "./components/MyPinDialog";
 import { PushButton } from "./components/PushButton";
@@ -38,7 +39,18 @@ import { useBoard } from "./hooks/useBoard";
 
 export default function App() {
   const { session } = useSession();
-  if (!session) return <Login />;
+  // Sem sessão, a raiz é a landing: é o link que se divulga, e quem chega por
+  // ele nunca ouviu falar do produto. Quem já é cliente vai direto para
+  // /entrar — e quem tem sessão nunca vê nenhuma das duas, porque o teste de
+  // sessão continua vindo antes.
+  if (!session)
+    return (
+      <Routes>
+        <Route path="/" element={<Signup />} />
+        <Route path="/cadastro" element={<Signup />} />
+        <Route path="*" element={<Login />} />
+      </Routes>
+    );
   // Outra porta, outra casca: quem vende e dá suporte não é membro de clínica
   // nenhuma, e o token da plataforma é recusado por toda rota de clínica. Não
   // há o que montar do shell da clínica para essa sessão.

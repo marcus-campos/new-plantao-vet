@@ -176,12 +176,24 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
   return payload as T;
 }
 
+export interface SignupPayload {
+  clinic_name: string;
+  admin_name: string;
+  email: string;
+  password: string;
+  phone?: string;
+}
+
 export const api = {
   login: (email: string, password: string) =>
     request<TokenResponse>("/api/v1/auth/login", {
       method: "POST",
       body: { email, password },
     }),
+
+  /** A porta pública: cria a clínica e já devolve a sessão. */
+  signup: (payload: SignupPayload) =>
+    request<TokenResponse>("/api/v1/signup", { method: "POST", body: payload }),
 
   /** Caminho antigo: a senha única da clínica. Mantido enquanto houver
    *  aparelho em campo que só conhece ela. */
