@@ -84,8 +84,52 @@ async def test_email_ja_cadastrado_recusa_com_o_codigo_certo(client, session):
 
 
 @pytest.mark.asyncio
+async def test_corrida_de_email_duplicado_vira_409_nao_500(client, monkeypatch):
+    """O SELECT prévio em `OnboardingService.create_clinic` cobre o caso
+    comum (email já existe ANTES do cadastro rodar); isto simula a corrida:
+    duas requisições simultâneas passam as duas pela checagem antes de
+    qualquer uma comitar, e a perdedora esbarra na constraint única do banco
+    como `IntegrityError`, que sem tradução vira 500."""
+    import app.api.routes.signup as signup_module
+
+    async def _esbarra_na_constraint(*args, **kwargs):
+        raise sa.exc.IntegrityError("insert", {}, Exception("duplicate key value"))
+
+    monkeypatch.setattr(signup_module.OnboardingService, "create_clinic", _esbarra_na_constraint)
+
+    resposta = await client.post("/api/v1/signup", json=CORPO)
+    assert resposta.status_code == 409
+    assert resposta.json()["error"]["code"] == "email_taken"
+
+
+@pytest.mark.asyncio
+async def test_cadastro_que_falha_devolve_a_vaga_reservada(client, session):
+    """A vaga é reservada ANTES do cadastro rodar, para valer contra rajada
+    concorrente (item crítico da revisão); se o cadastro falha, `refund`
+    devolve a vaga — cinco tentativas com e-mail repetido não podem gastar a
+    cota de quem vai corrigir e tentar de novo."""
+    await make_user(session, email="paula@vida.vet")
+    for _ in range(5):
+        resposta = await client.post("/api/v1/signup", json=CORPO)
+        assert resposta.status_code == 409, resposta.text
+
+    ok = await client.post("/api/v1/signup", json={**CORPO, "email": "corrigido@vida.vet"})
+    assert ok.status_code == 201, ok.text
+
+
+@pytest.mark.asyncio
 async def test_senha_curta_e_recusada(client):
     resposta = await client.post("/api/v1/signup", json={**CORPO, "password": "1234"})
+    assert resposta.status_code == 422
+
+
+@pytest.mark.asyncio
+async def test_senha_de_73_bytes_e_422_nao_500(client):
+    """`bcrypt.hashpw` LEVANTA acima de 72 bytes em vez de truncar (bcrypt
+    5.0.0); sem o teto no schema isto era 500 sem handler, no único formulário
+    público do lançamento — exatamente onde um gerenciador de senhas manda uma
+    senha longa."""
+    resposta = await client.post("/api/v1/signup", json={**CORPO, "password": "a" * 73})
     assert resposta.status_code == 422
 
 

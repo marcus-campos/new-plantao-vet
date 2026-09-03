@@ -115,7 +115,9 @@ class PlatformClinicCreate(BaseModel):
     admin_name: str = Field(min_length=2, max_length=120)
     admin_email: str = Field(pattern=r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
     #: Vazio = o sistema sorteia uma e devolve.
-    admin_password: str | None = Field(default=None, min_length=8, max_length=128)
+    #: 72, não 128: mesmo limite do cadastro público (`schemas/signup.py`) pelo
+    #: mesmo motivo — `bcrypt.hashpw` levanta `ValueError` acima de 72 bytes.
+    admin_password: str | None = Field(default=None, min_length=8, max_length=72)
 
 
 class PlatformClinicCreated(BaseModel):

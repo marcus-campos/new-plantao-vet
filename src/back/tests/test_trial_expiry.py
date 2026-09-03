@@ -11,7 +11,7 @@ from tests.factories import (
     make_owner,
     make_patient,
 )
-from tests.helpers import bearer, personal_token
+from tests.helpers import bearer, operator_token, personal_token, station_token
 
 ONTEM = datetime.now(UTC) - timedelta(days=1)
 DAQUI_UMA_SEMANA = datetime.now(UTC) + timedelta(days=7)
@@ -112,6 +112,27 @@ async def test_me_com_teste_vigente_traz_tudo(client, session):
     corpo = (await client.get("/api/v1/auth/me", headers=bearer(personal_token(vet)))).json()
     assert corpo["read_only"] is False
     assert "prescription.create" in corpo["capabilities"]
+
+
+@pytest.mark.asyncio
+async def test_operator_encolhe_as_capacidades_com_teste_vencido(client, session):
+    """`/auth/operator`, não `/auth/me`, é o que o tablet da estação lê
+    (`useSession`: `station ? operator?.capabilities : me?.capabilities`).
+    Sem o mesmo filtro aqui, o aparelho compartilhado seguia oferecendo
+    prescrição depois do teste vencer — um botão que devolve 403 no toque."""
+    clinic = await _clinica_vencida(session)
+    vet = await make_membership(session, clinic=clinic, role="vet")
+    await session.flush()
+
+    resposta = await client.get(
+        "/api/v1/auth/operator",
+        headers={**bearer(station_token(clinic)), "X-Operator-Token": operator_token(vet)},
+    )
+    assert resposta.status_code == 200
+    corpo = resposta.json()
+    assert "prescription.create" not in corpo["capabilities"]
+    assert "record.read" in corpo["capabilities"]
+    assert "hospitalization.discharge" in corpo["capabilities"]
 
 
 @pytest.mark.asyncio

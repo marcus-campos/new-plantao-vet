@@ -94,21 +94,34 @@ async def me(
 
 
 @router.get("/operator")
-async def operator(actor: ActorInfo = Depends(get_operator)) -> OperatorResponse:
+async def operator(
+    actor: ActorInfo = Depends(get_operator),
+    auth: AuthContext = Depends(get_current_auth),
+    session: AsyncSession = Depends(get_session),
+) -> OperatorResponse:
     """O que pode quem está com o dedo no aparelho agora.
 
     No modo pessoal responde o próprio vínculo. Na estação, o dono do PIN, e
     sem PIN devolve `operator_required`, que é o mesmo código que a interface já
     traduz em "identifique-se". É o que permite ao cliente parar de oferecer o
     impossível num dispositivo compartilhado.
+
+    Com o teste vencido a lista encolhe do MESMO jeito que em `/auth/me`: é
+    esta resposta, não a pessoal, que o tablet da estação usa para decidir o
+    que oferece (`useSession`), e sem o filtro aqui o aparelho compartilhado
+    continuava mostrando prescrição, tarefa avulsa e nota de plantão — cada
+    uma delas voltando 403 no toque, que é exatamente o "botão que devolve 403
+    é pior que ausente" que este sistema promete não fazer.
     """
+    clinic = await session.get(Clinic, auth.clinic_id)
+    read_only = clinic is not None and clinic.is_read_only
     return OperatorResponse(
         membership_id=actor.membership_id,
         name=actor.name,
         role=actor.role,
         license_number=actor.license_number,
         license_authority=actor.license_authority,
-        capabilities=sorted(capabilities_of(actor.role)),
+        capabilities=sorted(capabilities_of(actor.role, read_only=read_only)),
     )
 
 

@@ -12,6 +12,9 @@ class SignupRequest(BaseModel):
 
     clinic_name: str = Field(min_length=2, max_length=120)
     admin_name: str = Field(min_length=2, max_length=120)
-    email: str = Field(pattern=r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
-    password: str = Field(min_length=8, max_length=128)
+    email: str = Field(pattern=r"^[^@\s]+@[^@\s]+\.[^@\s]+$", max_length=254)
+    #: 72, não 128: `bcrypt.hashpw` LEVANTA `ValueError` acima de 72 bytes em vez
+    #: de truncar (bcrypt 5.0.0), e não há handler para isso — virava 500 no
+    #: único formulário público do lançamento.
+    password: str = Field(min_length=8, max_length=72)
     phone: str | None = Field(default=None, max_length=32)

@@ -14,6 +14,7 @@ from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
 
 from fastapi import APIRouter, Depends, Request
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_session
@@ -58,6 +59,12 @@ class SignupThrottle:
     def check(self, ip: str) -> None:
         now = self._now_fn()
         recent = [t for t in self._hits[ip] if now - t < self.window]
+        if not recent:
+            # Sem isto, todo IP que já chamou o cadastro uma vez ficava
+            # registrado para sempre: uma lista vazia continuava sendo
+            # gravada de volta em vez de o IP sumir do dicionário.
+            self._hits.pop(ip, None)
+            return
         self._hits[ip] = recent
         if len(recent) >= self.max_signups:
             retry_after = int((self.window - (now - min(recent))).total_seconds())
@@ -65,6 +72,17 @@ class SignupThrottle:
 
     def register(self, ip: str) -> None:
         self._hits[ip].append(self._now_fn())
+
+    def refund(self, ip: str) -> None:
+        """Devolve a vaga mais recente deste IP.
+
+        É o par de `register`: quando a reserva foi feita cedo demais (antes
+        de saber se o cadastro ia dar certo) e ele falha, a vaga não pode
+        ficar gasta — senão um e-mail digitado errado consumiria a cota de
+        quem vai corrigir e tentar de novo."""
+        hits = self._hits.get(ip)
+        if hits:
+            hits.pop()
 
     def reset_all(self) -> None:
         self._hits.clear()
@@ -102,25 +120,45 @@ async def signup(
     e-mail e a senha que a pessoa acabou de digitar é onde ela desiste."""
     ip = client_ip(request)
     signup_throttle.check(ip)
-
-    clinic, admin, membership, _ = await OnboardingService.create_clinic(
-        session,
-        spec=ClinicSpec(
-            name=payload.clinic_name,
-            admin_name=payload.admin_name,
-            admin_email=payload.email,
-            admin_password=payload.password,
-            plan_code="trial",
-            contact_name=payload.admin_name.strip(),
-            contact_email=payload.email.strip().lower(),
-            contact_phone=payload.phone,
-        ),
-        actor=SITE_ACTOR,
-    )
-    await session.commit()
-    # Só conta depois de dar certo: um e-mail repetido não gasta a cota de
-    # quem digitou errado e vai tentar de novo.
+    # Reserva a vaga JÁ AQUI, antes de qualquer `await`: num worker asyncio só
+    # (é o deploy de hoje), nada cede o loop entre o `check()` de uma
+    # requisição e o `register()` de outra, então uma rajada concorrente
+    # inteira passaria pelo `check()` vendo zero cadastros antes de a primeira
+    # sequer terminar — cinquenta POSTs simultâneos criariam cinquenta
+    # clínicas. Reservando aqui e devolvendo a vaga (`refund`) se o cadastro
+    # falhar, o limite volta a valer contra rajada, e um e-mail digitado
+    # errado continua sem gastar a cota de quem vai corrigir e tentar de novo.
     signup_throttle.register(ip)
+
+    try:
+        clinic, admin, membership, _ = await OnboardingService.create_clinic(
+            session,
+            spec=ClinicSpec(
+                name=payload.clinic_name,
+                admin_name=payload.admin_name,
+                admin_email=payload.email,
+                admin_password=payload.password,
+                plan_code="trial",
+                contact_name=payload.admin_name.strip(),
+                contact_email=payload.email.strip().lower(),
+                contact_phone=payload.phone,
+            ),
+            actor=SITE_ACTOR,
+        )
+        await session.commit()
+    except AppError:
+        signup_throttle.refund(ip)
+        raise
+    except IntegrityError:
+        # O `SELECT` prévio em `OnboardingService.create_clinic` cobre o caso
+        # comum; isto cobre a corrida: duas requisições simultâneas com o
+        # mesmo e-mail (ou nome, que gera o mesmo slug) passam as duas pela
+        # checagem antes de qualquer uma commitar, e a perdedora esbarra na
+        # constraint única do banco. Sem isto virava 500 em vez do
+        # `email_taken` que o front já sabe mostrar.
+        await session.rollback()
+        signup_throttle.refund(ip)
+        raise AppError("email_taken", 409) from None
 
     token = create_jwt(
         {
