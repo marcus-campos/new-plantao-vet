@@ -140,6 +140,27 @@ DEFAULT_ROLE_CAPABILITIES: Final[dict[str, frozenset[str]]] = {
     "admin": _ADMIN,
 }
 
+#: O que continua valendo quando o teste vence.
+#:
+#: As cinco leituras sensíveis, porque ler não é agir — e a ALTA, porque
+#: congelar um sistema com paciente internado dentro seria prender o animal
+#: num software vencido. A clínica precisa poder dar alta e levar o prontuário
+#: embora. Um teste que termina sequestrando dado clínico não é um teste.
+#:
+#: Mora aqui, e não em `deps.py`, pelo mesmo motivo que o resto: "espalhar
+#: `if role == ...` pelas rotas é como o sistema deixa passar um técnico
+#: prescrevendo — a regra fica onde ninguém procura".
+READ_ONLY_CAPABILITIES: Final[frozenset[str]] = frozenset(
+    {
+        OWNER_READ,
+        RECORD_READ,
+        TEAM_READ,
+        CHARGES_READ,
+        AUDIT_READ,
+        HOSPITALIZATION_DISCHARGE,
+    }
+)
+
 
 def can(role: str | None, capability: str) -> bool:
     if role is None:
@@ -147,8 +168,13 @@ def can(role: str | None, capability: str) -> bool:
     return capability in DEFAULT_ROLE_CAPABILITIES.get(role, frozenset())
 
 
-def capabilities_of(role: str | None) -> frozenset[str]:
-    """O que este papel pode. A interface usa para não oferecer o proibido."""
+def capabilities_of(role: str | None, *, read_only: bool = False) -> frozenset[str]:
+    """O que este papel pode. A interface usa para não oferecer o proibido.
+
+    `read_only` é o teste vencido: a lista encolhe para o que sobrevive, e o
+    front esconde o resto sozinho, sem saber que existe uma assinatura. Uma
+    fonte da verdade, usada por este filtro e pelo gate em `deps.py`."""
     if role is None:
         return frozenset()
-    return DEFAULT_ROLE_CAPABILITIES.get(role, frozenset())
+    capabilities = DEFAULT_ROLE_CAPABILITIES.get(role, frozenset())
+    return capabilities & READ_ONLY_CAPABILITIES if read_only else capabilities
