@@ -20,11 +20,14 @@ venv/
 ENV/
 
 # Environment & local config
+# Tudo que começa com .env fica de fora, e a lista de sufixos foi trocada por
+# um padrão de propósito: `.env.dev` e `.env.prod` (com chaves reais da
+# pagar.me dentro) escapavam de uma lista que só previa `.local`. O único que
+# entra no repositório é o exemplo, que não tem valor nenhum.
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env*
+!.env.example
+!*.env.example
 *.log
 
 # IDEs and Editors
