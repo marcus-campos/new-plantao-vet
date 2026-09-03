@@ -13,11 +13,12 @@ from app.api.deps import (
     get_tenant_obj,
     require,
     require_any,
+    require_read_any,
 )
 from app.core.errors import AppError
 from app.models.dose_rule import DoseRule
 from app.models.price_list_item import PriceListItem
-from app.permissions import PRESCRIPTION_CREATE, PRICE_LIST_MANAGE, can
+from app.permissions import CHARGES_WRITE, PRESCRIPTION_CREATE, PRICE_LIST_MANAGE, can
 from app.schemas.pagination import DEFAULT_LIMIT, MAX_LIMIT, Page, paginate
 from app.schemas.price_list_item import (
     DoseRuleIn,
@@ -34,6 +35,12 @@ router = APIRouter(prefix="/api/v1/price-list", tags=["price-list"])
 @router.get("", response_model=Page[PriceListItemOut])
 async def list_items(
     auth: Annotated[AuthContext, Depends(get_current_auth)],
+    # Três papéis, um dado: o administrador curadoria a tabela, quem prescreve
+    # lê o preço para preencher a prescrição, quem lança conta lê para saber o
+    # que está lançando. Fecha para o técnico e para a estação sem PIN.
+    _actor: Annotated[
+        ActorInfo, Depends(require_read_any(PRICE_LIST_MANAGE, PRESCRIPTION_CREATE, CHARGES_WRITE))
+    ],
     session: Annotated[AsyncSession, Depends(get_session)],
     limit: int = Query(DEFAULT_LIMIT, ge=1, le=MAX_LIMIT),
     cursor: str | None = None,
@@ -76,6 +83,9 @@ async def list_items(
 async def get_item(
     item_id: uuid.UUID,
     auth: Annotated[AuthContext, Depends(get_current_auth)],
+    _actor: Annotated[
+        ActorInfo, Depends(require_read_any(PRICE_LIST_MANAGE, PRESCRIPTION_CREATE, CHARGES_WRITE))
+    ],
     session: Annotated[AsyncSession, Depends(get_session)],
 ) -> PriceListItemOut:
     item = await get_tenant_obj(session, PriceListItem, item_id, auth.clinic_id)

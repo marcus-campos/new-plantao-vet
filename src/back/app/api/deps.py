@@ -220,6 +220,36 @@ def require_read(capability: str) -> Any:
     return dependency
 
 
+def require_read_any(*capabilities: str) -> Any:
+    """Autoriza uma LEITURA sensível quando MAIS DE UM papel tem motivo.
+
+    `require_read` aceita uma capacidade só; a tabela de preços precisa de
+    três: o administrador curadoria o catálogo (`price_list.manage`), quem
+    prescreve lê o preço para preencher o valor da prescrição
+    (`prescription.create`) e quem lança item na conta lê para saber o que
+    está lançando (`charges.write`). Uma capacidade só quebraria alguma dessas
+    leituras — em especial a do vet, que não administra a tabela mas não pode
+    parar de prescrever.
+
+    E `require_any` não serve, pelo mesmo motivo que `require_read` existe: ele
+    exige `get_operator`, que pede PIN também na estação sem ninguém
+    identificado. Para uma leitura isso é fricção no lugar errado — ver
+    `get_optional_operator`. Esta função é `require_read` com várias
+    capacidades: no modo pessoal responde o vínculo, na estação responde o
+    dono do PIN, e sem PIN a leitura não acontece."""
+
+    async def dependency(
+        actor: ActorInfo | None = Depends(get_optional_operator),
+    ) -> ActorInfo | None:
+        if actor is None:
+            raise AppError("operator_required", 403, capability=capabilities[0])
+        if not any(can(actor.role, capability) for capability in capabilities):
+            raise AppError("forbidden", 403, capability=capabilities[0], role=actor.role)
+        return actor
+
+    return dependency
+
+
 def require_any(*capabilities: str) -> Any:
     """Basta UMA das capacidades.
 
