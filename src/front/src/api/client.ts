@@ -414,9 +414,15 @@ export const api = {
       needsOperator: true,
     }),
 
+  // `needsOperator` numa LEITURA: a tabela de preços passou a exigir capacidade
+  // (curadoria, prescrição ou lançamento na conta), e na estação quem responde
+  // pelo acesso é o dono do PIN. Sem mandar o token do operador, o tablet
+  // receberia `operator_required` mesmo com alguém já identificado, e o preço
+  // pararia de aparecer sozinho na hora de prescrever.
   priceList: (includeInactive = false) =>
     request<Page<PriceListItem>>("/api/v1/price-list", {
       query: { include_inactive: includeInactive ? "true" : undefined, limit: 200 },
+      needsOperator: true,
     }),
 
   createPriceListItem: (body: Record<string, unknown>) =>
