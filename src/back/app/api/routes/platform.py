@@ -49,6 +49,7 @@ from app.schemas.platform import (
     PlatformMeOut,
 )
 from app.services.audit import ActorInfo, AuditService
+from app.services.onboarding import ClinicSpec, OnboardingService
 from app.services.plans import PlanService
 
 router = APIRouter(prefix="/api/v1/platform", tags=["platform"])
@@ -237,63 +238,34 @@ async def create_clinic(
 ) -> PlatformClinicCreated:
     """Onboarding: a clínica e o primeiro administrador, num ato só.
 
-    A senha sai em claro UMA vez, nesta resposta. É o que se entrega ao
-    cliente; aqui fica o hash."""
-    plan = await PlanService.assignable(session, payload.plan_tier)
-    if await session.scalar(sa.select(Clinic.id).where(Clinic.slug == payload.slug)):
-        raise AppError("slug_taken", 409)
-    email = payload.admin_email.strip().lower()
-    if await session.scalar(sa.select(User.id).where(User.email == email)):
-        raise AppError("email_taken", 409)
-
-    now = datetime.now(UTC)
-    clinic = Clinic(
-        name=payload.name.strip(),
-        slug=payload.slug,
-        subscription_status=payload.subscription_status,
-        trial_ends_at=(
-            now + timedelta(days=payload.trial_days)
-            if payload.subscription_status == "trial"
-            else None
-        ),
-        locale=payload.locale,
-        currency=payload.currency.upper(),
-        timezone=payload.timezone,
-        compliance_profile=payload.compliance_profile,
-        contact_name=payload.contact_name,
-        contact_email=payload.contact_email,
-        contact_phone=payload.contact_phone,
-    )
-    # O plano decide limite e, se for de teste, o próprio teste. Um limite
-    # informado por fora (negociação) vence o do plano.
-    PlanService.apply(clinic, plan, now=now)
-    if payload.bed_limit is not None:
-        clinic.bed_limit = payload.bed_limit
-    session.add(clinic)
-    await session.flush()
-
-    password = payload.admin_password or _temporary_password()
-    admin = User(
-        name=payload.admin_name.strip(), email=email, password_hash=hash_password(password)
-    )
-    session.add(admin)
-    await session.flush()
-    membership = Membership(clinic_id=clinic.id, user_id=admin.id, role="admin")
-    session.add(membership)
-    await session.flush()
-
-    await AuditService.record(
+    O miolo vive em `OnboardingService`, compartilhado com o cadastro pelo
+    site. Aqui fica o que é DESTA porta: quem pode chamar, e o ator que a
+    trilha registra."""
+    clinic, admin, _, password = await OnboardingService.create_clinic(
         session,
-        clinic_id=clinic.id,
+        spec=ClinicSpec(
+            name=payload.name,
+            admin_name=payload.admin_name,
+            admin_email=payload.admin_email,
+            admin_password=payload.admin_password,
+            slug=payload.slug,
+            plan_code=payload.plan_tier,
+            subscription_status=payload.subscription_status,
+            trial_days=payload.trial_days,
+            bed_limit=payload.bed_limit,
+            locale=payload.locale,
+            currency=payload.currency,
+            timezone=payload.timezone,
+            compliance_profile=payload.compliance_profile,
+            contact_name=payload.contact_name,
+            contact_email=payload.contact_email,
+            contact_phone=payload.contact_phone,
+        ),
         actor=_support_actor(operator),
-        action="clinic_created",
-        entity_type="clinic",
-        entity_id=clinic.id,
-        after=AuditService.snapshot(clinic),
     )
     await session.commit()
     return PlatformClinicCreated(
-        clinic=await _detail(session, clinic), admin_email=email, admin_password=password
+        clinic=await _detail(session, clinic), admin_email=admin.email, admin_password=password
     )
 
 
