@@ -1,0 +1,111 @@
+"""A porta pública: uma clínica nasce sem passar por ninguém."""
+
+from datetime import UTC, datetime, timedelta
+
+import pytest
+import sqlalchemy as sa
+
+from app.models.clinic import Clinic
+from tests.factories import make_user
+from tests.helpers import bearer
+
+CORPO = {
+    "clinic_name": "Clínica Vida Animal",
+    "admin_name": "Paula Martins",
+    "email": "paula@vida.vet",
+    "password": "senha-boa-123",
+    "phone": "61999998888",
+}
+
+
+@pytest.fixture(autouse=True)
+def _throttle_limpo():
+    # O limite é de PROCESSO: sem zerar, o sexto teste do arquivo levaria 429.
+    from app.api.routes.signup import signup_throttle
+
+    signup_throttle.reset_all()
+    yield
+    signup_throttle.reset_all()
+
+
+@pytest.mark.asyncio
+async def test_cadastro_cria_clinica_e_ja_entra(client, session):
+    resposta = await client.post("/api/v1/signup", json=CORPO)
+    assert resposta.status_code == 201, resposta.text
+    token = resposta.json()["access_token"]
+
+    # O token vale de verdade: entra em /auth/me como administrador.
+    me = await client.get("/api/v1/auth/me", headers=bearer(token))
+    assert me.status_code == 200
+    assert me.json()["role"] == "admin"
+
+
+@pytest.mark.asyncio
+async def test_a_clinica_nasce_em_teste_de_14_dias(client, session):
+    await client.post("/api/v1/signup", json=CORPO)
+    clinic = await session.scalar(sa.select(Clinic).where(Clinic.name == "Clínica Vida Animal"))
+    assert clinic.plan_tier == "trial"
+    assert clinic.subscription_status == "trial"
+    assert clinic.bed_limit == 10
+    faltam = clinic.trial_ends_at - datetime.now(UTC)
+    assert timedelta(days=13, hours=23) < faltam <= timedelta(days=14)
+
+
+@pytest.mark.asyncio
+async def test_slug_sai_do_nome_sem_perguntar(client, session):
+    await client.post("/api/v1/signup", json=CORPO)
+    clinic = await session.scalar(sa.select(Clinic).where(Clinic.name == "Clínica Vida Animal"))
+    assert clinic.slug == "clinica-vida-animal"
+
+
+@pytest.mark.asyncio
+async def test_duas_clinicas_com_o_mesmo_nome_convivem(client, session):
+    primeira = await client.post("/api/v1/signup", json=CORPO)
+    segunda = await client.post("/api/v1/signup", json={**CORPO, "email": "outra@vida.vet"})
+    assert primeira.status_code == 201
+    assert segunda.status_code == 201
+    slugs = list(
+        (
+            await session.execute(
+                sa.select(Clinic.slug).where(Clinic.name == "Clínica Vida Animal")
+            )
+        ).scalars()
+    )
+    assert len(slugs) == 2
+    assert len(set(slugs)) == 2
+
+
+@pytest.mark.asyncio
+async def test_email_ja_cadastrado_recusa_com_o_codigo_certo(client, session):
+    await make_user(session, email="paula@vida.vet")
+    resposta = await client.post("/api/v1/signup", json=CORPO)
+    assert resposta.status_code == 409
+    assert resposta.json()["error"]["code"] == "email_taken"
+
+
+@pytest.mark.asyncio
+async def test_senha_curta_e_recusada(client):
+    resposta = await client.post("/api/v1/signup", json={**CORPO, "password": "1234"})
+    assert resposta.status_code == 422
+
+
+@pytest.mark.asyncio
+async def test_o_sexto_cadastro_do_mesmo_ip_na_mesma_hora_e_barrado(client):
+    for i in range(5):
+        resposta = await client.post("/api/v1/signup", json={**CORPO, "email": f"vet{i}@vida.vet"})
+        assert resposta.status_code == 201, resposta.text
+    barrado = await client.post("/api/v1/signup", json={**CORPO, "email": "sexto@vida.vet"})
+    assert barrado.status_code == 429
+    assert barrado.json()["error"]["code"] == "signup_rate_limited"
+
+
+@pytest.mark.asyncio
+async def test_ips_diferentes_nao_compartilham_o_limite(client):
+    for i in range(5):
+        await client.post("/api/v1/signup", json={**CORPO, "email": f"vet{i}@vida.vet"})
+    outro = await client.post(
+        "/api/v1/signup",
+        json={**CORPO, "email": "outro-ip@vida.vet"},
+        headers={"X-Forwarded-For": "203.0.113.7"},
+    )
+    assert outro.status_code == 201, outro.text

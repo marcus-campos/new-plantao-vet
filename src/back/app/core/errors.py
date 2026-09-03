@@ -48,6 +48,12 @@ ERROR_CODES: frozenset[str] = frozenset(
         "identifier_invalid",
         "identifier_taken",
         "compliance_profile_in_use",
+        # --- Cadastro pelo site e fim do teste ---------------------------
+        # `trial_expired` é 403 e não 402: não há nada a pagar dentro do
+        # produto ainda. Quem recebe precisa saber que a escrita parou e por
+        # quê, e a leitura continua aberta.
+        "signup_rate_limited",
+        "trial_expired",
         # --- Nota de áudio e provedores de IA ---------------------------
         "audio_empty",
         "audio_too_large",
