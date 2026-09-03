@@ -228,12 +228,71 @@ function Shell() {
             }
           >
             <Route index element={<Navigate to="equipe" replace />} />
-            <Route path="equipe" element={<Team />} />
-            <Route path="escala" element={<ShiftSchedule />} />
-            <Route path="precos" element={<PriceList />} />
-            <Route path="aparelhos" element={<StationDevices />} />
-            <Route path="auditoria" element={<AuditTrail />} />
-            <Route path="configuracoes" element={<ClinicSettings />} />
+            {/* "Esconder do menu sem guardar a rota é teatro" (authz.tsx): o
+                portão do PAI só decide quem entra no prédio — aceita
+                clinicConfigure OU auditRead —, mas cada sala continua exigindo
+                a chave própria. Sem isso, um vet (que tem auditRead e por
+                tanto atravessa o portão) digitaria a URL de Equipe, Preços,
+                Aparelhos ou Configurações e veria a tela inteira renderizar,
+                porque o <Gate> de Management.tsx só filtra o LINK da aba, não
+                a rota casada pelo <Outlet/>. redirectTo aponta para Auditoria
+                porque é a única aba que sobrevive ao teste vencido e que,
+                portanto, qualquer um que passou pelo portão do pai consegue
+                abrir — clinicConfigure e auditRead nunca faltam os dois ao
+                mesmo tempo (admin tem os dois; vet só tem auditRead). */}
+            <Route
+              path="equipe"
+              element={
+                <RequireCapability can={CAN.teamManage} redirectTo="/gestao/auditoria">
+                  <Team />
+                </RequireCapability>
+              }
+            />
+            <Route
+              path="escala"
+              element={
+                <RequireCapability can={CAN.shiftSchedule} redirectTo="/gestao/auditoria">
+                  <ShiftSchedule />
+                </RequireCapability>
+              }
+            />
+            <Route
+              path="precos"
+              element={
+                <RequireCapability can={CAN.priceListManage} redirectTo="/gestao/auditoria">
+                  <PriceList />
+                </RequireCapability>
+              }
+            />
+            <Route
+              path="aparelhos"
+              element={
+                <RequireCapability can={CAN.clinicConfigure} redirectTo="/gestao/auditoria">
+                  <StationDevices />
+                </RequireCapability>
+              }
+            />
+            <Route
+              path="auditoria"
+              element={
+                // Guarda por si mesma, e não só pelo portão do pai: manter o
+                // padrão explícito de cada filha, mesmo sabendo que quem
+                // atravessou o portão sempre tem auditRead ou clinicConfigure
+                // (e admin tem os dois). redirectTo cai fora de Gestão — não
+                // há outra aba universalmente segura para onde mandar aqui.
+                <RequireCapability can={CAN.auditRead} redirectTo="/internados">
+                  <AuditTrail />
+                </RequireCapability>
+              }
+            />
+            <Route
+              path="configuracoes"
+              element={
+                <RequireCapability can={CAN.clinicConfigure} redirectTo="/gestao/auditoria">
+                  <ClinicSettings />
+                </RequireCapability>
+              }
+            />
           </Route>
 
           {/* Rotas antigas continuam funcionando: link salvo e favorito não
