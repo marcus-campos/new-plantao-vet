@@ -664,7 +664,12 @@ class OnboardingService:
         if spec.subscription_status == "trial" and clinic.trial_ends_at is None:
             from datetime import UTC, datetime, timedelta
 
-            clinic.trial_ends_at = datetime.now(UTC) + timedelta(days=spec.trial_days or 30)
+            # `or 30` seria errado: PlatformClinicCreate.trial_days é int
+            # com `ge=0`, nunca None, e ZERO é legal — um teste que já
+            # nasce vencido. Com `or`, o zero explícito do back-office
+            # viraria 30 dias em silêncio.
+            dias = spec.trial_days if spec.trial_days is not None else 30
+            clinic.trial_ends_at = datetime.now(UTC) + timedelta(days=dias)
         session.add(clinic)
         await session.flush()
 
