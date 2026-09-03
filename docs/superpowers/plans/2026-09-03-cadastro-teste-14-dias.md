@@ -1027,7 +1027,12 @@ def client_ip(request: Request) -> str:
     todo mundo depois do quinto cadastro do dia."""
     encaminhado = request.headers.get("X-Forwarded-For")
     if encaminhado:
-        return encaminhado.split(",")[0].strip()
+        # O ÚLTIMO hop, nunca o primeiro: o Caddy ANEXA o IP que observou ao
+        # valor que chegou, então o primeiro elemento é exatamente a parte que
+        # o cliente controla. Confiar nele deixaria o limite de cinco por hora
+        # a um header de distância de ser burlado, nesta que é a única rota do
+        # sistema que cria uma clínica sem credencial nenhuma.
+        return encaminhado.split(",")[-1].strip()
     return request.client.host if request.client else "desconhecido"
 
 
