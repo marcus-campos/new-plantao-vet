@@ -15,6 +15,7 @@
   "signup.form.busy": "Creating your clinic…",
   "signup.form.hasAccount": "Already have an account?",
   "signup.form.signIn": "Sign in",
+  "signup.form.emailTaken": "That email already has an account. Sign in instead.",
 
   "signup.problem.title": "Handover happens over WhatsApp and memory",
   "signup.problem.body": "The clipboard stays stuck in the box, a late dose only shows up when someone happens to look, and whoever comes on at 7pm finds out what happened by asking around. What gets lost at shift change is what costs the most.",

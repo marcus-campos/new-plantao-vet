@@ -98,7 +98,11 @@ export function Signup() {
             <form onSubmit={submit} className="signup-form" noValidate>
               <h2 className="signup-form-title">{t("signup.form.title")}</h2>
 
-              <ErrorBanner message={error} />
+              {/* error.email_taken é compartilhado com a tela de suporte da
+                  plataforma (Platform.tsx), que não tem link nenhum — por
+                  isso o texto genérico não pode prometer "Entre por aqui".
+                  Aqui, com o link logo abaixo, a promessa é verdadeira. */}
+              <ErrorBanner message={emailTaken ? t("signup.form.emailTaken") : error} />
               {emailTaken ? (
                 <p style={{ margin: 0, fontSize: 14 }}>
                   <Link to="/entrar">{t("signup.form.signIn")}</Link>

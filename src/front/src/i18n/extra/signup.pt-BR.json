@@ -15,6 +15,7 @@
   "signup.form.busy": "Criando sua clínica…",
   "signup.form.hasAccount": "Já tem conta?",
   "signup.form.signIn": "Entrar",
+  "signup.form.emailTaken": "Esse e-mail já tem conta. Entre por aqui.",
 
   "signup.problem.title": "O plantão vira pelo WhatsApp e pela memória",
   "signup.problem.body": "A prancheta fica presa no box, a dose atrasada só aparece quando alguém olha, e quem entra às 19h descobre o que aconteceu perguntando. O que se perde na troca de turno é o que mais custa caro.",
