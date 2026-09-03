@@ -32,3 +32,11 @@ ENV/
 .vscode/
 *.swp
 *.swo
+
+# Terraform: estado mora no GCS; o resto é cache local.
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+firebase-debug.log

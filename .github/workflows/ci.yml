@@ -1,0 +1,97 @@
+name: CI
+
+# Só em pull request. O push em main é coberto pelo job de testes DENTRO do
+# Deploy, que é o que decide se aquele commit vai para produção: rodar aqui
+# também seria pagar duas vezes pela mesma resposta.
+on:
+  pull_request:
+  workflow_dispatch:
+
+# O GITHUB_TOKEN não precisa de nada além de ler o código. Sem esta linha ele
+# herda o padrão do repositório, que pode ser escrita, num job que executa
+# código vindo de pull request.
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    name: API · testes, lint
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: plantaovet
+          POSTGRES_PASSWORD: plantaovet
+          POSTGRES_DB: plantaovet
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U plantaovet"
+          --health-interval 3s --health-timeout 3s --health-retries 20
+    defaults:
+      run:
+        working-directory: src/back
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5
+        with:
+          version: "0.10.4"
+      - run: uv sync --frozen
+      - run: uv run ruff check app tests scripts alembic
+      # `format --check` só onde a base já está formatada. O resto tem
+      # arquivos anteriores a esta CI; formatá-los é um commit separado.
+      - run: uv run ruff format --check app/schemas app/core scripts
+      - name: testes
+        env:
+          DATABASE_URL: postgresql+asyncpg://plantaovet:plantaovet@localhost:5432/plantaovet
+          SCHEDULER_ENABLED: "false"
+        run: uv run pytest -q -p no:randomly
+
+  web:
+    name: Web · tipos, lint, build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/front
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: src/front/package-lock.json
+      - run: npm ci
+      - run: npx tsc --noEmit -p tsconfig.app.json
+      - run: npx oxlint src
+      - run: npm run build
+
+  mobile:
+    name: Mobile · tipos
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/mobile
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: src/mobile/package-lock.json
+      - run: npm ci
+      - run: npx tsc --noEmit
+
+  infra:
+    name: Infra · fmt, validate
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
+        with:
+          terraform_version: "1.15.8"
+      - run: terraform fmt -check -recursive
+      - run: terraform init -backend=false -input=false
+      - run: terraform validate

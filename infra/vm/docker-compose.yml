@@ -1,0 +1,85 @@
+# A produção é o compose de sempre, mais o Caddy na frente para HTTPS.
+# As imagens vêm do Artifact Registry (tag = commit); o .env é escrito pelo
+# startup a partir do Secret Manager e atualizado pelo deploy.sh.
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: plantaovet
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: plantaovet
+    volumes:
+      # Disco próprio, montado em /mnt/pgdata pelo startup. Antes era um volume
+      # nomeado do Docker, que vive no disco de boot e morre com a máquina.
+      - /mnt/pgdata/data:/var/lib/postgresql/data
+    # Postgres em 1 GB de RAM compartilhado: limites baixos de propósito.
+    command: ["postgres", "-c", "shared_buffers=64MB", "-c", "max_connections=40"]
+    # Tetos explícitos: são 1 GB no total, e sem limite um pico da API leva o
+    # Postgres junto. O banco é o único que não pode cair.
+    mem_limit: 320m
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U plantaovet"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    image: ${REGISTRY}/api:${TAG}
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql+asyncpg://plantaovet:${DB_PASSWORD}@postgres:5432/plantaovet
+      JWT_SECRET: ${JWT_SECRET}
+      ENV: prod
+      SCHEDULER_ENABLED: "true"
+      SEED_DEMO: "false"
+      CORS_ORIGINS: ${SITE_URL}
+      VERTEX_PROJECT: ${PROJECT_ID}
+      FCM_PROJECT: ${PROJECT_ID}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      WHATSAPP_TOKEN: ${WHATSAPP_TOKEN}
+      WHATSAPP_APP_SECRET: ${WHATSAPP_APP_SECRET}
+      WHATSAPP_VERIFY_TOKEN: ${WHATSAPP_VERIFY_TOKEN}
+      WHATSAPP_PHONE_NUMBER_ID: ${WHATSAPP_PHONE_NUMBER_ID}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    mem_limit: 420m
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  web:
+    image: ${REGISTRY}/web:${TAG}
+    restart: unless-stopped
+    mem_limit: 64m
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  # HTTPS automático (Let's Encrypt) e uma origem só: /api vai para a API, o
+  # resto para o web. Mesma origem = sem CORS e o push do navegador funciona.
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports: ["80:80", "443:443"]
+    environment:
+      HOST: ${HOST}
+      FALLBACK_HOST: ${FALLBACK_HOST}
+    mem_limit: 96m
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [api, web]
+
+volumes:
+  caddy_data:
+  caddy_config:

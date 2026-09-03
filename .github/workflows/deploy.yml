@@ -1,0 +1,131 @@
+name: Deploy
+
+# Todo push em main vai para produção, DEPOIS de passar nos testes. O portão
+# está aqui dentro de propósito: com CI num arquivo separado, um teste vermelho
+# e um deploy verde rodavam em paralelo e a versão quebrada subia do mesmo jeito.
+#
+# Sem chave em lugar nenhum: o job troca o próprio token OIDC do GitHub pela
+# service account do deployer (Workload Identity Federation), restrita a este
+# repositório E à branch main.
+#
+# As imagens são construídas no runner do GitHub, não na VM: uma e2-micro com
+# 1 GB de RAM não constrói uma imagem Python sem morrer, e o runner é grátis.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  testes:
+    name: Portão · testes e tipos
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: plantaovet
+          POSTGRES_PASSWORD: plantaovet
+          POSTGRES_DB: plantaovet
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U plantaovet"
+          --health-interval 3s --health-timeout 3s --health-retries 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5
+        with:
+          version: "0.10.4"
+      - name: API · lint e testes
+        working-directory: src/back
+        env:
+          DATABASE_URL: postgresql+asyncpg://plantaovet:plantaovet@localhost:5432/plantaovet
+          SCHEDULER_ENABLED: "false"
+        run: |
+          uv sync --frozen
+          uv run ruff check app tests scripts alembic
+          uv run pytest -q -p no:randomly
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: src/front/package-lock.json
+      - name: Web · tipos e lint
+        working-directory: src/front
+        run: |
+          npm ci
+          npx tsc --noEmit -p tsconfig.app.json
+          npx oxlint src
+
+  publicar:
+    name: Build, publicar e atualizar a VM
+    needs: [testes]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      REGISTRY: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/plantaovet
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - uses: google-github-actions/auth@c200f3691d83b41bf9bbd8638997a462592937ed # v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_DEPLOYER_SA }}
+
+      - uses: google-github-actions/setup-gcloud@e427ad8a34f8676edf47cf7d7925499adf3eb74f # v2
+
+      - name: Docker no Artifact Registry
+        run: gcloud auth configure-docker ${{ vars.GCP_REGION }}-docker.pkg.dev --quiet
+
+      - name: API · build e push
+        run: |
+          docker build -t "$REGISTRY/api:${GITHUB_SHA}" src/back
+          docker push "$REGISTRY/api:${GITHUB_SHA}"
+
+      # O web fala com a API pelo MESMO domínio (o Caddy roteia /api), então
+      # VITE_API_URL vai vazio e o cliente monta caminhos relativos: funciona
+      # em plantao.vet, no sslip.io e em qualquer domínio novo, sem rebuild e
+      # sem CORS. A config do push é PÚBLICA (vai no bundle de qualquer jeito);
+      # o que não pode faltar é distinguir "não configurado" de "falhei ao ler".
+      - name: Web · build e push
+        run: |
+          ler() {
+            if ! gcloud secrets versions access latest --secret="$1" 2>/dev/null | tr -d '[:space:]'; then
+              echo "aviso: '$1' sem versão; o botão de alertas não vai aparecer" >&2
+            fi
+          }
+          FB_CONFIG="$(ler web-firebase-config)"
+          FB_VAPID="$(ler web-firebase-vapid-key)"
+          if [ -n "$FB_CONFIG" ] && [ -z "$FB_VAPID" ]; then
+            echo "erro: config do Firebase presente mas sem chave VAPID; o push ficaria meio configurado" >&2
+            exit 1
+          fi
+          docker build -t "$REGISTRY/web:${GITHUB_SHA}" \
+            --build-arg "VITE_API_URL=" \
+            --build-arg "VITE_FIREBASE_CONFIG=$FB_CONFIG" \
+            --build-arg "VITE_FIREBASE_VAPID_KEY=$FB_VAPID" \
+            src/front
+          docker push "$REGISTRY/web:${GITHUB_SHA}"
+
+      # A VM troca a tag, puxa, sobe e confere. Se a API não responder, o
+      # deploy.sh volta para a tag anterior sozinho e sai com erro.
+      #
+      # `--ssh-key-expire-after`: cada execução importa uma chave nova no perfil
+      # OS Login da service account, e o perfil tem limite. Sem expiração, um
+      # dia o deploy para de funcionar com "too many keys".
+      - name: VM · atualizar
+        run: |
+          gcloud compute ssh "${{ vars.GCP_VM_NAME }}" \
+            --zone "${{ vars.GCP_ZONE }}" \
+            --tunnel-through-iap \
+            --ssh-key-expire-after=15m \
+            --quiet \
+            --command "sudo /opt/plantaovet/deploy.sh ${GITHUB_SHA}"

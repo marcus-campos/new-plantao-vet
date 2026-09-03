@@ -1,0 +1,20 @@
+# HTTPS automático (Let's Encrypt). Uma origem só para o site inteiro: o web
+# chama /api/... relativo, sem CORS, e o service worker do push fica na mesma
+# origem que precisa registrar.
+#
+# O segundo nome é o <ip>.sslip.io, servido SEMPRE: ele resolve para o próprio
+# IP sem DNS nenhum, então é o endereço que funciona no minuto seguinte ao
+# apply, antes de qualquer registro propagar.
+{$HOST}, {$FALLBACK_HOST} {
+	encode gzip
+
+	handle /api/* {
+		reverse_proxy api:8000
+	}
+	handle /health {
+		reverse_proxy api:8000
+	}
+	handle {
+		reverse_proxy web:80
+	}
+}
