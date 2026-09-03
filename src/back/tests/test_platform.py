@@ -318,7 +318,7 @@ async def test_catalogo_inicial_e_semeado_uma_vez(client, session):
     resp = await client.get("/api/v1/platform/plans", headers=headers)
     assert resp.status_code == 200
     codes = [p["code"] for p in resp.json()]
-    assert codes[:3] == ["starter", "pro", "enterprise"]
+    assert codes[:4] == ["trial", "starter", "pro", "enterprise"]
     assert next(p for p in resp.json() if p["code"] == "pro")["bed_limit"] == 25
 
     # Semear de novo não recria nem duplica: o catálogo é decisão comercial.
