@@ -1265,7 +1265,7 @@ Em `src/back/app/api/deps.py`, acrescentar aos imports `from app.permissions imp
 
 ```python
 async def _ensure_writable(
-    session: AsyncSession, clinic_id: uuid.UUID, *capabilities: str
+    session: AsyncSession, clinic_id: uuid.UUID, capability: str
 ) -> None:
     """A escrita para quando o teste vence. A leitura, não.
 
@@ -1276,7 +1276,11 @@ async def _ensure_writable(
 
     O que sobrevive está em `READ_ONLY_CAPABILITIES` (permissions.py), a mesma
     lista que encolhe a resposta de `/auth/me`: uma fonte, dois usos."""
-    if any(capability in READ_ONLY_CAPABILITIES for capability in capabilities):
+    # UMA capacidade: a que AUTORIZOU o ator, nunca a lista da rota. Em
+    # `require_any` as duas coisas diferem, e passar a lista deixaria uma rota
+    # que misture `hospitalization.discharge` com uma escrita liberar a escrita
+    # para quem só tem a escrita.
+    if capability in READ_ONLY_CAPABILITIES:
         return
     clinic = await session.get(Clinic, clinic_id)
     if clinic is None or not clinic.is_read_only:
@@ -1300,9 +1304,12 @@ def require_any(*capabilities: str) -> Any:
         auth: AuthContext = Depends(get_current_auth),
         session: AsyncSession = Depends(get_session),
     ) -> ActorInfo:
-        if not any(can(actor.role, capability) for capability in capabilities):
+        # QUAL capacidade autorizou, não apenas SE alguma autorizou: é ela
+        # que o gate do teste vencido precisa julgar.
+        autorizada = next((c for c in capabilities if can(actor.role, c)), None)
+        if autorizada is None:
             raise AppError("forbidden", 403, capability=capabilities[0], role=actor.role)
-        await _ensure_writable(session, auth.clinic_id, *capabilities)
+        await _ensure_writable(session, auth.clinic_id, autorizada)
         return actor
 
     return dependency
