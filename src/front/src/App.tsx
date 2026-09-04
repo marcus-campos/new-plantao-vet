@@ -402,7 +402,11 @@ function SubscriptionBanner() {
   }
   if (profile.subscription_status === "trial" && profile.trial_ends_at) {
     const days = Math.max(0, Math.ceil((Date.parse(profile.trial_ends_at) - Date.now()) / 86_400_000));
-    if (days > 14) return null;
+    // Só na reta final. O corte era 14, o mesmo tamanho do teste, então a faixa
+    // aparecia no primeiro minuto e não saía mais — e um aviso que está sempre
+    // ali deixa de ser aviso. Nos últimos três dias ele volta a significar
+    // alguma coisa, e é tempo suficiente para a clínica decidir.
+    if (days > 3) return null;
     return <div className="subscription-banner">{t("subscription.trialEnding", { count: days })}</div>;
   }
   return null;
