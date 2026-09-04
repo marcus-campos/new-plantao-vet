@@ -185,6 +185,7 @@ async def _detail(session: AsyncSession, clinic: Clinic) -> PlatformClinicOut:
             license_authority=m.license_authority,
             has_pin=m.pin_hash is not None,
             is_active=m.is_active,
+            tour_done=m.tour_done_at is not None,
         )
         for m, u in membros.all()
     ]
@@ -354,6 +355,33 @@ async def reset_password(
     )
     await session.commit()
     return PasswordReset(temporary_password=password)
+
+
+@router.post("/clinics/{clinic_id}/members/{membership_id}/reset-tour", status_code=204)
+async def reset_tour(
+    clinic_id: uuid.UUID,
+    membership_id: uuid.UUID,
+    operator: Annotated[User, Depends(get_platform_operator)],
+    session: Annotated[AsyncSession, Depends(get_session)],
+) -> None:
+    """Faz o tour de boas-vindas aparecer de novo para esta pessoa.
+
+    Serve ao suporte de duas maneiras: mostrar o produto a quem pulou o tour no
+    primeiro acesso e depois se perdeu, e conferir na conta de alguém como ele
+    está hoje. Fica na trilha da clínica como todo ato do suporte — o cliente vê
+    que mexemos, e vê no quê."""
+    membership, _ = await _member(session, clinic_id, membership_id)
+    membership.tour_done_at = None
+    await session.flush()
+    await AuditService.record(
+        session,
+        clinic_id=clinic_id,
+        actor=_support_actor(operator),
+        action="tour_reset_by_support",
+        entity_type="membership",
+        entity_id=membership.id,
+    )
+    await session.commit()
 
 
 @router.post("/clinics/{clinic_id}/members/{membership_id}/reset-pin", status_code=204)

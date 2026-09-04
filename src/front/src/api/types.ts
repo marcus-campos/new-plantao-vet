@@ -621,6 +621,8 @@ export interface PlatformMember {
   license_authority: string | null;
   has_pin: boolean;
   is_active: boolean;
+  /** Se já viu o tour de boas-vindas. */
+  tour_done: boolean;
 }
 
 export interface PlatformClinic extends PlatformClinicRow {

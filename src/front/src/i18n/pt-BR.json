@@ -640,5 +640,7 @@
   "tour.handover.title": "A passagem de plantão",
   "tour.handover.body": "No fim do turno o boletim já está montado, paciente por paciente. Quem entra aceita cada um com as pendências à vista.",
   "tour.admitAdmin.title": "O primeiro paciente",
-  "tour.admitAdmin.body": "Com equipe e boxes prontos, interne alguém e faça uma prescrição. É aí que a grade de tarefas nasce e o produto começa a trabalhar por você."
+  "tour.admitAdmin.body": "Com equipe e boxes prontos, interne alguém e faça uma prescrição. É aí que a grade de tarefas nasce e o produto começa a trabalhar por você.",
+  "platform.resetTour": "Reativar tour",
+  "platform.tourReset": "O tour vai aparecer de novo para {{name}} na próxima entrada."
 }

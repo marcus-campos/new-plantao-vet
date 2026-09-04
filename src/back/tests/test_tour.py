@@ -1,10 +1,13 @@
 """O tour de boas-vindas: quem ainda não viu, e como se marca que viu."""
 
+from datetime import UTC, datetime, timedelta
+
 import pytest
 import sqlalchemy as sa
 
+from app.core.security import create_jwt
 from app.models.membership import Membership
-from tests.factories import make_clinic, make_membership
+from tests.factories import make_clinic, make_membership, make_user
 from tests.helpers import bearer, operator_token, personal_token, station_token
 
 
@@ -105,4 +108,34 @@ async def test_quem_se_cadastra_pelo_site_ve_o_tour(client, session):
 
     corpo = (await client.get("/api/v1/auth/me", headers=bearer(token))).json()
     assert corpo["role"] == "admin"
+    assert corpo["tour_done"] is False
+
+
+@pytest.mark.asyncio
+async def test_suporte_reativa_o_tour_de_alguem(client, session):
+    """O caminho do back-office: mostrar o produto a quem pulou o tour e
+    depois se perdeu."""
+    operador = await make_user(session, is_platform_operator=True)
+    membership = await make_membership(session, role="vet")
+    membership.tour_done_at = datetime.now(UTC)
+    await session.flush()
+
+    token = create_jwt({"kind": "platform", "sub": str(operador.id)}, expires_in=timedelta(hours=1))
+
+    resposta = await client.post(
+        f"/api/v1/platform/clinics/{membership.clinic_id}"
+        f"/members/{membership.id}/reset-tour",
+        headers=bearer(token),
+    )
+    assert resposta.status_code == 204
+
+    zerado = await session.scalar(
+        sa.select(Membership.tour_done_at).where(Membership.id == membership.id)
+    )
+    assert zerado is None
+
+    # E a pessoa volta a ver o tour na próxima entrada.
+    corpo = (
+        await client.get("/api/v1/auth/me", headers=bearer(personal_token(membership)))
+    ).json()
     assert corpo["tour_done"] is False

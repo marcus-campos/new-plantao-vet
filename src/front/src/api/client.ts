@@ -614,6 +614,12 @@ export const api = {
       method: "POST",
     }),
 
+  /** Faz o tour de boas-vindas aparecer de novo para esta pessoa. */
+  platformResetTour: (clinicId: string, membershipId: string) =>
+    request<void>(`/api/v1/platform/clinics/${clinicId}/members/${membershipId}/reset-tour`, {
+      method: "POST",
+    }),
+
   /* ---- planos: criados, aposentados e migrados pela plataforma ---- */
   platformPlans: () => request<Plan[]>("/api/v1/platform/plans"),
   platformCreatePlan: (body: Record<string, unknown>) =>

@@ -87,6 +87,20 @@ export function PlatformClinic() {
     }
   }
 
+  async function resetTour(member: PlatformMember) {
+    if (!id) return;
+    setBusy(true);
+    try {
+      await api.platformResetTour(id, member.membership_id);
+      setNotice(t("platform.tourReset", { name: member.name }));
+      await load();
+    } catch (err) {
+      setSaveError(describeError(err));
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function resetPin(member: PlatformMember) {
     if (!id) return;
     if (!window.confirm(t("platform.confirmResetPin", { name: member.name }))) return;
@@ -183,6 +197,19 @@ export function PlatformClinic() {
                         style={{ padding: "7px 12px", fontSize: 13 }}
                       >
                         {t("platform.resetPin")}
+                      </Button>
+                    ) : null}
+                    {/* Só para quem já viu: reativar um tour que ainda vai
+                        aparecer não faria nada, e um botão sem efeito é pior
+                        que um botão ausente. */}
+                    {member.tour_done ? (
+                      <Button
+                        variant="secondary"
+                        disabled={busy}
+                        onClick={() => void resetTour(member)}
+                        style={{ padding: "7px 12px", fontSize: 13 }}
+                      >
+                        {t("platform.resetTour")}
                       </Button>
                     ) : null}
                   </div>

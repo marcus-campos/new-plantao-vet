@@ -640,5 +640,7 @@
   "tour.handover.title": "The handover",
   "tour.handover.body": "At the end of the shift the report is already built, patient by patient. Whoever takes over accepts each one with the open items in view.",
   "tour.admitAdmin.title": "The first patient",
-  "tour.admitAdmin.body": "With the team and kennels ready, admit someone and write a prescription. That's when the task grid is born and the product starts working for you."
+  "tour.admitAdmin.body": "With the team and kennels ready, admit someone and write a prescription. That's when the task grid is born and the product starts working for you.",
+  "platform.resetTour": "Replay tour",
+  "platform.tourReset": "The tour will show again for {{name}} on their next visit."
 }

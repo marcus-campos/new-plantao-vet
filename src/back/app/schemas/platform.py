@@ -54,6 +54,9 @@ class PlatformMemberOut(BaseModel):
     license_authority: str | None
     has_pin: bool
     is_active: bool
+    #: Se esta pessoa já viu o tour de boas-vindas. O suporte usa para saber a
+    #: quem o produto ainda não se apresentou.
+    tour_done: bool = True
 
 
 class PlatformDeviceOut(BaseModel):
