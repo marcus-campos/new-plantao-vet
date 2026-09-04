@@ -39,18 +39,35 @@ variable "github_repository" {
 #
 # Vazio usa <ip>.sslip.io, que resolve para o próprio IP e ganha certificado
 # do Let's Encrypt igual: dá para testar antes de o DNS propagar.
+#
+# É o plantaovet.com.br e NÃO o plantao.vet porque canônico só pode ser um
+# domínio que aponta para esta VM. O plantao.vet continua estacionado na
+# GoDaddy: o desafio do Let's Encrypt para ele sai em 3.33.130.190 e volta 403,
+# então o Caddy nunca emite o certificado, e no primeiro deploy real o único
+# domínio que resolvia (o .com.br) redirecionava 301 para um domínio sem
+# certificado — o produto estava no ar e inacessível ao mesmo tempo.
+#
+# Quando o A do plantao.vet apontar para cá, é trocar este default e mover o
+# plantaovet.com.br para a lista de baixo. A troca de canônico custa as sessões
+# abertas, o service worker do push e a permissão de notificação, que são por
+# origem; hoje isso é grátis porque ninguém acessou ainda, e cada dia de uso
+# real encarece a mudança.
 variable "domain" {
   type    = string
-  default = "plantao.vet"
+  default = "plantaovet.com.br"
 }
 
 # Quem redireciona para o canônico. O Caddy emite certificado para todos
 # (senão o navegador mostra erro ANTES de conseguir redirecionar).
 variable "redirect_domains" {
   type = list(string)
+  #
+  # O plantao.vet e o www.plantao.vet ficam FORA enquanto estiverem na GoDaddy.
+  # Não é economia: um nome aqui que não aponta para esta VM põe o Caddy num
+  # laço de emissão que falha a cada 5 minutos contra o Let's Encrypt, que tem
+  # limite por domínio — insistir queima a cota que vai ser necessária no dia
+  # em que o DNS estiver certo. Voltam para cá junto com o A.
   default = [
-    "www.plantao.vet",
-    "plantaovet.com.br",
     "www.plantaovet.com.br",
   ]
 }

@@ -126,6 +126,26 @@ jobs:
       # `--ssh-key-expire-after`: cada execução importa uma chave nova no perfil
       # OS Login da service account, e o perfil tem limite. Sem expiração, um
       # dia o deploy para de funcionar com "too many keys".
+      # O deploy.sh é gravado na VM pelo startup-script, que só roda no boot da
+      # instância. Sem este envio, corrigir infra/vm/deploy.sh no repositório
+      # não muda NADA em produção até a VM ser recriada — a correção fica verde
+      # no git e inerte na máquina. Enviar a cada deploy faz do repositório a
+      # fonte da verdade, que é o que se espera de um arquivo versionado.
+      - name: VM · enviar o deploy.sh do repositório
+        run: |
+          gcloud compute scp infra/vm/deploy.sh \
+            "${{ vars.GCP_VM_NAME }}":/tmp/deploy.sh \
+            --zone "${{ vars.GCP_ZONE }}" \
+            --tunnel-through-iap \
+            --ssh-key-expire-after=15m \
+            --quiet
+          gcloud compute ssh "${{ vars.GCP_VM_NAME }}" \
+            --zone "${{ vars.GCP_ZONE }}" \
+            --tunnel-through-iap \
+            --ssh-key-expire-after=15m \
+            --quiet \
+            --command "sudo install -m 755 -o root -g root /tmp/deploy.sh /opt/plantaovet/deploy.sh && rm -f /tmp/deploy.sh"
+
       - name: VM · atualizar
         run: |
           gcloud compute ssh "${{ vars.GCP_VM_NAME }}" \
