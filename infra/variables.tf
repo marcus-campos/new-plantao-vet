@@ -41,20 +41,22 @@ variable "github_repository" {
 # do Let's Encrypt igual: dá para testar antes de o DNS propagar.
 #
 # É o plantaovet.com.br e NÃO o plantao.vet porque canônico só pode ser um
-# domínio que aponta para esta VM. O plantao.vet continua estacionado na
-# GoDaddy: o desafio do Let's Encrypt para ele sai em 3.33.130.190 e volta 403,
-# então o Caddy nunca emite o certificado, e no primeiro deploy real o único
-# domínio que resolvia (o .com.br) redirecionava 301 para um domínio sem
-# certificado — o produto estava no ar e inacessível ao mesmo tempo.
+# domínio que aponta para esta VM.
 #
-# Quando o A do plantao.vet apontar para cá, é trocar este default e mover o
-# plantaovet.com.br para a lista de baixo. A troca de canônico custa as sessões
-# abertas, o service worker do push e a permissão de notificação, que são por
-# origem; hoje isso é grátis porque ninguém acessou ainda, e cada dia de uso
-# real encarece a mudança.
+# Foi `plantaovet.com.br` por um dia, porque o `plantao.vet` estava estacionado
+# na GoDaddy: o desafio do Let's Encrypt saía em 3.33.130.190 e voltava 403, o
+# Caddy nunca emitia o certificado, e o único domínio que resolvia redirecionava
+# 301 para um domínio sem certificado — o produto no ar e inacessível ao mesmo
+# tempo.
+#
+# Em 04/09/2026 o A do plantao.vet passou a apontar para cá, que era a condição
+# escrita aqui para a troca. Trocado agora, e não depois, porque o custo é
+# crescente: mudar o canônico invalida sessões abertas, o service worker do push
+# e a permissão de notificação, todos ligados à ORIGEM. Com zero clínica
+# cadastrada isso custa nada; com a primeira em uso, custa o plantão dela.
 variable "domain" {
   type    = string
-  default = "plantaovet.com.br"
+  default = "plantao.vet"
 }
 
 # Quem redireciona para o canônico. O Caddy emite certificado para todos
@@ -62,12 +64,16 @@ variable "domain" {
 variable "redirect_domains" {
   type = list(string)
   #
-  # O plantao.vet e o www.plantao.vet ficam FORA enquanto estiverem na GoDaddy.
-  # Não é economia: um nome aqui que não aponta para esta VM põe o Caddy num
-  # laço de emissão que falha a cada 5 minutos contra o Let's Encrypt, que tem
-  # limite por domínio — insistir queima a cota que vai ser necessária no dia
-  # em que o DNS estiver certo. Voltam para cá junto com o A.
+  # Todo nome desta lista PRECISA apontar para esta VM: um que não aponte põe o
+  # Caddy num laço de emissão que falha a cada 5 minutos contra o Let's Encrypt,
+  # que tem limite por domínio, e queima a cota que fará falta depois.
+  #
+  # Os três apontam (verificado por dig em 04/09/2026, inclusive no 8.8.8.8).
+  # O `plantaovet.com` fica de fora: continua servindo um site do WebsiteBuilder
+  # na GoDaddy e não resolve para cá.
   default = [
+    "www.plantao.vet",
+    "plantaovet.com.br",
     "www.plantaovet.com.br",
   ]
 }
