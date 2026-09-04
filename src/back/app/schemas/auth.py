@@ -30,6 +30,9 @@ class MeResponse(BaseModel):
     #: `capabilities`, que já vem encolhida. Existe para a interface conseguir
     #: EXPLICAR por que os botões sumiram, em vez de parecer quebrada.
     read_only: bool = False
+    #: Se esta pessoa já viu o tour de boas-vindas. False manda a interface
+    #: apresentá-lo; ela marca como visto assim que ele termina ou é dispensado.
+    tour_done: bool = True
 
 
 class OperatorResponse(BaseModel):

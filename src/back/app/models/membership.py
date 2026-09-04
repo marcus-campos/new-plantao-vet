@@ -1,5 +1,6 @@
 import enum
 import uuid
+from datetime import datetime
 from typing import Any
 
 import sqlalchemy as sa
@@ -35,5 +36,15 @@ class Membership(Base):
     license_number: Mapped[str | None] = mapped_column(sa.Text, default=None)
     license_authority: Mapped[str | None] = mapped_column(sa.Text, default=None)
     pin_hash: Mapped[str | None] = mapped_column(sa.Text, default=None)
+    #: Quando esta pessoa viu o tour de boas-vindas. None = ainda não viu.
+    #:
+    #: Mora no vínculo, e não no usuário, porque o tour é diferente por papel:
+    #: quem administra procura a gestão, quem prescreve procura a ficha, quem
+    #: executa procura o plantão. Guarda o instante em vez de um booleano —
+    #: "quando" responde tudo que "se" responderia, e ainda diz quanto tempo a
+    #: pessoa levou até aqui.
+    tour_done_at: Mapped[datetime | None] = mapped_column(
+        sa.TIMESTAMP(timezone=True), default=None
+    )
     permissions: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict)
     is_active: Mapped[bool] = mapped_column(sa.Boolean, default=True)

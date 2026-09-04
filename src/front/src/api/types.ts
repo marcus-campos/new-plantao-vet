@@ -35,6 +35,9 @@ export interface Me {
    *  `capabilities`, que já vem encolhida da API. Existe para a interface
    *  conseguir EXPLICAR por que os botões sumiram. */
   read_only: boolean;
+  /** Se esta pessoa já viu o tour de boas-vindas. Falso só no primeiro acesso
+   *  de cada vínculo — o tour é por papel, e o papel vive no vínculo. */
+  tour_done: boolean;
 }
 
 /** Quem digitou o PIN, e o que pode.

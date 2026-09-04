@@ -195,6 +195,9 @@ export interface SignupPayload {
 }
 
 export const api = {
+  /** Marca o tour de boas-vindas como visto. Idempotente no servidor. */
+  finishTour: () => request<void>("/api/v1/auth/me/tour", { method: "PUT" }),
+
   login: (email: string, password: string) =>
     request<TokenResponse>("/api/v1/auth/login", {
       method: "POST",

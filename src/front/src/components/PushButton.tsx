@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { disablePush, enablePush, pushState, pushSupported, type PushState } from "../push";
+import { enablePush, pushState, pushSupported, type PushState } from "../push";
 import { useSession } from "../hooks/useSession";
 
 /** Ligar os alertas neste navegador.
@@ -27,17 +27,18 @@ export function PushButton() {
     };
   }, []);
 
-  if (session?.kind !== "personal" || !supported || state === "unsupported") return null;
+  // Some depois de ativado: o botão existe para conseguir a permissão, e uma
+  // vez conseguida ele não tem mais trabalho a fazer na barra. Quem quiser
+  // desligar usa as configurações do site no navegador, que é onde a permissão
+  // de notificação realmente vive.
+  if (session?.kind !== "personal" || !supported || state === "unsupported" || state === "on") {
+    return null;
+  }
 
-  async function toggle() {
+  async function ligar() {
     setBusy(true);
     try {
-      if (state === "on") {
-        await disablePush();
-        setState("off");
-      } else {
-        setState(await enablePush());
-      }
+      setState(await enablePush());
     } finally {
       setBusy(false);
     }
@@ -54,12 +55,12 @@ export function PushButton() {
   return (
     <button
       type="button"
-      className={state === "on" ? "nav-link push-on" : "nav-link"}
+      className="nav-link"
       disabled={busy}
-      onClick={() => void toggle()}
-      title={state === "on" ? t("push.onHint") : t("push.offHint")}
+      onClick={() => void ligar()}
+      title={t("push.offHint")}
     >
-      {state === "on" ? t("push.on") : t("push.off")}
+      {t("push.off")}
     </button>
   );
 }

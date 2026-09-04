@@ -1,0 +1,164 @@
+/* O tour de boas-vindas.
+ *
+ *  Escurece a tela e recorta o item real da navegação, em vez de desenhar uma
+ *  imitação dele: quem termina o tour já sabe onde clicar, porque clicou ali. */
+
+.tour {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+}
+
+.tour-veu {
+  position: absolute;
+  inset: 0;
+  background: rgba(12, 24, 20, 0.55);
+  animation: tour-entra 0.25s ease;
+}
+
+/* O holofote: um retângulo transparente com sombra enorme para fora. Recorta o
+   alvo sem clonar o elemento nem tocar no layout da página. */
+.tour-furo {
+  position: absolute;
+  border-radius: 10px;
+  box-shadow: 0 0 0 9999px rgba(12, 24, 20, 0.55), 0 0 0 2px var(--primary) inset;
+  background: transparent;
+  pointer-events: none;
+  transition: top 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    left 0.28s cubic-bezier(0.22, 1, 0.36, 1), width 0.28s ease, height 0.28s ease;
+}
+/* Sem furo, o véu já cobre tudo — a sombra do furo não deve somar por cima. */
+.tour-veu:not(:has(.tour-furo)) {
+  background: rgba(12, 24, 20, 0.55);
+}
+.tour-veu:has(.tour-furo) {
+  background: transparent;
+}
+
+.tour-cartao {
+  position: absolute;
+  width: min(344px, calc(100vw - 24px));
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 24px 60px -20px rgba(12, 24, 20, 0.5);
+  animation: tour-sobe 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.tour-cartao:focus {
+  outline: none;
+}
+.tour-cartao-centro {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(400px, calc(100vw - 24px));
+}
+
+.tour-cartao h2 {
+  margin: 0 0 8px;
+  font-size: 19px;
+  letter-spacing: -0.02em;
+}
+.tour-cartao p {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.58;
+  color: var(--ink-2);
+}
+
+.tour-pe {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.tour-pontos {
+  display: inline-flex;
+  gap: 6px;
+}
+.tour-pontos i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--line);
+  transition: background-color 0.2s ease, width 0.2s ease;
+}
+.tour-pontos i.is-atual {
+  width: 18px;
+  border-radius: 3px;
+  background: var(--primary);
+}
+
+.tour-acoes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tour-pular,
+.tour-proximo {
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 15px;
+  min-height: 40px;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+.tour-pular {
+  background: transparent;
+  color: var(--ink-3);
+}
+.tour-pular:hover {
+  color: var(--ink);
+}
+.tour-proximo {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.tour-proximo:hover {
+  background: var(--primary-dark);
+}
+.tour-pular:focus-visible,
+.tour-proximo:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+@keyframes tour-entra {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes tour-sobe {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+.tour-cartao-centro {
+  animation: tour-entra 0.3s ease;
+}
+
+/* No celular o cartão fica sempre ancorado embaixo: seguir o furo numa tela
+   estreita empurraria o texto para fora da tela. */
+@media (max-width: 620px) {
+  .tour-cartao,
+  .tour-cartao-centro {
+    top: auto !important;
+    bottom: 16px;
+    left: 12px !important;
+    right: 12px;
+    width: auto;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tour-veu,
+  .tour-cartao,
+  .tour-furo {
+    animation: none;
+    transition: none;
+  }
+}

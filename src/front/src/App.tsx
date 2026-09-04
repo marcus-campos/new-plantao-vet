@@ -9,6 +9,7 @@ import { Login } from "./pages/Login";
 import { Landing } from "./pages/Landing";
 import { MyPinDialog } from "./components/MyPinDialog";
 import { PushButton } from "./components/PushButton";
+import { Tour } from "./components/Tour";
 import { CAN } from "./api/capabilities";
 import { RequireCapability, RoleHome } from "./components/authz";
 import { ClinicProvider } from "./hooks/useClinic";
@@ -130,6 +131,7 @@ function Shell() {
 
   return (
     <div className="app-shell">
+      <Tour />
       <SubscriptionBanner />
       <header className="app-header">
         <Link to="/" className="brand">
@@ -148,6 +150,9 @@ function Shell() {
                 to={item.to}
                 className="nav-link"
                 aria-current={active ? "page" : undefined}
+                // Âncora do tour de boas-vindas. É a rota, e não um índice,
+                // porque o menu muda de tamanho conforme o papel de quem entrou.
+                data-tour={item.to}
               >
                 {t(item.label)}
                 {count > 0 ? (

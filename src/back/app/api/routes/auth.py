@@ -1,5 +1,5 @@
 import uuid
-from datetime import timedelta
+from datetime import UTC, datetime, timedelta
 
 from fastapi import APIRouter, Depends
 from sqlalchemy import select
@@ -90,6 +90,9 @@ async def me(
         capabilities=sorted(capabilities_of(role, read_only=read_only)),
         has_pin=auth.membership is not None and auth.membership.pin_hash is not None,
         read_only=read_only,
+        # A estação não recebe tour: o aparelho do corredor é compartilhado e
+        # não é de ninguém, então não há a quem apresentar a casa.
+        tour_done=auth.membership is None or auth.membership.tour_done_at is not None,
     )
 
 
@@ -282,6 +285,27 @@ async def _station_device(
     if device is None or device.clinic_id != clinic_id:
         return None
     return device
+
+
+@router.put("/me/tour", status_code=204)
+async def finish_my_tour(
+    auth: AuthContext = Depends(get_current_auth),
+    session: AsyncSession = Depends(get_session),
+) -> None:
+    """Marcar o tour de boas-vindas como visto.
+
+    Idempotente de propósito: quem já viu e chama de novo recebe 204 e o
+    instante original permanece. A interface pode chamar sem saber o estado, e
+    duas abas abertas não brigam pelo mesmo registro.
+
+    Só o vínculo pessoal: na estação quem responde é o operador do momento, e a
+    sessão do aparelho não é de ninguém a quem apresentar a casa."""
+    membership = auth.membership
+    if membership is None or not membership.is_active:
+        raise AppError("forbidden", 403)
+    if membership.tour_done_at is None:
+        membership.tour_done_at = datetime.now(UTC)
+        await session.commit()
 
 
 @router.put("/me/pin", status_code=204)
