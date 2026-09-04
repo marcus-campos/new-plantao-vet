@@ -3,7 +3,15 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import { ApiError } from "../api/client";
-import { Button, ErrorBanner, Field, inputStyle, useApiErrorMessage } from "../components/ui";
+import {
+  Button,
+  ErrorBanner,
+  Field,
+  inputStyle,
+  telefone,
+  telefoneField,
+  useApiErrorMessage,
+} from "../components/ui";
 import { useSession } from "../hooks/useSession";
 
 /** O formulário que cria a clínica.
@@ -20,6 +28,7 @@ export function SignupForm({ id }: { id?: string }) {
   const [adminName, setAdminName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [phone, setPhone] = useState("");
   const [error, setError] = useState<string | null>(null);
   // O e-mail repetido é o erro mais provável e o único com saída óbvia: em vez
@@ -31,6 +40,10 @@ export function SignupForm({ id }: { id?: string }) {
     event.preventDefault();
     setError(null);
     setEmailTaken(false);
+    if (password !== passwordConfirm) {
+      setError(t("signup.form.passwordMismatch"));
+      return;
+    }
     setBusy(true);
     try {
       await signupClinic({
@@ -38,7 +51,7 @@ export function SignupForm({ id }: { id?: string }) {
         admin_name: adminName.trim(),
         email: email.trim(),
         password,
-        phone: phone.trim() || undefined,
+        phone: phone || undefined,
       });
       // Nada a fazer no sucesso: a sessão foi salva, o App re-renderiza e o
       // RoleHome manda o administrador para /internados.
@@ -108,13 +121,26 @@ export function SignupForm({ id }: { id?: string }) {
         />
         <span className="lp-hint">{t("signup.form.passwordHint")}</span>
       </Field>
+      <Field label={t("signup.form.passwordConfirm")}>
+        <input
+          style={inputStyle}
+          type="password"
+          autoComplete="new-password"
+          value={passwordConfirm}
+          onChange={(e) => setPasswordConfirm(e.target.value)}
+          required
+          minLength={8}
+        />
+      </Field>
       <Field label={t("signup.form.phone")}>
         <input
           style={inputStyle}
           type="tel"
+          inputMode="numeric"
           autoComplete="tel"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          placeholder="(61) 98303-1823"
+          value={telefoneField(phone)}
+          onChange={(e) => setPhone(telefone(e.target.value))}
         />
       </Field>
 

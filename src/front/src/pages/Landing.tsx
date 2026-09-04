@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import type { CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
@@ -8,14 +9,7 @@ import "../styles/landing.css";
 const WHATSAPP_URL =
   "https://wa.me/5561983031823?text=Ol%C3%A1%21%20Quero%20saber%20mais%20sobre%20o%20Plant%C3%A3oVet";
 
-/** Respeita a preferência do sistema por menos movimento.
- *
- *  A landing usa animação para EXPLICAR (uma prescrição virando três horários,
- *  uma dose vencendo a janela). Para quem pediu menos movimento, o estado final
- *  aparece de uma vez: a informação é a mesma, sem a transição. */
 function useReducedMotion() {
-  // Lido na inicialização, não num efeito: assim a primeira pintura já respeita
-  // a preferência, em vez de animar por um frame antes de descobrir.
   const [reduced, setReduced] = useState(
     () =>
       typeof window !== "undefined" &&
@@ -28,62 +22,6 @@ function useReducedMotion() {
     return () => mq.removeEventListener("change", ouvir);
   }, []);
   return reduced;
-}
-
-/** Dispara uma vez quando o elemento entra na tela.
- *
- *  As demonstrações só animam quando alguém está olhando — animar fora da tela
- *  gasta bateria e faz a pessoa perder justamente a parte que explica. */
-function useOnScreen<T extends HTMLElement>() {
-  const ref = useRef<T | null>(null);
-  const [visivel, setVisivel] = useState(false);
-  useEffect(() => {
-    const alvo = ref.current;
-    if (!alvo || visivel) return;
-    const obs = new IntersectionObserver(
-      ([entrada]) => {
-        if (entrada.isIntersecting) setVisivel(true);
-      },
-      { threshold: 0.35 },
-    );
-    obs.observe(alvo);
-    // Rede de segurança: se o observer não disparar em 2 segundos — porque o
-    // navegador não o implementa, porque a seção nunca cruza o limiar, ou
-    // porque a página foi renderizada fora de uma viewport real — o conteúdo
-    // aparece assim mesmo. Perder a animação é aceitável; perder o texto não.
-    const rede = window.setTimeout(() => setVisivel(true), 2000);
-    return () => {
-      obs.disconnect();
-      window.clearTimeout(rede);
-    };
-  }, [visivel]);
-  return [ref, visivel] as const;
-}
-
-/** Revela um elemento quando ele entra na tela. Usado pelas seções inteiras.
- *
- *  Devolve `is-in` só depois que o observer viu o elemento; o CSS esconde
- *  apenas quando a página está `lp-armado`, então sem JS nada some. */
-function useRevelar<T extends HTMLElement>() {
-  const ref = useRef<T | null>(null);
-  const [dentro, setDentro] = useState(false);
-  useEffect(() => {
-    const alvo = ref.current;
-    if (!alvo || dentro) return;
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) setDentro(true);
-      },
-      { threshold: 0.16, rootMargin: "0px 0px -8% 0px" },
-    );
-    obs.observe(alvo);
-    const rede = window.setTimeout(() => setDentro(true), 2600);
-    return () => {
-      obs.disconnect();
-      window.clearTimeout(rede);
-    };
-  }, [dentro]);
-  return { ref, cls: dentro ? "lp-rev is-in" : "lp-rev" };
 }
 
 function Check({ size = 16 }: { size?: number }) {
@@ -123,143 +61,137 @@ function Alert({ size = 16 }: { size?: number }) {
   );
 }
 
-/* ─────────────────────────────────────────────────────────────────────────
-   A ficha viva do hero.
+type Marca = "feita" | "programada" | "atrasada";
 
-   É o produto, não uma ilustração: a mesma grade hora × tarefa da ficha de
-   internação, com os horários que o aprazamento realmente produz (as âncoras
-   padrão da clínica: q8h → 10:00, 18:00, 02:00). O relógio anda, e a dose das
-   22h cruza a janela de tolerância na frente de quem está lendo. É a tese da
-   página em movimento, antes de qualquer parágrafo.
-   ───────────────────────────────────────────────────────────────────────── */
+const HORAS = ["18", "19", "20", "21", "22", "23", "00", "01", "02"];
 
-type LinhaFicha = {
-  hora: string;
-  nome: string;
-  detalhe: string;
-  critica?: boolean;
-  estado: "feita" | "programada" | "vencendo";
-  autor?: string;
-};
-
-/** O relógio do hero: onde ele começa e onde para. A janela normal é de 60
- *  minutos, então a dose vence no caminho entre os dois. */
-const ANTES = 47;
-const DEPOIS = 66;
-
-const FICHA: LinhaFicha[] = [
-  { hora: "18:00", nome: "Dipirona", detalhe: "25 mg/kg · IV", estado: "feita", autor: "MC" },
-  { hora: "20:00", nome: "Checagem da bomba", detalhe: "Ringer 60 ml/h", estado: "feita", autor: "JR" },
-  { hora: "22:00", nome: "Dipirona", detalhe: "25 mg/kg · IV", estado: "vencendo" },
-  { hora: "22:00", nome: "Pressão arterial", detalhe: "não invasiva", critica: true, estado: "programada" },
-  { hora: "02:00", nome: "Dipirona", detalhe: "25 mg/kg · IV", estado: "programada" },
+const LEITOS: { nome: string; meta: string; doses: Record<string, Marca> }[] = [
+  {
+    nome: "Thor",
+    meta: "canino · UTI 03",
+    doses: { "18": "feita", "20": "feita", "22": "atrasada", "02": "programada" },
+  },
+  {
+    nome: "Mel",
+    meta: "felina · Box 07",
+    doses: { "18": "feita", "21": "feita", "23": "programada", "02": "programada" },
+  },
+  {
+    nome: "Amora",
+    meta: "canina · Box 02",
+    doses: { "19": "feita", "22": "feita", "01": "programada" },
+  },
 ];
 
-function FichaViva() {
+const ROTULO: Record<Marca, string> = {
+  feita: "dose registrada",
+  programada: "dose programada",
+  atrasada: "dose atrasada",
+};
+
+function GradeHoras() {
   const { t } = useTranslation();
   const reduced = useReducedMotion();
-  // Começa em 47 minutos, não em zero: a dose já chega perto de vencer e cruza
-  // a janela em pouco mais de um segundo. Zerar o relógio custava quatro
-  // segundos de ficha tranquila — e quem rolasse a página nesse intervalo via
-  // exatamente o contrário do que a headline promete.
-  const [minutos, setMinutos] = useState(reduced ? DEPOIS : ANTES);
+  const [entrou, setEntrou] = useState(false);
+  const corpo = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (reduced) return;
-    // 47 → 66 minutos depois das 22h. A dose atravessa a janela normal (60 min)
-    // no meio do caminho: o vermelho não é decoração, é a regra acontecendo.
-    const inicio = performance.now();
-    let frame = 0;
-    const passo = (agora: number) => {
-      const decorrido = Math.min((agora - inicio) / 1800, 1);
-      setMinutos(Math.round(ANTES + decorrido * (DEPOIS - ANTES)));
-      if (decorrido < 1) frame = requestAnimationFrame(passo);
-    };
-    frame = requestAnimationFrame(passo);
-    return () => cancelAnimationFrame(frame);
+    const id = requestAnimationFrame(() => setEntrou(true));
+    return () => cancelAnimationFrame(id);
   }, [reduced]);
 
-  const atrasada = minutos > 60;
-  const relogio = useMemo(() => {
-    const total = 22 * 60 + minutos;
-    const h = Math.floor(total / 60) % 24;
-    const m = total % 60;
-    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
-  }, [minutos]);
+  useEffect(() => {
+    const alvo = corpo.current;
+    if (!alvo) return;
+    const excedente = alvo.scrollWidth - alvo.clientWidth;
+    if (excedente <= 0) return;
+    const agora = alvo.querySelector<HTMLElement>(".lp-agora");
+    if (!agora) return;
+    const desejado = agora.offsetLeft - alvo.clientWidth * 0.55;
+    alvo.scrollLeft = Math.max(0, Math.min(desejado, excedente));
+  }, []);
+
+  const classes = ["lp-grade", reduced ? "" : "is-armada", entrou ? "is-in" : ""]
+    .filter(Boolean)
+    .join(" ");
 
   return (
-    <figure className={`lp-ficha ${atrasada ? "is-late" : ""}`} aria-label={t("lp.sheet.aria")}>
-      <div className="lp-ficha-top">
-        <div className="lp-ficha-paciente">
-          <strong>Thor</strong>
-          <span>{t("lp.sheet.patient")}</span>
-        </div>
-        <div className="lp-ficha-relogio" aria-live="off">
-          <span className="lp-pulso" aria-hidden="true" />
-          {relogio}
+    <figure className={classes}>
+      <div className="lp-grade-topo">
+        <span className="lp-grade-local">
+          Internação
+          <small>3 pacientes · plantão 19h às 07h</small>
+        </span>
+        <span className="lp-grade-relogio">22:03</span>
+      </div>
+
+      <div className="lp-grade-corpo" ref={corpo}>
+        <div className="lp-grade-pista">
+          <table className="lp-grade-tab">
+            <caption className="lp-oculto">{t("lp.sheet.aria")}</caption>
+            <thead>
+              <tr>
+                <th scope="col">Paciente</th>
+                {HORAS.map((h) => (
+                  <th key={h} scope="col">
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {LEITOS.map((leito) => (
+                <tr key={leito.nome}>
+                  <th scope="row" className="lp-grade-paciente">
+                    {leito.nome}
+                    <small>{leito.meta}</small>
+                  </th>
+                  {HORAS.map((h, i) => {
+                    const marca = leito.doses[h];
+                    return (
+                      <td key={h} className={marca === "atrasada" ? "lp-celula-atrasada" : undefined}>
+                        {marca ? (
+                          <span
+                            className={`lp-dose lp-dose-${marca}`}
+                            style={{ "--i": i } as CSSProperties}
+                          >
+                            {marca === "feita" ? <Check size={15} /> : null}
+                            {marca === "atrasada" ? <Alert size={15} /> : null}
+                            <span className="lp-oculto">
+                              {h}:00, {ROTULO[marca]}
+                            </span>
+                          </span>
+                        ) : null}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <span
+            className="lp-agora"
+            style={{ left: "calc(var(--rotulo) + 4.05 * (100% - var(--rotulo)) / 9)" }}
+            aria-hidden="true"
+          />
         </div>
       </div>
 
-      <ul className="lp-ficha-linhas">
-        {FICHA.map((linha, i) => {
-          const venceu = linha.estado === "vencendo" && atrasada;
-          const estado = venceu ? "atrasada" : linha.estado;
-          return (
-            <li key={i} className={`lp-linha lp-linha-${estado}`}>
-              <span className="lp-linha-hora tabular">{linha.hora}</span>
-              <span className="lp-linha-nome">
-                {linha.nome}
-                {linha.critica ? <em className="lp-critica">{t("lp.sheet.critical")}</em> : null}
-                <small>{linha.detalhe}</small>
-              </span>
-              <span className="lp-linha-estado">
-                {estado === "feita" ? (
-                  <>
-                    <Check size={15} />
-                    <b className="tabular">{linha.autor}</b>
-                  </>
-                ) : estado === "atrasada" ? (
-                  <>
-                    <Alert size={15} />
-                    <b>{t("lp.sheet.late", { min: minutos - 60 })}</b>
-                  </>
-                ) : (
-                  <b className="lp-programada">{t("lp.sheet.scheduled")}</b>
-                )}
-              </span>
-            </li>
-          );
-        })}
-      </ul>
-
-      <figcaption className={`lp-ficha-pe ${atrasada ? "is-late" : ""}`}>
-        {atrasada ? t("lp.sheet.footLate") : t("lp.sheet.foot")}
+      <figcaption className="lp-grade-pe">
+        <Alert size={16} />
+        {t("lp.sheet.footLate")}
       </figcaption>
     </figure>
   );
 }
 
-/* ─────────────────────────────────────────────────────────────────────────
-   Prescrição → aprazamento → execução.
-   Uma linha de receita virando três horários, e os três horários virando
-   estados. É a mecânica central do produto, e explicar isso com texto custa
-   três parágrafos que ninguém lê.
-   ───────────────────────────────────────────────────────────────────────── */
 function FluxoPrescricao() {
   const { t } = useTranslation();
-  const reduced = useReducedMotion();
-  const [ref, visivel] = useOnScreen<HTMLDivElement>();
-  // Arma a entrada só depois da montagem: até lá o CSS deixa tudo visível, e
-  // um observer que não dispare nunca esconde o conteúdo.
-  const [armado, setArmado] = useState(false);
-  useEffect(() => {
-    if (!reduced) setArmado(true);
-  }, [reduced]);
-  const rodar = visivel || reduced;
 
   return (
-    <div className={`lp-fluxo ${armado ? "is-armed" : ""}`} ref={ref}>
-      <div className={`lp-fluxo-passo ${rodar ? "is-in" : ""}`}>
+    <div className="lp-fluxo">
+      <div className="lp-fluxo-passo">
         <h3>{t("lp.flow.a.title")}</h3>
         <div className="lp-receita">
           <strong>Dipirona</strong>
@@ -270,7 +202,7 @@ function FluxoPrescricao() {
         <p>{t("lp.flow.a.body")}</p>
       </div>
 
-      <div className={`lp-fluxo-passo lp-delay-1 ${rodar ? "is-in" : ""}`}>
+      <div className="lp-fluxo-passo">
         <h3>{t("lp.flow.b.title")}</h3>
         <div className="lp-horarios">
           {["10:00", "18:00", "02:00"].map((h) => (
@@ -282,7 +214,7 @@ function FluxoPrescricao() {
         <p>{t("lp.flow.b.body")}</p>
       </div>
 
-      <div className={`lp-fluxo-passo lp-delay-2 ${rodar ? "is-in" : ""}`}>
+      <div className="lp-fluxo-passo">
         <h3>{t("lp.flow.c.title")}</h3>
         <div className="lp-execucoes">
           <span className="lp-ex-feita">
@@ -301,9 +233,6 @@ function FluxoPrescricao() {
   );
 }
 
-/* ─────────────────────────────────────────────────────────────────────────
-   A passagem de plantão: o que atravessa a troca de turno.
-   ───────────────────────────────────────────────────────────────────────── */
 function FluxoPassagem() {
   const { t } = useTranslation();
   const itens = ["done", "notDone", "pending", "changes"] as const;
@@ -311,49 +240,45 @@ function FluxoPassagem() {
     <div className="lp-passagem">
       <div className="lp-turno lp-turno-sai">
         <span className="lp-turno-rot">{t("lp.handover.out")}</span>
-        <strong>07h — 19h</strong>
+        <strong>07h às 19h</strong>
       </div>
 
-      <ul className="lp-passagem-itens">
-        {itens.map((k) => (
-          <li key={k}>
-            <span className={`lp-bolinha lp-bolinha-${k}`} aria-hidden="true" />
-            {t(`lp.handover.item.${k}`)}
-          </li>
-        ))}
-      </ul>
+      <div className="lp-passagem-meio">
+        <ul className="lp-passagem-itens">
+          {itens.map((k) => (
+            <li key={k}>
+              <span className={`lp-bolinha lp-bolinha-${k}`} aria-hidden="true" />
+              {t(`lp.handover.item.${k}`)}
+            </li>
+          ))}
+        </ul>
 
-      <div className="lp-aceite">
-        <Check size={16} />
-        {t("lp.handover.ack")}
+        <div className="lp-aceite">
+          <Check size={16} />
+          {t("lp.handover.ack")}
+        </div>
       </div>
 
       <div className="lp-turno lp-turno-entra">
         <span className="lp-turno-rot">{t("lp.handover.in")}</span>
-        <strong>19h — 07h</strong>
+        <strong>19h às 07h</strong>
       </div>
     </div>
   );
 }
 
-/* ───────────────────────────────────────────────────────────────────────── */
-
 const SUPERFICIES = ["web", "board", "app", "station"] as const;
 const FAQS = ["erp", "record", "mobile", "install", "beds", "over", "after", "export", "who", "team"] as const;
 const PASSOS = ["a", "b", "c"] as const;
+const JANELAS = [
+  { k: "critical", min: 30, tom: "lp-janela-critica" },
+  { k: "normal", min: 60, tom: "lp-janela-media" },
+  { k: "daily", min: 120, tom: "" },
+] as const;
 
 export function Landing() {
   const { t } = useTranslation();
-  const reduced = useReducedMotion();
-  // `lp-armado` é o que autoriza o CSS a esconder as seções antes de revelá-las.
-  // Só entra depois da montagem, e nunca para quem pediu menos movimento: assim
-  // a página sem JS, ou com o observer falhando, continua legível por completo.
-  const [armado, setArmado] = useState(false);
   const [colado, setColado] = useState(false);
-
-  useEffect(() => {
-    if (!reduced) setArmado(true);
-  }, [reduced]);
 
   useEffect(() => {
     const aoRolar = () => setColado(window.scrollY > 8);
@@ -362,21 +287,8 @@ export function Landing() {
     return () => window.removeEventListener("scroll", aoRolar);
   }, []);
 
-  const cena = useRevelar<HTMLElement>();
-  const fluxo = useRevelar<HTMLElement>();
-  const atraso = useRevelar<HTMLElement>();
-  const passagem = useRevelar<HTMLElement>();
-  const superficies = useRevelar<HTMLElement>();
-  const estacao = useRevelar<HTMLElement>();
-  const trace = useRevelar<HTMLElement>();
-  const comecar = useRevelar<HTMLElement>();
-  const preco = useRevelar<HTMLElement>();
-  const teste = useRevelar<HTMLElement>();
-  const faq = useRevelar<HTMLElement>();
-  const criar = useRevelar<HTMLElement>();
-
   return (
-    <div className={`lp ${armado ? "lp-armado" : ""}`}>
+    <div className="lp">
       <header className={`lp-nav ${colado ? "is-stuck" : ""}`}>
         <a className="lp-marca" href="#topo">
           Plantão<span>Vet</span>
@@ -391,12 +303,12 @@ export function Landing() {
       </header>
 
       <main id="topo">
-        {/* HERO ─ a tese e o produto na mesma tela. */}
         <section className="lp-hero">
+          <span className="lp-hora">22:03</span>
           <div className="lp-hero-texto">
-            <h1 className="lp-sobe lp-sobe-1">{t("lp.hero.title")}</h1>
-            <p className="lp-hero-sub lp-sobe lp-sobe-2">{t("lp.hero.sub")}</p>
-            <div className="lp-hero-acoes lp-sobe lp-sobe-3">
+            <h1>{t("lp.hero.title")}</h1>
+            <p className="lp-hero-sub">{t("lp.hero.sub")}</p>
+            <div className="lp-hero-acoes">
               <a href="#criar" className="lp-btn lp-btn-primario">
                 {t("lp.cta.primary")}
               </a>
@@ -404,59 +316,58 @@ export function Landing() {
                 {t("lp.cta.secondary")}
               </a>
             </div>
-            <p className="lp-hero-nota lp-sobe lp-sobe-4">{t("lp.hero.note")}</p>
+            <p className="lp-hero-nota">{t("lp.hero.note")}</p>
           </div>
-          <div className="lp-hero-produto lp-sobe lp-sobe-5">
-            <FichaViva />
+          <div className="lp-hero-produto">
+            <GradeHoras />
           </div>
         </section>
 
-        {/* A CENA ─ o reconhecimento. Uma frase por linha, no ritmo de quem
-            conta o que aconteceu no plantão de ontem. */}
-        <section className={`lp-cena ${cena.cls}`} ref={cena.ref}>
+        <section className="lp-cena">
           <p className="lp-cena-linha">{t("lp.scene.a")}</p>
           <p className="lp-cena-linha">{t("lp.scene.b")}</p>
           <p className="lp-cena-linha">{t("lp.scene.c")}</p>
           <p className="lp-cena-virada">{t("lp.scene.turn")}</p>
         </section>
 
-        {/* PRESCRIÇÃO → EXECUÇÃO */}
-        <section className={`lp-secao ${fluxo.cls}`} id="fluxo" ref={fluxo.ref}>
+        <section className="lp-secao" id="fluxo">
+          <span className="lp-hora">10:00</span>
           <h2>{t("lp.flow.title")}</h2>
           <p className="lp-secao-sub">{t("lp.flow.sub")}</p>
           <FluxoPrescricao />
         </section>
 
-        {/* O ATRASO */}
-        <section className={`lp-secao ${atraso.cls}`} ref={atraso.ref}>
+        <section className="lp-secao">
+          <span className="lp-hora">22:03</span>
           <h2>{t("lp.late.title")}</h2>
           <p className="lp-secao-sub">{t("lp.late.sub")}</p>
           <div className="lp-janelas">
-            {[
-              { k: "critical", min: 30 },
-              { k: "normal", min: 60 },
-              { k: "daily", min: 120 },
-            ].map(({ k, min }) => (
-              <div key={k} className="lp-janela">
-                <span className="lp-janela-min tabular">{min}</span>
-                <span className="lp-janela-un">min</span>
+            {JANELAS.map(({ k, min, tom }) => (
+              <div key={k} className={`lp-janela ${tom}`}>
                 <span className="lp-janela-nome">{t(`lp.late.${k}`)}</span>
+                <span className="lp-janela-barra">
+                  <span className="lp-janela-trilho">
+                    <i style={{ width: `${(min / 120) * 100}%` }} />
+                  </span>
+                  <span className="lp-janela-min tabular">
+                    {min} <span className="lp-janela-un">min</span>
+                  </span>
+                </span>
               </div>
             ))}
           </div>
           <p className="lp-nota">{t("lp.late.note")}</p>
         </section>
 
-        {/* PASSAGEM DE PLANTÃO */}
-        <section className={`lp-secao ${passagem.cls}`} id="passagem" ref={passagem.ref}>
+        <section className="lp-secao" id="passagem">
+          <span className="lp-hora">19:00</span>
           <h2>{t("lp.handover.title")}</h2>
           <p className="lp-secao-sub">{t("lp.handover.sub")}</p>
           <FluxoPassagem />
           <p className="lp-frase">{t("lp.handover.line")}</p>
         </section>
 
-        {/* SUPERFÍCIES */}
-        <section className={`lp-secao ${superficies.cls}`} id="como" ref={superficies.ref}>
+        <section className="lp-secao" id="como">
           <h2>{t("lp.surfaces.title")}</h2>
           <p className="lp-frase lp-frase-alta">{t("lp.surfaces.line")}</p>
           <div className="lp-superficies">
@@ -469,8 +380,8 @@ export function Landing() {
           </div>
         </section>
 
-        {/* ESTAÇÃO */}
-        <section className={`lp-estacao ${estacao.cls}`} ref={estacao.ref}>
+        <section className="lp-estacao">
+          <span className="lp-hora">02:00</span>
           <h2>{t("lp.station.title")}</h2>
           <p>{t("lp.station.body")}</p>
           <div className="lp-pin">
@@ -484,8 +395,7 @@ export function Landing() {
           </div>
         </section>
 
-        {/* RASTREABILIDADE */}
-        <section className={`lp-secao ${trace.cls}`} ref={trace.ref}>
+        <section className="lp-secao">
           <h2>{t("lp.trace.title")}</h2>
           <p className="lp-secao-sub">{t("lp.trace.sub")}</p>
           <dl className="lp-trace">
@@ -498,8 +408,7 @@ export function Landing() {
           </dl>
         </section>
 
-        {/* COMEÇAR */}
-        <section className={`lp-secao ${comecar.cls}`} ref={comecar.ref}>
+        <section className="lp-secao">
           <h2>{t("lp.start.title")}</h2>
           <ol className="lp-passos">
             {PASSOS.map((p, i) => (
@@ -514,16 +423,14 @@ export function Landing() {
           </ol>
         </section>
 
-        {/* PREÇO */}
-        <section className={`lp-secao ${preco.cls}`} id="preco" ref={preco.ref}>
+        <section className="lp-secao" id="preco">
           <h2>{t("lp.price.title")}</h2>
           <p className="lp-secao-sub">{t("lp.price.sub")}</p>
           <p className="lp-frase">{t("lp.price.soft")}</p>
           <p className="lp-nota">{t("lp.price.note")}</p>
         </section>
 
-        {/* FIM DO TESTE */}
-        <section className={`lp-secao ${teste.cls}`} ref={teste.ref}>
+        <section className="lp-secao">
           <h2>{t("lp.trial.title")}</h2>
           <p className="lp-secao-sub">{t("lp.trial.sub")}</p>
           <ul className="lp-lista">
@@ -536,8 +443,7 @@ export function Landing() {
           </ul>
         </section>
 
-        {/* FAQ */}
-        <section className={`lp-secao ${faq.cls}`} id="faq" ref={faq.ref}>
+        <section className="lp-secao" id="faq">
           <h2>{t("lp.faq.title")}</h2>
           <div className="lp-faq">
             {FAQS.map((k) => (
@@ -549,8 +455,7 @@ export function Landing() {
           </div>
         </section>
 
-        {/* CADASTRO */}
-        <section className={`lp-criar ${criar.cls}`} id="criar" ref={criar.ref}>
+        <section className="lp-criar" id="criar">
           <div className="lp-criar-texto">
             <h2>{t("lp.final.title")}</h2>
             <p>{t("lp.final.sub")}</p>

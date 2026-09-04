@@ -147,6 +147,20 @@ export function decimalField(
   return (limpo || "0").replace(".", separator);
 }
 
+export function telefone(value: string): string {
+  return value.replace(/\D/g, "").slice(0, 11);
+}
+
+export function telefoneField(value: string | null | undefined): string {
+  const digitos = telefone(String(value ?? ""));
+  if (digitos.length <= 2) return digitos;
+  if (digitos.length <= 6) return `(${digitos.slice(0, 2)}) ${digitos.slice(2)}`;
+  if (digitos.length <= 10) {
+    return `(${digitos.slice(0, 2)}) ${digitos.slice(2, 6)}-${digitos.slice(6)}`;
+  }
+  return `(${digitos.slice(0, 2)}) ${digitos.slice(2, 7)}-${digitos.slice(7)}`;
+}
+
 export const inputStyle: CSSProperties = {
   border: "1px solid var(--line)",
   borderRadius: 8,
