@@ -95,6 +95,12 @@ jobs:
       # em plantao.vet, no sslip.io e em qualquer domínio novo, sem rebuild e
       # sem CORS. A config do push é PÚBLICA (vai no bundle de qualquer jeito);
       # o que não pode faltar é distinguir "não configurado" de "falhei ao ler".
+      #
+      # Config sem chave VAPID AVISA, não derruba. A versão anterior falhava o
+      # build, e isso é desproporcional: `pushSupported()` exige as duas, então
+      # o botão de alertas simplesmente não aparece e o site fica idêntico ao
+      # caso sem Firebase nenhum. Travar a entrega do produto inteiro por um
+      # recurso opcional meio configurado é o erro maior.
       - name: Web · build e push
         run: |
           ler() {
@@ -105,8 +111,7 @@ jobs:
           FB_CONFIG="$(ler web-firebase-config)"
           FB_VAPID="$(ler web-firebase-vapid-key)"
           if [ -n "$FB_CONFIG" ] && [ -z "$FB_VAPID" ]; then
-            echo "erro: config do Firebase presente mas sem chave VAPID; o push ficaria meio configurado" >&2
-            exit 1
+            echo "::warning title=Push no navegador desligado::web-firebase-config existe mas web-firebase-vapid-key esta vazio. O site sobe normalmente e o botao 'Receber alertas aqui' NAO aparece (pushSupported() exige as duas). Para ligar: console do Firebase > Cloud Messaging > Web Push certificates > Generate key pair, e depois 'gcloud secrets versions add web-firebase-vapid-key --data-file=-'."
           fi
           docker build -t "$REGISTRY/web:${GITHUB_SHA}" \
             --build-arg "VITE_API_URL=" \
