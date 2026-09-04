@@ -1,17 +1,57 @@
-/* A landing pública.
+/* A landing pública — o plantão da madrugada.
  *
- *  Usa os tokens do produto (index.css) de propósito: quem entra depois de
- *  criar a conta reconhece o mesmo verde, a mesma grade, o mesmo vermelho de
- *  atraso. Coerência entre a promessa e o software é argumento de venda.
+ *  Escura porque o assunto é escuro: a dose das 2h, a bomba que pede checagem
+ *  às 4h, o turno que vira sem ninguém por perto. O verde não é decoração, é a
+ *  luz do monitor no corredor apagado; o vermelho é o único outro tom, e só
+ *  aparece quando alguma coisa passou da hora.
  *
- *  O protagonista visual é a ficha — a grade hora × tarefa. Todo o resto é
- *  quieto para que ela seja a única coisa que chama atenção. */
+ *  A regra que segura o resto: aqui, cor é informação. Se brilha, exige ação. */
 
 .lp {
-  --lp-max: 1120px;
-  --lp-texto: 62ch;
-  background: var(--ground);
-  color: var(--ink);
+  --n-fundo: #080f0d;
+  --n-carta: #101d19;
+  --n-carta-alta: #14261f;
+  --n-linha: #1e332c;
+  --n-linha-forte: #2a463c;
+  --n-texto: #eaf4ef;
+  --n-texto-2: #9db3a9;
+  --n-texto-3: #7f998c;
+  --n-verde: #34e29b;
+  --n-verde-fundo: rgba(52, 226, 155, 0.1);
+  --n-vermelho: #ff6f5e;
+  --n-vermelho-fundo: rgba(255, 111, 94, 0.13);
+  --n-ambar: #f5b544;
+  --lp-max: 1140px;
+
+  background: var(--n-fundo);
+  color: var(--n-texto);
+  overflow-x: clip;
+  position: relative;
+}
+
+/* Uma única fonte de luz, no alto, atrás do produto. É o que dá profundidade à
+   página inteira sem espalhar gradiente por seção nenhuma. */
+.lp::before {
+  content: "";
+  position: absolute;
+  top: -420px;
+  left: 50%;
+  width: min(1500px, 160vw);
+  height: 1000px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse 50% 50% at 50% 50%,
+    rgba(52, 226, 155, 0.16),
+    rgba(52, 226, 155, 0.04) 42%,
+    transparent 68%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lp > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* ── Navegação ─────────────────────────────────────────────────────────── */
@@ -19,49 +59,53 @@
 .lp-nav {
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 40;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 14px clamp(16px, 5vw, 40px);
-  background: color-mix(in srgb, var(--ground) 88%, transparent);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--line);
+  padding: 15px clamp(16px, 5vw, 44px);
+  background: rgba(8, 15, 13, 0.72);
+  backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+.lp-nav.is-stuck {
+  border-bottom-color: var(--n-linha);
+  background: rgba(8, 15, 13, 0.93);
 }
 
 .lp-marca {
-  font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
   font-weight: 800;
   font-size: 19px;
-  letter-spacing: -0.02em;
-  color: var(--ink);
+  letter-spacing: -0.025em;
+  color: var(--n-texto);
   text-decoration: none;
 }
 .lp-marca span {
-  color: var(--primary);
+  color: var(--n-verde);
 }
 
 .lp-nav nav {
   display: flex;
   align-items: center;
-  gap: clamp(12px, 3vw, 26px);
+  gap: clamp(14px, 3vw, 28px);
   font-size: 14.5px;
 }
 .lp-nav nav a {
-  color: var(--ink-2);
+  color: var(--n-texto-2);
   text-decoration: none;
+  transition: color 0.18s ease;
 }
 .lp-nav nav a:hover {
-  color: var(--ink);
+  color: var(--n-texto);
 }
 .lp-nav-entrar {
+  color: var(--n-verde) !important;
   font-weight: 600;
-  color: var(--primary) !important;
 }
-/* Abaixo de 560px o menu do meio sai: sobra a marca e a única ação que
-   interessa a quem já é cliente. */
-@media (max-width: 560px) {
+@media (max-width: 620px) {
   .lp-nav nav a:not(.lp-nav-entrar) {
     display: none;
   }
@@ -72,121 +116,179 @@
 .lp-hero {
   max-width: var(--lp-max);
   margin: 0 auto;
-  padding: clamp(36px, 7vw, 88px) clamp(16px, 5vw, 40px) clamp(28px, 5vw, 64px);
+  padding: clamp(44px, 8vw, 104px) clamp(16px, 5vw, 44px) clamp(40px, 7vw, 88px);
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(28px, 5vw, 56px);
+  gap: clamp(36px, 6vw, 60px);
   align-items: center;
 }
-@media (min-width: 940px) {
+@media (min-width: 980px) {
   .lp-hero {
-    grid-template-columns: 1.02fr 1fr;
+    grid-template-columns: 1.05fr 1fr;
+  }
+}
+
+/* A entrada da página: uma sequência orquestrada, uma vez só, na ordem em que
+   se lê. Depois disto a página fica quieta até alguém rolar. */
+.lp-sobe {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: lp-sobe 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.lp-sobe-1 { animation-delay: 0.05s; }
+.lp-sobe-2 { animation-delay: 0.16s; }
+.lp-sobe-3 { animation-delay: 0.27s; }
+.lp-sobe-4 { animation-delay: 0.38s; }
+.lp-sobe-5 { animation-delay: 0.2s; }
+
+@keyframes lp-sobe {
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
 .lp-hero h1 {
-  font-size: clamp(2.1rem, 6.2vw, 3.7rem);
-  line-height: 1.03;
-  letter-spacing: -0.035em;
+  font-size: clamp(2.35rem, 6.6vw, 4.15rem);
+  line-height: 0.99;
+  letter-spacing: -0.045em;
   margin: 0;
-  max-width: 15ch;
+  max-width: 14ch;
+  font-weight: 800;
+  background: linear-gradient(175deg, #ffffff 20%, #a9c9bd 130%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .lp-hero-sub {
-  margin: clamp(16px, 2.4vw, 24px) 0 0;
-  font-size: clamp(1.02rem, 1.9vw, 1.2rem);
-  line-height: 1.55;
-  color: var(--ink-2);
-  max-width: 46ch;
+  margin: clamp(18px, 2.6vw, 26px) 0 0;
+  font-size: clamp(1.04rem, 1.9vw, 1.22rem);
+  line-height: 1.58;
+  color: var(--n-texto-2);
+  max-width: 47ch;
 }
 
 .lp-hero-acoes {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: clamp(22px, 3vw, 32px);
+  margin-top: clamp(26px, 3.4vw, 36px);
 }
 
 .lp-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 50px;
-  padding: 0 22px;
-  border-radius: 10px;
+  min-height: 52px;
+  padding: 0 24px;
+  border-radius: 11px;
   font-weight: 650;
   font-size: 15.5px;
   text-decoration: none;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition: transform 0.16s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease,
+    background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
 }
 .lp-btn-primario {
-  background: var(--primary);
-  color: #fff;
-  border: 1px solid var(--primary);
+  background: var(--n-verde);
+  color: #06231a;
+  border: 1px solid var(--n-verde);
+  box-shadow: 0 10px 30px -12px rgba(52, 226, 155, 0.7);
 }
 .lp-btn-primario:hover {
-  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 5px rgba(52, 226, 155, 0.14), 0 16px 40px -14px rgba(52, 226, 155, 0.85);
 }
 .lp-btn-fantasma {
   background: transparent;
-  color: var(--ink-2);
-  border: 1px solid var(--line);
+  color: var(--n-texto-2);
+  border: 1px solid var(--n-linha-forte);
 }
 .lp-btn-fantasma:hover {
-  border-color: var(--ink-3);
-  color: var(--ink);
+  color: var(--n-texto);
+  border-color: var(--n-texto-3);
+  transform: translateY(-2px);
 }
-@media (max-width: 460px) {
+@media (max-width: 470px) {
   .lp-hero-acoes .lp-btn {
     flex: 1 1 100%;
   }
 }
 
 .lp-hero-nota {
-  margin: 16px 0 0;
+  margin: 18px 0 0;
   font-size: 13.5px;
-  color: var(--ink-3);
+  color: var(--n-texto-3);
 }
 
 /* ── A ficha viva ──────────────────────────────────────────────────────── */
 
 .lp-ficha {
   margin: 0;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 14px;
+  background: linear-gradient(180deg, var(--n-carta-alta), var(--n-carta));
+  border: 1px solid var(--n-linha);
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 1px 2px rgba(23, 37, 31, 0.04), 0 12px 32px -18px rgba(23, 37, 31, 0.28);
+  box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.9);
+  transition: box-shadow 0.6s ease;
+}
+/* Quando a dose vence, a ficha inteira reage: a luz cede para o vermelho. É a
+   página mudando de humor por causa de uma linha. */
+.lp-ficha.is-late {
+  box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.9), 0 0 70px -22px rgba(255, 111, 94, 0.45);
 }
 
 .lp-ficha-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 13px 16px;
-  border-bottom: 1px solid var(--line);
-  background: var(--surface-subtle);
+  padding: 15px 18px;
+  border-bottom: 1px solid var(--n-linha);
+  background: rgba(255, 255, 255, 0.015);
 }
 .lp-ficha-paciente {
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  gap: 9px;
 }
 .lp-ficha-paciente strong {
   font-family: "Bricolage Grotesque", system-ui, sans-serif;
-  font-size: 16px;
+  font-size: 16.5px;
   font-weight: 800;
+  letter-spacing: -0.01em;
 }
 .lp-ficha-paciente span {
   font-size: 12.5px;
-  color: var(--ink-3);
+  color: var(--n-texto-3);
 }
 .lp-ficha-relogio {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   font-family: "Bricolage Grotesque", system-ui, sans-serif;
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 800;
-  color: var(--ink-2);
+  color: var(--n-texto);
   font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+/* O ponto que pisca é o único movimento perpétuo da página, e existe para
+   dizer que o relógio está correndo de verdade. */
+.lp-pulso {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--n-verde);
+  animation: lp-pulso 2.4s ease-out infinite;
+}
+.lp-ficha.is-late .lp-pulso {
+  background: var(--n-vermelho);
+  animation-duration: 1.1s;
+}
+@keyframes lp-pulso {
+  0% { box-shadow: 0 0 0 0 rgba(52, 226, 155, 0.55); }
+  70% { box-shadow: 0 0 0 9px rgba(52, 226, 155, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(52, 226, 155, 0); }
 }
 
 .lp-ficha-linhas {
@@ -197,112 +299,138 @@
 
 .lp-linha {
   display: grid;
-  grid-template-columns: 54px 1fr auto;
-  gap: 10px;
+  grid-template-columns: 52px 1fr auto;
+  gap: 12px;
   align-items: center;
-  padding: 11px 16px;
-  border-bottom: 1px solid var(--line-soft);
+  padding: 13px 18px;
+  border-bottom: 1px solid rgba(30, 51, 44, 0.6);
   font-size: 14px;
+  transition: background-color 0.5s ease;
 }
 .lp-linha:last-child {
   border-bottom: 0;
 }
 .lp-linha-hora {
   font-weight: 700;
-  color: var(--ink-3);
+  color: var(--n-texto-3);
   font-variant-numeric: tabular-nums;
+  transition: color 0.5s ease;
 }
 .lp-linha-nome {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
   min-width: 0;
+  color: var(--n-texto);
 }
 .lp-linha-nome small {
   font-size: 12px;
-  color: var(--ink-3);
+  color: var(--n-texto-3);
 }
 .lp-critica {
   display: inline-block;
-  margin-left: 6px;
-  padding: 1px 6px;
+  margin-left: 7px;
+  padding: 1.5px 7px;
   border-radius: 999px;
-  background: var(--warn-bg);
-  color: var(--warn);
-  font-size: 10.5px;
+  background: rgba(245, 181, 68, 0.14);
+  color: var(--n-ambar);
+  font-size: 10px;
   font-weight: 700;
   font-style: normal;
-  vertical-align: 1px;
+  vertical-align: 1.5px;
 }
 .lp-linha-estado {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   font-size: 12.5px;
   font-weight: 700;
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 .lp-linha-feita .lp-linha-estado {
-  color: var(--ok);
+  color: var(--n-verde);
 }
 .lp-programada {
-  color: var(--ink-muted);
+  color: var(--n-texto-3);
   font-weight: 600;
 }
+
+/* A linha que vence: o fundo acende e ela empurra de leve para a direita — a
+   tarefa saindo da fila do previsto e entrando na do que exige ação. */
 .lp-linha-atrasada {
-  background: var(--late-bg);
+  background: var(--n-vermelho-fundo);
+  box-shadow: inset 3px 0 0 var(--n-vermelho);
+  animation: lp-acende 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.lp-linha-atrasada .lp-linha-estado {
-  color: var(--late);
-}
+.lp-linha-atrasada .lp-linha-estado,
 .lp-linha-atrasada .lp-linha-hora {
-  color: var(--late);
+  color: var(--n-vermelho);
+}
+@keyframes lp-acende {
+  0% { background: transparent; transform: translateX(0); }
+  35% { background: rgba(255, 111, 94, 0.32); transform: translateX(5px); }
+  100% { background: var(--n-vermelho-fundo); transform: translateX(0); }
 }
 
 .lp-ficha-pe {
-  padding: 11px 16px;
-  border-top: 1px solid var(--line);
-  background: var(--surface-subtle);
+  padding: 13px 18px;
+  border-top: 1px solid var(--n-linha);
+  background: rgba(255, 255, 255, 0.015);
   font-size: 12.5px;
-  color: var(--ink-3);
-  transition: color 0.4s ease, background-color 0.4s ease;
+  color: var(--n-texto-3);
+  transition: color 0.5s ease, background-color 0.5s ease;
 }
 .lp-ficha-pe.is-late {
-  background: var(--late-bg);
-  color: var(--late);
+  background: var(--n-vermelho-fundo);
+  color: var(--n-vermelho);
   font-weight: 650;
 }
+
+/* ── Revelação por rolagem ─────────────────────────────────────────────── */
+
+/* Só esconde quando o JS armou. Sem script, ou se o observer falhar, tudo
+   aparece: a animação é enfeite, o texto é o produto. */
+.lp-armado .lp-rev {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lp-armado .lp-rev.is-in {
+  opacity: 1;
+  transform: none;
+}
+.lp-rev-1 { transition-delay: 0.09s; }
+.lp-rev-2 { transition-delay: 0.18s; }
+.lp-rev-3 { transition-delay: 0.27s; }
 
 /* ── A cena ────────────────────────────────────────────────────────────── */
 
 .lp-cena {
   max-width: var(--lp-max);
   margin: 0 auto;
-  padding: clamp(48px, 9vw, 116px) clamp(16px, 5vw, 40px);
-  border-top: 1px solid var(--line);
+  padding: clamp(72px, 13vw, 168px) clamp(16px, 5vw, 44px);
 }
 .lp-cena-linha {
-  margin: 0 0 6px;
+  margin: 0 0 10px;
   font-family: "Bricolage Grotesque", system-ui, sans-serif;
-  font-size: clamp(1.35rem, 4.1vw, 2.15rem);
-  line-height: 1.24;
-  letter-spacing: -0.025em;
+  font-size: clamp(1.5rem, 4.6vw, 2.6rem);
+  line-height: 1.2;
+  letter-spacing: -0.035em;
   font-weight: 700;
-  color: var(--ink-3);
-  max-width: 24ch;
-}
-.lp-cena-linha:last-of-type {
-  color: var(--ink-2);
+  color: var(--n-texto-3);
+  max-width: 22ch;
 }
 .lp-cena-virada {
-  margin: clamp(20px, 3vw, 30px) 0 0;
+  margin: clamp(26px, 3.6vw, 40px) 0 0;
   font-family: "Bricolage Grotesque", system-ui, sans-serif;
-  font-size: clamp(1.5rem, 4.6vw, 2.4rem);
-  line-height: 1.2;
-  letter-spacing: -0.028em;
+  font-size: clamp(1.75rem, 5.4vw, 3rem);
+  line-height: 1.12;
+  letter-spacing: -0.04em;
   font-weight: 800;
-  color: var(--ink);
-  max-width: 22ch;
+  color: var(--n-texto);
+  max-width: 20ch;
 }
 
 /* ── Seções ────────────────────────────────────────────────────────────── */
@@ -310,57 +438,46 @@
 .lp-secao {
   max-width: var(--lp-max);
   margin: 0 auto;
-  padding: clamp(44px, 8vw, 96px) clamp(16px, 5vw, 40px);
-  border-top: 1px solid var(--line);
+  padding: clamp(64px, 11vw, 132px) clamp(16px, 5vw, 44px);
+  border-top: 1px solid var(--n-linha);
 }
 .lp-secao h2 {
-  font-size: clamp(1.6rem, 4.2vw, 2.35rem);
-  line-height: 1.14;
-  letter-spacing: -0.03em;
+  font-size: clamp(1.75rem, 4.6vw, 2.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.038em;
   margin: 0;
-  max-width: 20ch;
+  max-width: 19ch;
+  font-weight: 800;
 }
 .lp-secao-sub {
-  margin: 14px 0 0;
-  font-size: clamp(1rem, 1.7vw, 1.1rem);
-  line-height: 1.6;
-  color: var(--ink-2);
-  max-width: var(--lp-texto);
-}
-
-.lp-secao-escura {
-  max-width: none;
-  background: var(--ink);
-  color: #fff;
-  border-top: 0;
-}
-.lp-secao-escura > * {
-  max-width: var(--lp-max);
-  margin-left: auto;
-  margin-right: auto;
-}
-.lp-secao-escura .lp-secao-sub {
-  color: #b9c7c0;
+  margin: 18px 0 0;
+  font-size: clamp(1rem, 1.7vw, 1.12rem);
+  line-height: 1.62;
+  color: var(--n-texto-2);
+  max-width: 60ch;
 }
 
 .lp-nota {
-  margin: 22px 0 0;
+  margin: 26px 0 0;
   font-size: 13.5px;
-  color: var(--ink-3);
-  max-width: var(--lp-texto);
-}
-.lp-secao-escura .lp-nota {
-  color: #8fa39a;
+  line-height: 1.6;
+  color: var(--n-texto-3);
+  max-width: 60ch;
 }
 
 .lp-frase {
-  margin: clamp(28px, 4vw, 44px) 0 0;
+  margin: clamp(34px, 4.6vw, 52px) 0 0;
   font-family: "Bricolage Grotesque", system-ui, sans-serif;
-  font-size: clamp(1.3rem, 3.4vw, 1.9rem);
-  line-height: 1.25;
-  letter-spacing: -0.025em;
+  font-size: clamp(1.5rem, 3.9vw, 2.3rem);
+  line-height: 1.16;
+  letter-spacing: -0.035em;
   font-weight: 800;
-  max-width: 24ch;
+  max-width: 22ch;
+}
+.lp-frase-alta {
+  margin-top: clamp(22px, 3vw, 30px);
+  margin-bottom: clamp(6px, 1.4vw, 14px);
+  color: var(--n-verde);
 }
 
 /* ── Fluxo prescrição → execução ───────────────────────────────────────── */
@@ -368,79 +485,75 @@
 .lp-fluxo {
   display: grid;
   gap: 14px;
-  margin-top: clamp(26px, 4vw, 40px);
+  margin-top: clamp(34px, 4.6vw, 52px);
+  position: relative;
 }
-@media (min-width: 800px) {
+@media (min-width: 860px) {
   .lp-fluxo {
     grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
+    gap: 20px;
+  }
+  /* A linha que costura os três passos, só onde eles ficam lado a lado. */
+  .lp-fluxo::before {
+    content: "";
+    position: absolute;
+    top: 54px;
+    left: 12%;
+    right: 12%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--n-linha-forte) 18%,
+      var(--n-linha-forte) 82%,
+      transparent
+    );
   }
 }
 
 .lp-fluxo-passo {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 18px;
+  background: var(--n-carta);
+  border: 1px solid var(--n-linha);
+  border-radius: 14px;
+  padding: 22px;
+  position: relative;
+  transition: border-color 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
-/* O conteúdo é visível por padrão e a entrada só é ARMADA pelo JS. Do jeito
-   contrário — opacity 0 no repouso — um observer que não dispara, um erro de
-   script ou um leitor sem JS deixariam os três passos invisíveis para sempre.
-   A animação é enfeite; o texto é o produto. */
-.lp-fluxo.is-armed .lp-fluxo-passo {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+.lp-fluxo-passo:hover {
+  border-color: var(--n-linha-forte);
+  transform: translateY(-3px);
 }
-.lp-fluxo.is-armed .lp-fluxo-passo.is-in {
-  opacity: 1;
-  transform: none;
-}
-.lp-delay-1 {
-  transition-delay: 0.22s;
-}
-.lp-delay-2 {
-  transition-delay: 0.44s;
-}
-@media (prefers-reduced-motion: reduce) {
-  .lp-fluxo.is-armed .lp-fluxo-passo {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-}
-
 .lp-fluxo-passo h3 {
-  margin: 0 0 12px;
+  margin: 0 0 14px;
   font-size: 12px;
   font-weight: 700;
-  color: var(--ink-3);
-  letter-spacing: 0.02em;
+  color: var(--n-texto-3);
 }
 .lp-fluxo-passo p {
-  margin: 12px 0 0;
+  margin: 14px 0 0;
   font-size: 14px;
-  line-height: 1.5;
-  color: var(--ink-2);
+  line-height: 1.55;
+  color: var(--n-texto-2);
 }
 
 .lp-receita {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 8px;
+  gap: 9px;
   font-size: 15px;
-  color: var(--ink-2);
+  color: var(--n-texto-2);
 }
 .lp-receita strong {
-  font-size: 17px;
-  color: var(--ink);
+  font-size: 18px;
+  color: var(--n-texto);
+  letter-spacing: -0.015em;
 }
 .lp-freq {
-  padding: 2px 8px;
-  border-radius: 6px;
-  background: var(--tint);
-  color: var(--primary-dark);
+  padding: 3px 9px;
+  border-radius: 7px;
+  background: var(--n-verde-fundo);
+  color: var(--n-verde);
   font-weight: 700;
   font-size: 13px;
 }
@@ -448,132 +561,159 @@
 .lp-horarios {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 9px;
 }
 .lp-horarios span {
-  padding: 7px 12px;
-  border-radius: 8px;
-  background: var(--tint);
-  color: var(--primary-dark);
+  padding: 9px 14px;
+  border-radius: 9px;
+  background: var(--n-verde-fundo);
+  border: 1px solid rgba(52, 226, 155, 0.2);
+  color: var(--n-verde);
   font-weight: 700;
   font-size: 15px;
   font-variant-numeric: tabular-nums;
+}
+/* Os três horários nascem um a um: é o aprazamento acontecendo, não uma lista
+   que já estava pronta. */
+.lp-armado .lp-horarios span {
+  opacity: 0;
+  transform: scale(0.86);
+}
+.lp-armado .is-in .lp-horarios span {
+  animation: lp-nasce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.lp-armado .is-in .lp-horarios span:nth-child(1) { animation-delay: 0.3s; }
+.lp-armado .is-in .lp-horarios span:nth-child(2) { animation-delay: 0.45s; }
+.lp-armado .is-in .lp-horarios span:nth-child(3) { animation-delay: 0.6s; }
+@keyframes lp-nasce {
+  to { opacity: 1; transform: none; }
 }
 
 .lp-execucoes {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 9px;
 }
 .lp-execucoes span {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 7px 11px;
-  border-radius: 8px;
+  gap: 6px;
+  padding: 9px 13px;
+  border-radius: 9px;
   font-size: 14px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
+  border: 1px solid transparent;
 }
 .lp-ex-feita {
-  background: var(--ok-bg);
-  color: var(--ok);
+  background: var(--n-verde-fundo);
+  border-color: rgba(52, 226, 155, 0.2);
+  color: var(--n-verde);
 }
 .lp-ex-atrasada {
-  background: var(--late-bg);
-  color: var(--late);
+  background: var(--n-vermelho-fundo);
+  border-color: rgba(255, 111, 94, 0.28);
+  color: var(--n-vermelho);
 }
 .lp-ex-prog {
-  background: var(--surface-subtle);
-  color: var(--ink-muted);
-  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.02);
+  border-color: var(--n-linha);
+  color: var(--n-texto-3);
 }
 
 /* ── Janelas de tolerância ─────────────────────────────────────────────── */
 
 .lp-janelas {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-top: clamp(26px, 4vw, 40px);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+  margin-top: clamp(34px, 4.6vw, 52px);
 }
 .lp-janela {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 18px;
-  border: 1px solid #2c3e37;
-  border-radius: 12px;
-  background: #1d2c26;
+  padding: 26px 22px;
+  border: 1px solid var(--n-linha);
+  border-radius: 14px;
+  background: linear-gradient(180deg, var(--n-carta-alta), var(--n-carta));
+  transition: border-color 0.3s ease;
+}
+.lp-janela:hover {
+  border-color: var(--n-linha-forte);
 }
 .lp-janela-min {
+  display: block;
   font-family: "Bricolage Grotesque", system-ui, sans-serif;
-  font-size: clamp(1.9rem, 5.4vw, 2.9rem);
+  font-size: clamp(2.6rem, 6.6vw, 3.6rem);
   font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.03em;
+  line-height: 0.94;
+  letter-spacing: -0.05em;
   font-variant-numeric: tabular-nums;
+  color: var(--n-verde);
 }
 .lp-janela-un {
   font-size: 12.5px;
-  color: #8fa39a;
-  margin-top: 2px;
+  color: var(--n-texto-3);
+  margin-top: 6px;
+  display: block;
 }
 .lp-janela-nome {
-  margin-top: 10px;
-  font-size: 13.5px;
+  margin-top: 16px;
+  font-size: 14px;
   font-weight: 650;
-  color: #d6e2dc;
+  color: var(--n-texto);
+  display: block;
 }
 
 /* ── Passagem de plantão ───────────────────────────────────────────────── */
 
 .lp-passagem {
-  margin-top: clamp(26px, 4vw, 40px);
+  margin-top: clamp(34px, 4.6vw, 52px);
   display: grid;
-  gap: 12px;
-  max-width: 560px;
+  gap: 14px;
+  max-width: 580px;
 }
 .lp-turno {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 12px;
-  padding: 14px 16px;
-  border-radius: 12px;
-  border: 1px solid var(--line);
-  background: var(--surface);
+  gap: 14px;
+  padding: 17px 20px;
+  border-radius: 13px;
+  border: 1px solid var(--n-linha);
+  background: var(--n-carta);
 }
 .lp-turno-rot {
   font-size: 13px;
-  color: var(--ink-3);
+  color: var(--n-texto-3);
 }
 .lp-turno strong {
   font-family: "Bricolage Grotesque", system-ui, sans-serif;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
+  letter-spacing: -0.015em;
 }
 .lp-turno-entra {
-  border-color: var(--primary);
-  background: var(--tint);
+  border-color: rgba(52, 226, 155, 0.3);
+  background: linear-gradient(180deg, var(--n-verde-fundo), transparent);
+}
+.lp-turno-entra strong {
+  color: var(--n-verde);
 }
 
 .lp-passagem-itens {
   list-style: none;
-  margin: 0;
-  padding: 0 0 0 18px;
+  margin: 0 0 0 20px;
+  padding: 4px 0 4px 22px;
   display: grid;
-  gap: 9px;
-  border-left: 2px solid var(--line);
-  margin-left: 16px;
+  gap: 12px;
+  border-left: 1px solid var(--n-linha-forte);
 }
 .lp-passagem-itens li {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 11px;
   font-size: 14.5px;
-  color: var(--ink-2);
+  color: var(--n-texto-2);
 }
 .lp-bolinha {
   width: 9px;
@@ -581,29 +721,22 @@
   border-radius: 50%;
   flex: none;
 }
-.lp-bolinha-done {
-  background: var(--ok);
-}
-.lp-bolinha-notDone {
-  background: var(--late);
-}
-.lp-bolinha-pending {
-  background: var(--warn-edge);
-}
-.lp-bolinha-changes {
-  background: var(--primary);
-}
+.lp-bolinha-done { background: var(--n-verde); }
+.lp-bolinha-notDone { background: var(--n-vermelho); }
+.lp-bolinha-pending { background: var(--n-ambar); }
+.lp-bolinha-changes { background: #6aa9ff; }
 
 .lp-aceite {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   align-self: start;
-  margin-left: 16px;
-  padding: 9px 14px;
+  margin-left: 20px;
+  padding: 11px 17px;
   border-radius: 999px;
-  background: var(--ok-bg);
-  color: var(--ok);
+  background: var(--n-verde-fundo);
+  border: 1px solid rgba(52, 226, 155, 0.28);
+  color: var(--n-verde);
   font-size: 13.5px;
   font-weight: 700;
 }
@@ -612,41 +745,46 @@
 
 .lp-superficies {
   display: grid;
-  gap: 1px;
-  margin-top: clamp(26px, 4vw, 40px);
-  background: var(--line);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  overflow: hidden;
+  gap: 14px;
+  margin-top: clamp(30px, 4vw, 44px);
 }
-@media (min-width: 720px) {
+@media (min-width: 760px) {
   .lp-superficies {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 .lp-superficie {
-  background: var(--surface);
-  padding: 20px;
+  background: var(--n-carta);
+  border: 1px solid var(--n-linha);
+  border-radius: 14px;
+  padding: 24px;
+  transition: border-color 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.3s ease;
+}
+.lp-superficie:hover {
+  border-color: var(--n-linha-forte);
+  background: var(--n-carta-alta);
+  transform: translateY(-3px);
 }
 .lp-superficie h3 {
-  margin: 0 0 7px;
-  font-size: 16px;
-  letter-spacing: -0.01em;
+  margin: 0 0 9px;
+  font-size: 17px;
+  letter-spacing: -0.02em;
+  color: var(--n-texto);
 }
 .lp-superficie p {
   margin: 0;
   font-size: 14.5px;
-  line-height: 1.55;
-  color: var(--ink-2);
+  line-height: 1.58;
+  color: var(--n-texto-2);
 }
 
 /* ── Estação ───────────────────────────────────────────────────────────── */
 
 .lp-estacao {
-  background: var(--surface);
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  padding: clamp(44px, 8vw, 96px) clamp(16px, 5vw, 40px);
+  border-top: 1px solid var(--n-linha);
+  padding: clamp(64px, 11vw, 132px) clamp(16px, 5vw, 44px);
+  background: radial-gradient(ellipse 70% 100% at 50% 0%, rgba(52, 226, 155, 0.06), transparent 70%);
 }
 .lp-estacao h2,
 .lp-estacao p,
@@ -656,246 +794,313 @@
   margin-right: auto;
 }
 .lp-estacao h2 {
-  font-size: clamp(1.6rem, 4.4vw, 2.5rem);
-  line-height: 1.14;
-  letter-spacing: -0.03em;
+  font-size: clamp(1.85rem, 5.2vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.042em;
   margin: 0;
-  max-width: 18ch;
+  max-width: 17ch;
+  font-weight: 800;
 }
 .lp-estacao p {
-  margin: 16px auto 0;
-  font-size: clamp(1rem, 1.7vw, 1.1rem);
-  line-height: 1.6;
-  color: var(--ink-2);
-  max-width: var(--lp-texto);
+  margin: 20px auto 0;
+  font-size: clamp(1rem, 1.7vw, 1.12rem);
+  line-height: 1.62;
+  color: var(--n-texto-2);
+  max-width: 58ch;
 }
 .lp-pin {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 26px;
+  gap: 16px;
+  margin-top: 34px;
+  flex-wrap: wrap;
 }
 .lp-pin-caixa {
-  padding: 12px 20px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--ground);
-  font-size: 20px;
-  letter-spacing: 0.32em;
-  color: var(--ink-2);
+  display: inline-flex;
+  gap: 10px;
+  padding: 15px 22px;
+  border: 1px solid var(--n-linha-forte);
+  border-radius: 12px;
+  background: var(--n-carta);
+}
+.lp-pin-caixa i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--n-texto-3);
+  animation: lp-digita 1.9s ease-in-out infinite;
+}
+.lp-pin-caixa i:nth-child(2) { animation-delay: 0.16s; }
+.lp-pin-caixa i:nth-child(3) { animation-delay: 0.32s; }
+.lp-pin-caixa i:nth-child(4) { animation-delay: 0.48s; }
+@keyframes lp-digita {
+  0%, 62%, 100% { background: var(--n-texto-3); transform: scale(1); }
+  20% { background: var(--n-verde); transform: scale(1.22); }
 }
 .lp-pin-nome {
-  font-size: 14px;
-  color: var(--ink-3);
+  font-size: 14.5px;
+  color: var(--n-texto-2);
 }
 
 /* ── Rastreabilidade ───────────────────────────────────────────────────── */
 
 .lp-trace {
-  margin: clamp(26px, 4vw, 40px) 0 0;
+  margin: clamp(30px, 4vw, 44px) 0 0;
   display: grid;
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  overflow: hidden;
+  gap: 14px;
 }
-@media (min-width: 720px) {
+@media (min-width: 760px) {
   .lp-trace {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 .lp-trace > div {
-  background: var(--surface);
-  padding: 18px 20px;
+  background: var(--n-carta);
+  border: 1px solid var(--n-linha);
+  border-radius: 14px;
+  padding: 22px;
+  transition: border-color 0.3s ease;
+}
+.lp-trace > div:hover {
+  border-color: var(--n-linha-forte);
 }
 .lp-trace dt {
   font-weight: 700;
-  font-size: 15px;
-  margin-bottom: 5px;
+  font-size: 15.5px;
+  margin-bottom: 7px;
+  color: var(--n-texto);
 }
 .lp-trace dd {
   margin: 0;
   font-size: 14.5px;
-  line-height: 1.55;
-  color: var(--ink-2);
+  line-height: 1.58;
+  color: var(--n-texto-2);
 }
 
 /* ── Passos ────────────────────────────────────────────────────────────── */
 
 .lp-passos {
   list-style: none;
-  counter-reset: none;
-  margin: clamp(26px, 4vw, 40px) 0 0;
+  margin: clamp(30px, 4vw, 44px) 0 0;
   padding: 0;
   display: grid;
-  gap: 18px;
-  max-width: 620px;
+  gap: 22px;
+  max-width: 640px;
 }
 .lp-passos li {
   display: grid;
-  grid-template-columns: 34px 1fr;
-  gap: 14px;
+  grid-template-columns: 38px 1fr;
+  gap: 18px;
   align-items: start;
 }
 .lp-passo-n {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  background: var(--tint);
-  color: var(--primary-dark);
+  background: var(--n-verde-fundo);
+  border: 1px solid rgba(52, 226, 155, 0.26);
+  color: var(--n-verde);
   font-weight: 800;
   font-size: 15px;
   font-variant-numeric: tabular-nums;
 }
 .lp-passos h3 {
-  margin: 5px 0 4px;
-  font-size: 16.5px;
-  letter-spacing: -0.01em;
+  margin: 7px 0 5px;
+  font-size: 17px;
+  letter-spacing: -0.02em;
+  color: var(--n-texto);
 }
 .lp-passos p {
   margin: 0;
   font-size: 14.5px;
-  line-height: 1.55;
-  color: var(--ink-2);
+  line-height: 1.58;
+  color: var(--n-texto-2);
 }
 
 /* ── Lista de fim de teste ─────────────────────────────────────────────── */
 
 .lp-lista {
   list-style: none;
-  margin: clamp(24px, 3.5vw, 34px) 0 0;
+  margin: clamp(28px, 3.8vw, 40px) 0 0;
   padding: 0;
   display: grid;
-  gap: 11px;
-  max-width: var(--lp-texto);
+  gap: 14px;
+  max-width: 58ch;
 }
 .lp-lista li {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 12px;
   font-size: 15.5px;
-  line-height: 1.5;
-  color: var(--ink-2);
+  line-height: 1.55;
+  color: var(--n-texto-2);
 }
 .lp-lista li svg {
   flex: none;
   margin-top: 2px;
-  color: var(--ok);
+  color: var(--n-verde);
 }
 .lp-lista li.is-off svg {
-  color: var(--warn);
+  color: var(--n-ambar);
 }
 
 /* ── FAQ ───────────────────────────────────────────────────────────────── */
 
 .lp-faq {
-  margin-top: clamp(24px, 3.5vw, 34px);
-  border-top: 1px solid var(--line);
-  max-width: 760px;
+  margin-top: clamp(28px, 3.8vw, 40px);
+  border-top: 1px solid var(--n-linha);
+  max-width: 780px;
 }
 .lp-faq details {
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--n-linha);
 }
 .lp-faq summary {
   cursor: pointer;
-  padding: 16px 32px 16px 0;
-  font-size: 16px;
+  padding: 20px 40px 20px 0;
+  font-size: 16.5px;
   font-weight: 650;
   list-style: none;
   position: relative;
+  color: var(--n-texto);
+  transition: color 0.2s ease;
+}
+.lp-faq summary:hover {
+  color: var(--n-verde);
 }
 .lp-faq summary::-webkit-details-marker {
   display: none;
 }
 .lp-faq summary::after {
-  content: "+";
+  content: "";
   position: absolute;
-  right: 4px;
+  right: 6px;
   top: 50%;
-  transform: translateY(-50%);
-  font-size: 20px;
-  font-weight: 400;
-  color: var(--ink-3);
+  width: 11px;
+  height: 11px;
+  margin-top: -8px;
+  border-right: 2px solid var(--n-texto-3);
+  border-bottom: 2px solid var(--n-texto-3);
+  transform: rotate(45deg);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.2s ease;
 }
 .lp-faq details[open] summary::after {
-  content: "–";
-}
-.lp-faq summary:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 3px;
-  border-radius: 4px;
+  transform: rotate(-135deg);
+  margin-top: -2px;
+  border-color: var(--n-verde);
 }
 .lp-faq p {
-  margin: 0 0 18px;
-  padding-right: 32px;
+  margin: 0 0 22px;
+  padding-right: 40px;
   font-size: 15px;
-  line-height: 1.62;
-  color: var(--ink-2);
-  max-width: var(--lp-texto);
+  line-height: 1.66;
+  color: var(--n-texto-2);
+  max-width: 60ch;
+}
+.lp-faq details[open] p {
+  animation: lp-abre 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes lp-abre {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
 }
 
 /* ── Cadastro ──────────────────────────────────────────────────────────── */
 
 .lp-criar {
-  background: var(--surface);
-  border-top: 1px solid var(--line);
-  padding: clamp(44px, 8vw, 96px) clamp(16px, 5vw, 40px);
+  border-top: 1px solid var(--n-linha);
+  padding: clamp(64px, 11vw, 132px) clamp(16px, 5vw, 44px);
   display: grid;
-  gap: clamp(28px, 5vw, 56px);
+  gap: clamp(36px, 6vw, 60px);
   align-items: center;
+  background: radial-gradient(ellipse 80% 90% at 50% 100%, rgba(52, 226, 155, 0.09), transparent 68%);
 }
-@media (min-width: 900px) {
+@media (min-width: 940px) {
   .lp-criar {
-    grid-template-columns: 1fr minmax(360px, 420px);
+    grid-template-columns: 1fr minmax(370px, 430px);
     max-width: var(--lp-max);
     margin: 0 auto;
   }
 }
 .lp-criar-texto h2 {
-  font-size: clamp(1.7rem, 4.6vw, 2.6rem);
-  line-height: 1.12;
-  letter-spacing: -0.032em;
+  font-size: clamp(1.9rem, 5.2vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.042em;
   margin: 0;
-  max-width: 17ch;
+  max-width: 16ch;
+  font-weight: 800;
 }
 .lp-criar-texto p {
-  margin: 16px 0 0;
-  font-size: clamp(1rem, 1.7vw, 1.1rem);
-  line-height: 1.6;
-  color: var(--ink-2);
+  margin: 20px 0 0;
+  font-size: clamp(1rem, 1.7vw, 1.12rem);
+  line-height: 1.62;
+  color: var(--n-texto-2);
   max-width: 44ch;
 }
 
 .lp-form {
   display: grid;
-  gap: 14px;
-  padding: clamp(20px, 3vw, 26px);
-  background: var(--ground);
-  border: 1px solid var(--line);
-  border-radius: 14px;
+  gap: 15px;
+  padding: clamp(24px, 3.4vw, 30px);
+  background: var(--n-carta);
+  border: 1px solid var(--n-linha-forte);
+  border-radius: 18px;
+  box-shadow: 0 40px 90px -46px rgba(0, 0, 0, 0.95);
 }
 .lp-form-title {
   margin: 0;
-  font-size: 19px;
-  letter-spacing: -0.015em;
+  font-size: 20px;
+  letter-spacing: -0.025em;
+  color: var(--n-texto);
 }
 .lp-form-sub {
-  margin: -6px 0 2px;
+  margin: -7px 0 2px;
   font-size: 13.5px;
-  color: var(--ink-3);
+  color: var(--n-texto-3);
 }
 .lp-hint {
   font-size: 12px;
-  color: var(--ink-3);
+  color: var(--n-texto-3);
 }
 .lp-form-foot {
   margin: 0;
   font-size: 13px;
-  color: var(--ink-3);
+  color: var(--n-texto-3);
   text-align: center;
+}
+.lp-form-foot a,
+.lp-form a {
+  color: var(--n-verde);
+}
+
+/* Os campos e o botão do produto vestidos para o escuro. Precisa de
+   especificidade e !important porque `ui.tsx` aplica estilo inline, e o
+   inline vence qualquer seletor. */
+.lp-form label > span {
+  color: var(--n-texto-2) !important;
+}
+.lp-form input {
+  background: rgba(255, 255, 255, 0.035) !important;
+  border-color: var(--n-linha-forte) !important;
+  color: var(--n-texto) !important;
+}
+.lp-form input:focus {
+  outline: none;
+  border-color: var(--n-verde) !important;
+  box-shadow: 0 0 0 3px rgba(52, 226, 155, 0.16);
+}
+.lp-form button[type="submit"] {
+  background: var(--n-verde) !important;
+  border-color: var(--n-verde) !important;
+  color: #06231a !important;
+  font-weight: 700 !important;
+  min-height: 50px;
+  transition: transform 0.16s ease, box-shadow 0.2s ease;
+}
+.lp-form button[type="submit"]:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px -14px rgba(52, 226, 155, 0.8);
 }
 
 /* ── Rodapé ────────────────────────────────────────────────────────────── */
@@ -905,60 +1110,71 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 16px;
   max-width: var(--lp-max);
   margin: 0 auto;
-  padding: 26px clamp(16px, 5vw, 40px) 44px;
+  padding: 32px clamp(16px, 5vw, 44px) 52px;
+  border-top: 1px solid var(--n-linha);
   font-family: "Bricolage Grotesque", system-ui, sans-serif;
   font-weight: 800;
   font-size: 15px;
-  color: var(--ink-3);
+  color: var(--n-texto-3);
 }
 .lp-rodape-vet {
-  color: var(--primary);
+  color: var(--n-verde);
 }
 .lp-rodape nav {
   display: flex;
-  gap: 20px;
+  gap: 24px;
   font-family: "Instrument Sans", system-ui, sans-serif;
   font-weight: 500;
   font-size: 14px;
 }
 .lp-rodape nav a {
-  color: var(--ink-3);
+  color: var(--n-texto-3);
   text-decoration: none;
+  transition: color 0.18s ease;
 }
 .lp-rodape nav a:hover {
-  color: var(--ink);
+  color: var(--n-verde);
 }
 
 /* Foco visível em tudo que recebe teclado. */
 .lp a:focus-visible,
 .lp button:focus-visible,
-.lp summary:focus-visible {
-  outline: 2px solid var(--primary);
+.lp summary:focus-visible,
+.lp input:focus-visible {
+  outline: 2px solid var(--n-verde);
   outline-offset: 3px;
   border-radius: 6px;
 }
 
-/* O cabeçalho é sticky, então um link de âncora pararia com o título escondido
-   atrás dele. Esta margem é o que faz #fluxo, #preco e #criar chegarem com o
-   título inteiro à vista. */
+/* O cabeçalho é sticky: sem esta margem, um link de âncora para com o título
+   escondido atrás dele. */
 .lp [id] {
-  scroll-margin-top: 72px;
+  scroll-margin-top: 84px;
 }
 
-/* Rolagem suave só para quem não pediu o contrário. */
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
   }
 }
 
-/* A frase que separa ERP de camada operacional vem ANTES da lista de
-   superfícies: é a resposta ao "já tenho um sistema de gestão", e ela precisa
-   estar onde o cético está olhando, não enterrada no FAQ. */
-.lp-frase-alta {
-  margin-top: clamp(18px, 2.5vw, 26px);
-  margin-bottom: clamp(4px, 1vw, 10px);
+/* Quem pediu menos movimento recebe a página parada — e completa. Nenhuma
+   informação depende de uma animação ter rodado. */
+@media (prefers-reduced-motion: reduce) {
+  .lp *,
+  .lp *::before,
+  .lp *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .lp-sobe,
+  .lp-armado .lp-rev,
+  .lp-armado .lp-horarios span {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

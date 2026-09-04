@@ -60,6 +60,32 @@ function useOnScreen<T extends HTMLElement>() {
   return [ref, visivel] as const;
 }
 
+/** Revela um elemento quando ele entra na tela. Usado pelas seções inteiras.
+ *
+ *  Devolve `is-in` só depois que o observer viu o elemento; o CSS esconde
+ *  apenas quando a página está `lp-armado`, então sem JS nada some. */
+function useRevelar<T extends HTMLElement>() {
+  const ref = useRef<T | null>(null);
+  const [dentro, setDentro] = useState(false);
+  useEffect(() => {
+    const alvo = ref.current;
+    if (!alvo || dentro) return;
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) setDentro(true);
+      },
+      { threshold: 0.16, rootMargin: "0px 0px -8% 0px" },
+    );
+    obs.observe(alvo);
+    const rede = window.setTimeout(() => setDentro(true), 2600);
+    return () => {
+      obs.disconnect();
+      window.clearTimeout(rede);
+    };
+  }, [dentro]);
+  return { ref, cls: dentro ? "lp-rev is-in" : "lp-rev" };
+}
+
 function Check({ size = 16 }: { size?: number }) {
   return (
     <svg
@@ -162,13 +188,14 @@ function FichaViva() {
   }, [minutos]);
 
   return (
-    <figure className="lp-ficha" aria-label={t("lp.sheet.aria")}>
+    <figure className={`lp-ficha ${atrasada ? "is-late" : ""}`} aria-label={t("lp.sheet.aria")}>
       <div className="lp-ficha-top">
         <div className="lp-ficha-paciente">
           <strong>Thor</strong>
           <span>{t("lp.sheet.patient")}</span>
         </div>
-        <div className="lp-ficha-relogio tabular" aria-live="off">
+        <div className="lp-ficha-relogio" aria-live="off">
+          <span className="lp-pulso" aria-hidden="true" />
           {relogio}
         </div>
       </div>
@@ -317,10 +344,40 @@ const PASSOS = ["a", "b", "c"] as const;
 
 export function Landing() {
   const { t } = useTranslation();
+  const reduced = useReducedMotion();
+  // `lp-armado` é o que autoriza o CSS a esconder as seções antes de revelá-las.
+  // Só entra depois da montagem, e nunca para quem pediu menos movimento: assim
+  // a página sem JS, ou com o observer falhando, continua legível por completo.
+  const [armado, setArmado] = useState(false);
+  const [colado, setColado] = useState(false);
+
+  useEffect(() => {
+    if (!reduced) setArmado(true);
+  }, [reduced]);
+
+  useEffect(() => {
+    const aoRolar = () => setColado(window.scrollY > 8);
+    aoRolar();
+    window.addEventListener("scroll", aoRolar, { passive: true });
+    return () => window.removeEventListener("scroll", aoRolar);
+  }, []);
+
+  const cena = useRevelar<HTMLElement>();
+  const fluxo = useRevelar<HTMLElement>();
+  const atraso = useRevelar<HTMLElement>();
+  const passagem = useRevelar<HTMLElement>();
+  const superficies = useRevelar<HTMLElement>();
+  const estacao = useRevelar<HTMLElement>();
+  const trace = useRevelar<HTMLElement>();
+  const comecar = useRevelar<HTMLElement>();
+  const preco = useRevelar<HTMLElement>();
+  const teste = useRevelar<HTMLElement>();
+  const faq = useRevelar<HTMLElement>();
+  const criar = useRevelar<HTMLElement>();
 
   return (
-    <div className="lp">
-      <header className="lp-nav">
+    <div className={`lp ${armado ? "lp-armado" : ""}`}>
+      <header className={`lp-nav ${colado ? "is-stuck" : ""}`}>
         <a className="lp-marca" href="#topo">
           Plantão<span>Vet</span>
         </a>
@@ -337,9 +394,9 @@ export function Landing() {
         {/* HERO ─ a tese e o produto na mesma tela. */}
         <section className="lp-hero">
           <div className="lp-hero-texto">
-            <h1>{t("lp.hero.title")}</h1>
-            <p className="lp-hero-sub">{t("lp.hero.sub")}</p>
-            <div className="lp-hero-acoes">
+            <h1 className="lp-sobe lp-sobe-1">{t("lp.hero.title")}</h1>
+            <p className="lp-hero-sub lp-sobe lp-sobe-2">{t("lp.hero.sub")}</p>
+            <div className="lp-hero-acoes lp-sobe lp-sobe-3">
               <a href="#criar" className="lp-btn lp-btn-primario">
                 {t("lp.cta.primary")}
               </a>
@@ -347,16 +404,16 @@ export function Landing() {
                 {t("lp.cta.secondary")}
               </a>
             </div>
-            <p className="lp-hero-nota">{t("lp.hero.note")}</p>
+            <p className="lp-hero-nota lp-sobe lp-sobe-4">{t("lp.hero.note")}</p>
           </div>
-          <div className="lp-hero-produto">
+          <div className="lp-hero-produto lp-sobe lp-sobe-5">
             <FichaViva />
           </div>
         </section>
 
         {/* A CENA ─ o reconhecimento. Uma frase por linha, no ritmo de quem
             conta o que aconteceu no plantão de ontem. */}
-        <section className="lp-cena">
+        <section className={`lp-cena ${cena.cls}`} ref={cena.ref}>
           <p className="lp-cena-linha">{t("lp.scene.a")}</p>
           <p className="lp-cena-linha">{t("lp.scene.b")}</p>
           <p className="lp-cena-linha">{t("lp.scene.c")}</p>
@@ -364,14 +421,14 @@ export function Landing() {
         </section>
 
         {/* PRESCRIÇÃO → EXECUÇÃO */}
-        <section className="lp-secao" id="fluxo">
+        <section className={`lp-secao ${fluxo.cls}`} id="fluxo" ref={fluxo.ref}>
           <h2>{t("lp.flow.title")}</h2>
           <p className="lp-secao-sub">{t("lp.flow.sub")}</p>
           <FluxoPrescricao />
         </section>
 
         {/* O ATRASO */}
-        <section className="lp-secao lp-secao-escura">
+        <section className={`lp-secao ${atraso.cls}`} ref={atraso.ref}>
           <h2>{t("lp.late.title")}</h2>
           <p className="lp-secao-sub">{t("lp.late.sub")}</p>
           <div className="lp-janelas">
@@ -391,7 +448,7 @@ export function Landing() {
         </section>
 
         {/* PASSAGEM DE PLANTÃO */}
-        <section className="lp-secao" id="passagem">
+        <section className={`lp-secao ${passagem.cls}`} id="passagem" ref={passagem.ref}>
           <h2>{t("lp.handover.title")}</h2>
           <p className="lp-secao-sub">{t("lp.handover.sub")}</p>
           <FluxoPassagem />
@@ -399,7 +456,7 @@ export function Landing() {
         </section>
 
         {/* SUPERFÍCIES */}
-        <section className="lp-secao" id="como">
+        <section className={`lp-secao ${superficies.cls}`} id="como" ref={superficies.ref}>
           <h2>{t("lp.surfaces.title")}</h2>
           <p className="lp-frase lp-frase-alta">{t("lp.surfaces.line")}</p>
           <div className="lp-superficies">
@@ -413,17 +470,22 @@ export function Landing() {
         </section>
 
         {/* ESTAÇÃO */}
-        <section className="lp-estacao">
+        <section className={`lp-estacao ${estacao.cls}`} ref={estacao.ref}>
           <h2>{t("lp.station.title")}</h2>
           <p>{t("lp.station.body")}</p>
           <div className="lp-pin">
-            <span className="lp-pin-caixa">••••</span>
+            <span className="lp-pin-caixa" aria-hidden="true">
+              <i />
+              <i />
+              <i />
+              <i />
+            </span>
             <span className="lp-pin-nome">{t("lp.station.who")}</span>
           </div>
         </section>
 
         {/* RASTREABILIDADE */}
-        <section className="lp-secao">
+        <section className={`lp-secao ${trace.cls}`} ref={trace.ref}>
           <h2>{t("lp.trace.title")}</h2>
           <p className="lp-secao-sub">{t("lp.trace.sub")}</p>
           <dl className="lp-trace">
@@ -437,7 +499,7 @@ export function Landing() {
         </section>
 
         {/* COMEÇAR */}
-        <section className="lp-secao">
+        <section className={`lp-secao ${comecar.cls}`} ref={comecar.ref}>
           <h2>{t("lp.start.title")}</h2>
           <ol className="lp-passos">
             {PASSOS.map((p, i) => (
@@ -453,7 +515,7 @@ export function Landing() {
         </section>
 
         {/* PREÇO */}
-        <section className="lp-secao lp-secao-escura" id="preco">
+        <section className={`lp-secao ${preco.cls}`} id="preco" ref={preco.ref}>
           <h2>{t("lp.price.title")}</h2>
           <p className="lp-secao-sub">{t("lp.price.sub")}</p>
           <p className="lp-frase">{t("lp.price.soft")}</p>
@@ -461,7 +523,7 @@ export function Landing() {
         </section>
 
         {/* FIM DO TESTE */}
-        <section className="lp-secao">
+        <section className={`lp-secao ${teste.cls}`} ref={teste.ref}>
           <h2>{t("lp.trial.title")}</h2>
           <p className="lp-secao-sub">{t("lp.trial.sub")}</p>
           <ul className="lp-lista">
@@ -475,7 +537,7 @@ export function Landing() {
         </section>
 
         {/* FAQ */}
-        <section className="lp-secao" id="faq">
+        <section className={`lp-secao ${faq.cls}`} id="faq" ref={faq.ref}>
           <h2>{t("lp.faq.title")}</h2>
           <div className="lp-faq">
             {FAQS.map((k) => (
@@ -488,7 +550,7 @@ export function Landing() {
         </section>
 
         {/* CADASTRO */}
-        <section className="lp-criar" id="criar">
+        <section className={`lp-criar ${criar.cls}`} id="criar" ref={criar.ref}>
           <div className="lp-criar-texto">
             <h2>{t("lp.final.title")}</h2>
             <p>{t("lp.final.sub")}</p>
