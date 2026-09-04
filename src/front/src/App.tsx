@@ -1,41 +1,45 @@
-import { Suspense, useState } from "react";
+import { Suspense, lazy, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, Navigate, Route, Routes, useLocation, useMatch } from "react-router-dom";
 
 import "./styles/app.css";
 import "./styles/platform.css";
 
-import { Admission } from "./pages/Admission";
-import { AuditTrail } from "./pages/AuditTrail";
-import { Charges } from "./pages/Charges";
-import { ClinicSettings } from "./pages/ClinicSettings";
-import { Discharge } from "./pages/Discharge";
-import { Handover } from "./pages/Handover";
-import { Inpatients } from "./pages/Inpatients";
 import { Login } from "./pages/Login";
-import { Management } from "./pages/Management";
-import { MedicalRecord } from "./pages/MedicalRecord";
-import { NewPrescription } from "./pages/NewPrescription";
-import { OwnerContacts } from "./pages/OwnerContacts";
-import { Patient } from "./pages/Patient";
-import { PriceList } from "./pages/PriceList";
-import { ProgressNotes } from "./pages/ProgressNotes";
-import { ShiftConsole } from "./pages/ShiftConsole";
-import { ShiftSchedule } from "./pages/ShiftSchedule";
-import { Signup } from "./pages/Signup";
-import { StationDevices } from "./pages/StationDevices";
+import { Landing } from "./pages/Landing";
 import { MyPinDialog } from "./components/MyPinDialog";
 import { PushButton } from "./components/PushButton";
-import { PlatformApp } from "./pages/Platform";
-import { Team } from "./pages/Team";
-import { TreatmentSheet } from "./pages/TreatmentSheet";
-import { WallBoard } from "./pages/WallBoard";
 import { CAN } from "./api/capabilities";
 import { RequireCapability, RoleHome } from "./components/authz";
 import { ClinicProvider } from "./hooks/useClinic";
 import { useSession } from "./hooks/useSession";
 import { useClinic } from "./hooks/useClinic";
 import { useBoard } from "./hooks/useBoard";
+
+// Tudo abaixo só existe DEPOIS do login. Carregar sob demanda tira o app
+// inteiro do bundle que a LANDING baixa: quem chega pelo link de marketing
+// não deveria pagar o download do back-office para ler uma headline.
+const Admission = lazy(() => import("./pages/Admission").then((m) => ({ default: m.Admission })));
+const AuditTrail = lazy(() => import("./pages/AuditTrail").then((m) => ({ default: m.AuditTrail })));
+const Charges = lazy(() => import("./pages/Charges").then((m) => ({ default: m.Charges })));
+const ClinicSettings = lazy(() => import("./pages/ClinicSettings").then((m) => ({ default: m.ClinicSettings })));
+const Discharge = lazy(() => import("./pages/Discharge").then((m) => ({ default: m.Discharge })));
+const Handover = lazy(() => import("./pages/Handover").then((m) => ({ default: m.Handover })));
+const Inpatients = lazy(() => import("./pages/Inpatients").then((m) => ({ default: m.Inpatients })));
+const Management = lazy(() => import("./pages/Management").then((m) => ({ default: m.Management })));
+const MedicalRecord = lazy(() => import("./pages/MedicalRecord").then((m) => ({ default: m.MedicalRecord })));
+const NewPrescription = lazy(() => import("./pages/NewPrescription").then((m) => ({ default: m.NewPrescription })));
+const OwnerContacts = lazy(() => import("./pages/OwnerContacts").then((m) => ({ default: m.OwnerContacts })));
+const Patient = lazy(() => import("./pages/Patient").then((m) => ({ default: m.Patient })));
+const PriceList = lazy(() => import("./pages/PriceList").then((m) => ({ default: m.PriceList })));
+const ProgressNotes = lazy(() => import("./pages/ProgressNotes").then((m) => ({ default: m.ProgressNotes })));
+const ShiftConsole = lazy(() => import("./pages/ShiftConsole").then((m) => ({ default: m.ShiftConsole })));
+const ShiftSchedule = lazy(() => import("./pages/ShiftSchedule").then((m) => ({ default: m.ShiftSchedule })));
+const StationDevices = lazy(() => import("./pages/StationDevices").then((m) => ({ default: m.StationDevices })));
+const Team = lazy(() => import("./pages/Team").then((m) => ({ default: m.Team })));
+const TreatmentSheet = lazy(() => import("./pages/TreatmentSheet").then((m) => ({ default: m.TreatmentSheet })));
+const WallBoard = lazy(() => import("./pages/WallBoard").then((m) => ({ default: m.WallBoard })));
+const PlatformApp = lazy(() => import("./pages/Platform").then((m) => ({ default: m.PlatformApp })));
 
 export default function App() {
   const { session } = useSession();
@@ -46,15 +50,20 @@ export default function App() {
   if (!session)
     return (
       <Routes>
-        <Route path="/" element={<Signup />} />
-        <Route path="/cadastro" element={<Signup />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/cadastro" element={<Landing />} />
         <Route path="*" element={<Login />} />
       </Routes>
     );
   // Outra porta, outra casca: quem vende e dá suporte não é membro de clínica
   // nenhuma, e o token da plataforma é recusado por toda rota de clínica. Não
   // há o que montar do shell da clínica para essa sessão.
-  if (session.kind === "platform") return <PlatformApp />;
+  if (session.kind === "platform")
+    return (
+      <Suspense fallback={null}>
+        <PlatformApp />
+      </Suspense>
+    );
   return (
     <Suspense fallback={null}>
       <ClinicProvider>

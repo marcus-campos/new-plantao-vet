@@ -1,0 +1,964 @@
+/* A landing pública.
+ *
+ *  Usa os tokens do produto (index.css) de propósito: quem entra depois de
+ *  criar a conta reconhece o mesmo verde, a mesma grade, o mesmo vermelho de
+ *  atraso. Coerência entre a promessa e o software é argumento de venda.
+ *
+ *  O protagonista visual é a ficha — a grade hora × tarefa. Todo o resto é
+ *  quieto para que ela seja a única coisa que chama atenção. */
+
+.lp {
+  --lp-max: 1120px;
+  --lp-texto: 62ch;
+  background: var(--ground);
+  color: var(--ink);
+}
+
+/* ── Navegação ─────────────────────────────────────────────────────────── */
+
+.lp-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px clamp(16px, 5vw, 40px);
+  background: color-mix(in srgb, var(--ground) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+
+.lp-marca {
+  font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 19px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.lp-marca span {
+  color: var(--primary);
+}
+
+.lp-nav nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 3vw, 26px);
+  font-size: 14.5px;
+}
+.lp-nav nav a {
+  color: var(--ink-2);
+  text-decoration: none;
+}
+.lp-nav nav a:hover {
+  color: var(--ink);
+}
+.lp-nav-entrar {
+  font-weight: 600;
+  color: var(--primary) !important;
+}
+/* Abaixo de 560px o menu do meio sai: sobra a marca e a única ação que
+   interessa a quem já é cliente. */
+@media (max-width: 560px) {
+  .lp-nav nav a:not(.lp-nav-entrar) {
+    display: none;
+  }
+}
+
+/* ── Hero ──────────────────────────────────────────────────────────────── */
+
+.lp-hero {
+  max-width: var(--lp-max);
+  margin: 0 auto;
+  padding: clamp(36px, 7vw, 88px) clamp(16px, 5vw, 40px) clamp(28px, 5vw, 64px);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(28px, 5vw, 56px);
+  align-items: center;
+}
+@media (min-width: 940px) {
+  .lp-hero {
+    grid-template-columns: 1.02fr 1fr;
+  }
+}
+
+.lp-hero h1 {
+  font-size: clamp(2.1rem, 6.2vw, 3.7rem);
+  line-height: 1.03;
+  letter-spacing: -0.035em;
+  margin: 0;
+  max-width: 15ch;
+}
+
+.lp-hero-sub {
+  margin: clamp(16px, 2.4vw, 24px) 0 0;
+  font-size: clamp(1.02rem, 1.9vw, 1.2rem);
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 46ch;
+}
+
+.lp-hero-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: clamp(22px, 3vw, 32px);
+}
+
+.lp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0 22px;
+  border-radius: 10px;
+  font-weight: 650;
+  font-size: 15.5px;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.lp-btn-primario {
+  background: var(--primary);
+  color: #fff;
+  border: 1px solid var(--primary);
+}
+.lp-btn-primario:hover {
+  background: var(--primary-dark);
+}
+.lp-btn-fantasma {
+  background: transparent;
+  color: var(--ink-2);
+  border: 1px solid var(--line);
+}
+.lp-btn-fantasma:hover {
+  border-color: var(--ink-3);
+  color: var(--ink);
+}
+@media (max-width: 460px) {
+  .lp-hero-acoes .lp-btn {
+    flex: 1 1 100%;
+  }
+}
+
+.lp-hero-nota {
+  margin: 16px 0 0;
+  font-size: 13.5px;
+  color: var(--ink-3);
+}
+
+/* ── A ficha viva ──────────────────────────────────────────────────────── */
+
+.lp-ficha {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(23, 37, 31, 0.04), 0 12px 32px -18px rgba(23, 37, 31, 0.28);
+}
+
+.lp-ficha-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-subtle);
+}
+.lp-ficha-paciente {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.lp-ficha-paciente strong {
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+}
+.lp-ficha-paciente span {
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+.lp-ficha-relogio {
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.lp-ficha-linhas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lp-linha {
+  display: grid;
+  grid-template-columns: 54px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 14px;
+}
+.lp-linha:last-child {
+  border-bottom: 0;
+}
+.lp-linha-hora {
+  font-weight: 700;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.lp-linha-nome {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.lp-linha-nome small {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.lp-critica {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--warn-bg);
+  color: var(--warn);
+  font-size: 10.5px;
+  font-weight: 700;
+  font-style: normal;
+  vertical-align: 1px;
+}
+.lp-linha-estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.lp-linha-feita .lp-linha-estado {
+  color: var(--ok);
+}
+.lp-programada {
+  color: var(--ink-muted);
+  font-weight: 600;
+}
+.lp-linha-atrasada {
+  background: var(--late-bg);
+}
+.lp-linha-atrasada .lp-linha-estado {
+  color: var(--late);
+}
+.lp-linha-atrasada .lp-linha-hora {
+  color: var(--late);
+}
+
+.lp-ficha-pe {
+  padding: 11px 16px;
+  border-top: 1px solid var(--line);
+  background: var(--surface-subtle);
+  font-size: 12.5px;
+  color: var(--ink-3);
+  transition: color 0.4s ease, background-color 0.4s ease;
+}
+.lp-ficha-pe.is-late {
+  background: var(--late-bg);
+  color: var(--late);
+  font-weight: 650;
+}
+
+/* ── A cena ────────────────────────────────────────────────────────────── */
+
+.lp-cena {
+  max-width: var(--lp-max);
+  margin: 0 auto;
+  padding: clamp(48px, 9vw, 116px) clamp(16px, 5vw, 40px);
+  border-top: 1px solid var(--line);
+}
+.lp-cena-linha {
+  margin: 0 0 6px;
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-size: clamp(1.35rem, 4.1vw, 2.15rem);
+  line-height: 1.24;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  color: var(--ink-3);
+  max-width: 24ch;
+}
+.lp-cena-linha:last-of-type {
+  color: var(--ink-2);
+}
+.lp-cena-virada {
+  margin: clamp(20px, 3vw, 30px) 0 0;
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-size: clamp(1.5rem, 4.6vw, 2.4rem);
+  line-height: 1.2;
+  letter-spacing: -0.028em;
+  font-weight: 800;
+  color: var(--ink);
+  max-width: 22ch;
+}
+
+/* ── Seções ────────────────────────────────────────────────────────────── */
+
+.lp-secao {
+  max-width: var(--lp-max);
+  margin: 0 auto;
+  padding: clamp(44px, 8vw, 96px) clamp(16px, 5vw, 40px);
+  border-top: 1px solid var(--line);
+}
+.lp-secao h2 {
+  font-size: clamp(1.6rem, 4.2vw, 2.35rem);
+  line-height: 1.14;
+  letter-spacing: -0.03em;
+  margin: 0;
+  max-width: 20ch;
+}
+.lp-secao-sub {
+  margin: 14px 0 0;
+  font-size: clamp(1rem, 1.7vw, 1.1rem);
+  line-height: 1.6;
+  color: var(--ink-2);
+  max-width: var(--lp-texto);
+}
+
+.lp-secao-escura {
+  max-width: none;
+  background: var(--ink);
+  color: #fff;
+  border-top: 0;
+}
+.lp-secao-escura > * {
+  max-width: var(--lp-max);
+  margin-left: auto;
+  margin-right: auto;
+}
+.lp-secao-escura .lp-secao-sub {
+  color: #b9c7c0;
+}
+
+.lp-nota {
+  margin: 22px 0 0;
+  font-size: 13.5px;
+  color: var(--ink-3);
+  max-width: var(--lp-texto);
+}
+.lp-secao-escura .lp-nota {
+  color: #8fa39a;
+}
+
+.lp-frase {
+  margin: clamp(28px, 4vw, 44px) 0 0;
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-size: clamp(1.3rem, 3.4vw, 1.9rem);
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  font-weight: 800;
+  max-width: 24ch;
+}
+
+/* ── Fluxo prescrição → execução ───────────────────────────────────────── */
+
+.lp-fluxo {
+  display: grid;
+  gap: 14px;
+  margin-top: clamp(26px, 4vw, 40px);
+}
+@media (min-width: 800px) {
+  .lp-fluxo {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+}
+
+.lp-fluxo-passo {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px;
+}
+/* O conteúdo é visível por padrão e a entrada só é ARMADA pelo JS. Do jeito
+   contrário — opacity 0 no repouso — um observer que não dispara, um erro de
+   script ou um leitor sem JS deixariam os três passos invisíveis para sempre.
+   A animação é enfeite; o texto é o produto. */
+.lp-fluxo.is-armed .lp-fluxo-passo {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.lp-fluxo.is-armed .lp-fluxo-passo.is-in {
+  opacity: 1;
+  transform: none;
+}
+.lp-delay-1 {
+  transition-delay: 0.22s;
+}
+.lp-delay-2 {
+  transition-delay: 0.44s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-fluxo.is-armed .lp-fluxo-passo {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+.lp-fluxo-passo h3 {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-3);
+  letter-spacing: 0.02em;
+}
+.lp-fluxo-passo p {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.lp-receita {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+.lp-receita strong {
+  font-size: 17px;
+  color: var(--ink);
+}
+.lp-freq {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--tint);
+  color: var(--primary-dark);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.lp-horarios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.lp-horarios span {
+  padding: 7px 12px;
+  border-radius: 8px;
+  background: var(--tint);
+  color: var(--primary-dark);
+  font-weight: 700;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+
+.lp-execucoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.lp-execucoes span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 11px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.lp-ex-feita {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+.lp-ex-atrasada {
+  background: var(--late-bg);
+  color: var(--late);
+}
+.lp-ex-prog {
+  background: var(--surface-subtle);
+  color: var(--ink-muted);
+  border: 1px solid var(--line);
+}
+
+/* ── Janelas de tolerância ─────────────────────────────────────────────── */
+
+.lp-janelas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: clamp(26px, 4vw, 40px);
+}
+.lp-janela {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 18px;
+  border: 1px solid #2c3e37;
+  border-radius: 12px;
+  background: #1d2c26;
+}
+.lp-janela-min {
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-size: clamp(1.9rem, 5.4vw, 2.9rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.lp-janela-un {
+  font-size: 12.5px;
+  color: #8fa39a;
+  margin-top: 2px;
+}
+.lp-janela-nome {
+  margin-top: 10px;
+  font-size: 13.5px;
+  font-weight: 650;
+  color: #d6e2dc;
+}
+
+/* ── Passagem de plantão ───────────────────────────────────────────────── */
+
+.lp-passagem {
+  margin-top: clamp(26px, 4vw, 40px);
+  display: grid;
+  gap: 12px;
+  max-width: 560px;
+}
+.lp-turno {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.lp-turno-rot {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+.lp-turno strong {
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.lp-turno-entra {
+  border-color: var(--primary);
+  background: var(--tint);
+}
+
+.lp-passagem-itens {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 18px;
+  display: grid;
+  gap: 9px;
+  border-left: 2px solid var(--line);
+  margin-left: 16px;
+}
+.lp-passagem-itens li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14.5px;
+  color: var(--ink-2);
+}
+.lp-bolinha {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: none;
+}
+.lp-bolinha-done {
+  background: var(--ok);
+}
+.lp-bolinha-notDone {
+  background: var(--late);
+}
+.lp-bolinha-pending {
+  background: var(--warn-edge);
+}
+.lp-bolinha-changes {
+  background: var(--primary);
+}
+
+.lp-aceite {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: start;
+  margin-left: 16px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  background: var(--ok-bg);
+  color: var(--ok);
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+/* ── Superfícies ───────────────────────────────────────────────────────── */
+
+.lp-superficies {
+  display: grid;
+  gap: 1px;
+  margin-top: clamp(26px, 4vw, 40px);
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+@media (min-width: 720px) {
+  .lp-superficies {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.lp-superficie {
+  background: var(--surface);
+  padding: 20px;
+}
+.lp-superficie h3 {
+  margin: 0 0 7px;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+.lp-superficie p {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+/* ── Estação ───────────────────────────────────────────────────────────── */
+
+.lp-estacao {
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: clamp(44px, 8vw, 96px) clamp(16px, 5vw, 40px);
+}
+.lp-estacao h2,
+.lp-estacao p,
+.lp-estacao .lp-pin {
+  max-width: var(--lp-max);
+  margin-left: auto;
+  margin-right: auto;
+}
+.lp-estacao h2 {
+  font-size: clamp(1.6rem, 4.4vw, 2.5rem);
+  line-height: 1.14;
+  letter-spacing: -0.03em;
+  margin: 0;
+  max-width: 18ch;
+}
+.lp-estacao p {
+  margin: 16px auto 0;
+  font-size: clamp(1rem, 1.7vw, 1.1rem);
+  line-height: 1.6;
+  color: var(--ink-2);
+  max-width: var(--lp-texto);
+}
+.lp-pin {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 26px;
+}
+.lp-pin-caixa {
+  padding: 12px 20px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--ground);
+  font-size: 20px;
+  letter-spacing: 0.32em;
+  color: var(--ink-2);
+}
+.lp-pin-nome {
+  font-size: 14px;
+  color: var(--ink-3);
+}
+
+/* ── Rastreabilidade ───────────────────────────────────────────────────── */
+
+.lp-trace {
+  margin: clamp(26px, 4vw, 40px) 0 0;
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+@media (min-width: 720px) {
+  .lp-trace {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.lp-trace > div {
+  background: var(--surface);
+  padding: 18px 20px;
+}
+.lp-trace dt {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+.lp-trace dd {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+/* ── Passos ────────────────────────────────────────────────────────────── */
+
+.lp-passos {
+  list-style: none;
+  counter-reset: none;
+  margin: clamp(26px, 4vw, 40px) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 18px;
+  max-width: 620px;
+}
+.lp-passos li {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 14px;
+  align-items: start;
+}
+.lp-passo-n {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--tint);
+  color: var(--primary-dark);
+  font-weight: 800;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+.lp-passos h3 {
+  margin: 5px 0 4px;
+  font-size: 16.5px;
+  letter-spacing: -0.01em;
+}
+.lp-passos p {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+/* ── Lista de fim de teste ─────────────────────────────────────────────── */
+
+.lp-lista {
+  list-style: none;
+  margin: clamp(24px, 3.5vw, 34px) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 11px;
+  max-width: var(--lp-texto);
+}
+.lp-lista li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 15.5px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.lp-lista li svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--ok);
+}
+.lp-lista li.is-off svg {
+  color: var(--warn);
+}
+
+/* ── FAQ ───────────────────────────────────────────────────────────────── */
+
+.lp-faq {
+  margin-top: clamp(24px, 3.5vw, 34px);
+  border-top: 1px solid var(--line);
+  max-width: 760px;
+}
+.lp-faq details {
+  border-bottom: 1px solid var(--line);
+}
+.lp-faq summary {
+  cursor: pointer;
+  padding: 16px 32px 16px 0;
+  font-size: 16px;
+  font-weight: 650;
+  list-style: none;
+  position: relative;
+}
+.lp-faq summary::-webkit-details-marker {
+  display: none;
+}
+.lp-faq summary::after {
+  content: "+";
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--ink-3);
+}
+.lp-faq details[open] summary::after {
+  content: "–";
+}
+.lp-faq summary:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.lp-faq p {
+  margin: 0 0 18px;
+  padding-right: 32px;
+  font-size: 15px;
+  line-height: 1.62;
+  color: var(--ink-2);
+  max-width: var(--lp-texto);
+}
+
+/* ── Cadastro ──────────────────────────────────────────────────────────── */
+
+.lp-criar {
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  padding: clamp(44px, 8vw, 96px) clamp(16px, 5vw, 40px);
+  display: grid;
+  gap: clamp(28px, 5vw, 56px);
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .lp-criar {
+    grid-template-columns: 1fr minmax(360px, 420px);
+    max-width: var(--lp-max);
+    margin: 0 auto;
+  }
+}
+.lp-criar-texto h2 {
+  font-size: clamp(1.7rem, 4.6vw, 2.6rem);
+  line-height: 1.12;
+  letter-spacing: -0.032em;
+  margin: 0;
+  max-width: 17ch;
+}
+.lp-criar-texto p {
+  margin: 16px 0 0;
+  font-size: clamp(1rem, 1.7vw, 1.1rem);
+  line-height: 1.6;
+  color: var(--ink-2);
+  max-width: 44ch;
+}
+
+.lp-form {
+  display: grid;
+  gap: 14px;
+  padding: clamp(20px, 3vw, 26px);
+  background: var(--ground);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+.lp-form-title {
+  margin: 0;
+  font-size: 19px;
+  letter-spacing: -0.015em;
+}
+.lp-form-sub {
+  margin: -6px 0 2px;
+  font-size: 13.5px;
+  color: var(--ink-3);
+}
+.lp-hint {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.lp-form-foot {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-3);
+  text-align: center;
+}
+
+/* ── Rodapé ────────────────────────────────────────────────────────────── */
+
+.lp-rodape {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  max-width: var(--lp-max);
+  margin: 0 auto;
+  padding: 26px clamp(16px, 5vw, 40px) 44px;
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--ink-3);
+}
+.lp-rodape-vet {
+  color: var(--primary);
+}
+.lp-rodape nav {
+  display: flex;
+  gap: 20px;
+  font-family: "Instrument Sans", system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+}
+.lp-rodape nav a {
+  color: var(--ink-3);
+  text-decoration: none;
+}
+.lp-rodape nav a:hover {
+  color: var(--ink);
+}
+
+/* Foco visível em tudo que recebe teclado. */
+.lp a:focus-visible,
+.lp button:focus-visible,
+.lp summary:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* O cabeçalho é sticky, então um link de âncora pararia com o título escondido
+   atrás dele. Esta margem é o que faz #fluxo, #preco e #criar chegarem com o
+   título inteiro à vista. */
+.lp [id] {
+  scroll-margin-top: 72px;
+}
+
+/* Rolagem suave só para quem não pediu o contrário. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* A frase que separa ERP de camada operacional vem ANTES da lista de
+   superfícies: é a resposta ao "já tenho um sistema de gestão", e ela precisa
+   estar onde o cético está olhando, não enterrada no FAQ. */
+.lp-frase-alta {
+  margin-top: clamp(18px, 2.5vw, 26px);
+  margin-bottom: clamp(4px, 1vw, 10px);
+}

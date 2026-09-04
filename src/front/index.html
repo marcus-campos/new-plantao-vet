@@ -3,26 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>PlantãoVet</title>
-    <!-- Sem isto o link deste cadastro vira URL nua no WhatsApp e no
-         Instagram, que é exatamente onde ele vai ser compartilhado. Sem
-         og:image de propósito: não existe arte pronta, e uma imagem quebrada
-         é pior que nenhuma. -->
+
+    <title>PlantãoVet — a ficha de internação que avisa quando a dose atrasa</title>
+    <link rel="canonical" href="https://plantao.vet/" />
+
+    <!-- A descrição responde as duas perguntas de quem vê o resultado da busca:
+         o que é, e para quem. "Internação veterinária" é o termo que a clínica
+         usa; "prancheta" é o que ela quer substituir. -->
     <meta
       name="description"
-      content="A ficha de internação que faz o plantão passar direito: prescrição, aprazamento e passagem de plantão num lugar só. Teste 14 dias, sem cartão."
+      content="Software de internação veterinária: cada prescrição vira tarefa com hora marcada, o atraso aparece sozinho e a passagem de plantão sai pronta. Teste 14 dias grátis, sem cartão."
     />
-    <meta property="og:title" content="PlantãoVet — a ficha de internação que faz o plantão passar direito" />
+
+    <!-- Sem isto o link vira URL nua no WhatsApp e no Instagram, que é
+         exatamente onde ele é compartilhado. Sem og:image de propósito: não
+         existe arte pronta, e uma imagem quebrada é pior que nenhuma. -->
+    <meta property="og:site_name" content="PlantãoVet" />
+    <meta property="og:title" content="A prancheta não avisa quando a dose atrasa." />
     <meta
       property="og:description"
-      content="Prescrição, aprazamento e passagem de plantão num lugar só. Teste 14 dias, sem cartão."
+      content="Cada prescrição vira tarefa com hora marcada, o que passou da janela aparece sozinho, e o próximo plantão começa sabendo onde o anterior parou. 14 dias grátis."
     />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://plantao.vet/" />
     <meta property="og:locale" content="pt_BR" />
     <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="A prancheta não avisa quando a dose atrasa." />
+    <meta
+      name="twitter:description"
+      content="Software de internação veterinária. Prescrição, aprazamento, execução e passagem de plantão. 14 dias grátis."
+    />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="theme-color" content="#0c6b58" />
+
     <!-- Na tela inicial do celular: sem barra do navegador, com o ícone certo.
          O iOS ignora o manifest para isto e lê estas três linhas. -->
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
@@ -30,6 +45,35 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="PlantãoVet" />
     <meta name="mobile-web-app-capable" content="yes" />
+
+    <!-- As duas famílias já usadas pelo produto. `display=swap` para o texto
+         aparecer na primeira pintura em vez de esperar a fonte. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap"
+    />
+
+    <!-- Descreve o produto para o buscador sem repetir palavra-chave na copy. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "PlantãoVet",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Web, iOS, Android",
+        "url": "https://plantao.vet/",
+        "inLanguage": "pt-BR",
+        "description": "Sistema de internação veterinária: prescrição, aprazamento, execução de tarefas, passagem de plantão e trilha de auditoria.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "BRL",
+          "description": "Teste gratuito de 14 dias, sem cartão de crédito."
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
