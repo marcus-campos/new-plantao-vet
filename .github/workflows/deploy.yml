@@ -133,12 +133,30 @@ jobs:
       # fonte da verdade, que é o que se espera de um arquivo versionado.
       - name: VM · enviar o deploy.sh do repositório
         run: |
-          gcloud compute scp infra/vm/deploy.sh \
-            "${{ vars.GCP_VM_NAME }}":/tmp/deploy.sh \
-            --zone "${{ vars.GCP_ZONE }}" \
-            --tunnel-through-iap \
-            --ssh-key-expire-after=15m \
-            --quiet
+          # O PRIMEIRO comando a tocar a VM importa uma chave nova no perfil
+          # OS Login da service account, e ela leva alguns segundos para
+          # propagar. Sem repetir, esse primeiro contato falha com
+          # "Permission denied (publickey)" — não por falta de permissão, mas
+          # por chegar antes da propagação. Antes isto não aparecia porque o
+          # `ssh` era o primeiro comando e costumava encontrar a chave de uma
+          # execução anterior ainda válida.
+          for tentativa in 1 2 3 4 5; do
+            if gcloud compute scp infra/vm/deploy.sh \
+                 "${{ vars.GCP_VM_NAME }}":/tmp/deploy.sh \
+                 --zone "${{ vars.GCP_ZONE }}" \
+                 --tunnel-through-iap \
+                 --ssh-key-expire-after=15m \
+                 --quiet; then
+              echo "deploy.sh enviado na tentativa $tentativa"
+              break
+            fi
+            if [ "$tentativa" = 5 ]; then
+              echo "erro: nao consegui enviar o deploy.sh em 5 tentativas" >&2
+              exit 1
+            fi
+            echo "tentativa $tentativa falhou; a chave do OS Login pode nao ter propagado. Repetindo em 10s." >&2
+            sleep 10
+          done
           gcloud compute ssh "${{ vars.GCP_VM_NAME }}" \
             --zone "${{ vars.GCP_ZONE }}" \
             --tunnel-through-iap \
