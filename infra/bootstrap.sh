@@ -79,9 +79,24 @@ IP="$(terraform output -raw ip)"
 
 say "5/6 Firebase: app web para o push no navegador"
 TOKEN="$(gcloud auth print-access-token)"
-api() { curl -sS -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" "$@"; }
-api -X POST "https://firebase.googleapis.com/v1beta1/projects/$PROJECT:addFirebase" -d '{}' >/dev/null 2>&1 || true
-sleep 3
+# `x-goog-user-project` é obrigatório: com credencial de usuário (ADC), a API
+# do Firebase recusa a chamada sem um projeto de cota, e o erro vinha como
+# "Requested entity was not found", que parece outra coisa. Sem este cabeçalho
+# o passo inteiro falhava em silêncio e o push no navegador nunca funcionava.
+api() {
+  curl -sS -H "Authorization: Bearer $TOKEN" -H "x-goog-user-project: $PROJECT" \
+    -H "Content-Type: application/json" "$@"
+}
+
+if [ "$(api "https://firebase.googleapis.com/v1beta1/projects/$PROJECT" | python3 -c 'import sys,json;print(json.load(sys.stdin).get("state",""))')" != "ACTIVE" ]; then
+  api -X POST "https://firebase.googleapis.com/v1beta1/projects/$PROJECT:addFirebase" -d '{}' >/dev/null
+  # É operação assíncrona: criar o app web antes de o projeto virar ACTIVE
+  # falha, e falhava calado.
+  for _ in $(seq 1 20); do
+    sleep 6
+    [ "$(api "https://firebase.googleapis.com/v1beta1/projects/$PROJECT" | python3 -c 'import sys,json;print(json.load(sys.stdin).get("state",""))')" = "ACTIVE" ] && break
+  done
+fi
 lista_app() {
   api "https://firebase.googleapis.com/v1beta1/projects/$PROJECT/webApps" \
     | python3 -c 'import sys,json;a=[x for x in json.load(sys.stdin).get("apps",[]) if x.get("displayName")=="PlantaoVet Web"];print(a[0]["appId"] if a else "")'
@@ -90,8 +105,11 @@ APP_ID="$(lista_app)"
 if [ -z "$APP_ID" ]; then
   api -X POST "https://firebase.googleapis.com/v1beta1/projects/$PROJECT/webApps" \
     -d '{"displayName":"PlantaoVet Web"}' >/dev/null
-  sleep 6
-  APP_ID="$(lista_app)"
+  for _ in $(seq 1 15); do
+    sleep 5
+    APP_ID="$(lista_app)"
+    [ -n "$APP_ID" ] && break
+  done
 fi
 if [ -n "$APP_ID" ]; then
   CONFIG="$(api "https://firebase.googleapis.com/v1beta1/projects/$PROJECT/webApps/$APP_ID/config" \
