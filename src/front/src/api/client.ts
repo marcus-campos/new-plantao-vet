@@ -36,7 +36,17 @@ import type {
   TokenResponse,
 } from "./types";
 
-const BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
+// Em produção o build passa `VITE_API_URL=` VAZIO de propósito: o web e a API
+// vivem na mesma origem, e o Caddy roteia /api. Mas `??` só troca null e
+// undefined — string vazia passa direto —, e `new URL(path, "")` lança
+// `TypeError: Invalid URL`. O resultado era nenhuma chamada de API funcionar
+// pelo navegador em produção, com a tela mostrando "Algo deu errado".
+//
+// `||` em vez de `??` porque aqui a string vazia É um caso a tratar, e a
+// origem da página é a base certa quando ninguém informou outra.
+const BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  (typeof window === "undefined" ? "http://localhost:8000" : window.location.origin);
 
 const SESSION_KEY = "plantaovet.session";
 
